@@ -1,0 +1,10 @@
+{
+  "basePath": "/WEFT_PPL_Presentation",
+  "url": "http://127.0.0.1:4174/WEFT_PPL_Presentation/",
+  "resourceCount": 94,
+  "failures": [],
+  "refresh": "passed",
+  "interactionAfterRefresh": "passed",
+  "chapterDestinations": "passed",
+  "deployment": "not performed"
+}

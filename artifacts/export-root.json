@@ -1,0 +1,10 @@
+{
+  "basePath": "",
+  "url": "http://127.0.0.1:4174/",
+  "resourceCount": 94,
+  "failures": [],
+  "refresh": "passed",
+  "interactionAfterRefresh": "passed",
+  "chapterDestinations": "passed",
+  "deployment": "not performed"
+}

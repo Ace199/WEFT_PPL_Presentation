@@ -1,5 +1,7 @@
 # PPL 展示网站内容规划 V0.3.4 — 4-Block Information Architecture
 
+> **当前适用范围修订 · 2026-09-16：** 本文保留系统内容论点、事实边界、案例与贡献归属；旧首页七节结构、四块权重和冻结流程不再直接约束当前首页。当前 V1 仅做概览首页，依据 [首页总结](WEFT_PPL_Homepage_Summary_V0.1.md)、[技术规范 V2.2](WEFT_PPL_Website_Technical_Implementation_Spec_V2.2.md) 和 [最终视觉图](../ref/final.png)。独立章节、Flow、Evidence 页面延期。新增的前端临时文本预览是展示网站的辅助功能，不是 WEFT / PPL 动画生产系统的能力：所有访客只能修改当前页面内存中的文案，刷新恢复；正式内容由维护者核对后修改代码、提交并部署，不接后台。临时输入不能自动成为已核验事实；正式落地仍须遵守本文的命名、证据与贡献边界。以下正文保留为历史内容依据。
+
 > **Designing a Cross-DCC Production System**  
 > *A production system for coordinating people, software, versions, dependencies and production state across Maya and Houdini.*
 

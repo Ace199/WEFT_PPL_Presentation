@@ -1,0 +1,11 @@
+{
+  "date": "2026-09-17T01:02:44.348Z",
+  "browser": "153.0.4234.32",
+  "viewport": "1440x1000",
+  "conditions": "Local static server, no CPU/network throttling, video capture enabled, hovering a green hub with bloom; single lab run, not real-user data",
+  "frames": {
+    "averageFps": 60.00705965407694,
+    "p95FrameMs": 16.800000000000182,
+    "samples": 119
+  }
+}

@@ -1,0 +1,41 @@
+.facts [data-typing-glyph] {
+  position: relative;
+}
+.facts [data-untyped="true"] {
+  visibility: hidden;
+}
+.facts [data-untyped-label="true"]::before {
+  visibility: hidden;
+}
+.facts [data-caret]::after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 12%;
+  height: 80%;
+  width: 1px;
+  background: currentColor;
+  visibility: visible;
+  animation: blink 0.72s steps(1, end) infinite;
+}
+.facts [data-caret="start"]::after {
+  left: 0;
+}
+.facts[data-paused="true"] [data-caret]::after {
+  animation-play-state: paused;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .facts [data-untyped="true"],
+  .facts [data-untyped-label="true"]::before {
+    visibility: visible;
+  }
+  .facts [data-caret]::after {
+    display: none;
+    animation: none;
+  }
+}

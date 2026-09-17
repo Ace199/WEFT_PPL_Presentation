@@ -1,0 +1,61 @@
+.header {
+  transition: transform 360ms cubic-bezier(.22, .7, .25, 1);
+}
+/* The document reserves 110px for section anchors, not for sticky controls. */
+.header a, .header button { scroll-margin-top: -110px; }
+.header[data-collapsed="true"] { transform: translateY(calc(-100% + 8px)); }
+.header:has(a:focus, [data-status-paused]:focus) {
+  transform: none;
+  transition: none;
+}
+.handle {
+  position: absolute;
+  inset: auto 0 0;
+  height: 8px;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+}
+.header[data-collapsed="true"] .handle { bottom: -36px; height: 44px; }
+.handle:focus-visible { outline-offset: -4px; }
+.status, .staticStatus {
+  border: 0;
+  border-left: 1px solid var(--line);
+  padding: 0 0 0 22px;
+  color: var(--ink);
+  font: 16px/1.3 var(--mono);
+  background: none;
+}
+.status { display: flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; }
+.window { position: relative; display: block; overflow: hidden; width: 132px; height: 1.4em; }
+.slide { position: absolute; inset: 0; white-space: nowrap; animation: roll 9s infinite; }
+.slide:nth-child(2) { animation-delay: -6s; }
+.slide:nth-child(3) { animation-delay: -3s; }
+.status b, .staticStatus b { font-weight: 500; color: var(--mint-ink); }
+.pause { width: 10px; font: 10px var(--body); color: var(--gray); }
+.staticStatus { display: flex; flex-direction: column; font-size: 12px; }
+.header[data-collapsed="true"] .slide,
+.status[data-status-paused="true"] .slide,
+.status:hover .slide,
+.status:focus-visible .slide { animation-play-state: paused; }
+@keyframes roll {
+  0%, 28% { transform: translateY(0); opacity: 1; }
+  33% { transform: translateY(-100%); opacity: 0; }
+  33.01%, 94% { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@media (max-width: 1100px) {
+  .status, .staticStatus { padding-left: 14px; font-size: 12px; }
+  .window { width: 100px; }
+}
+@media (max-width: 800px) {
+  .status, .staticStatus { margin-left: auto; }
+  .header[data-collapsed="true"] { transform: translateY(calc(-100% + 10px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header { transition: none; }
+  .slide { animation: none; }
+}

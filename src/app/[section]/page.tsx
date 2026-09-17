@@ -1,0 +1,50 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { destinations } from "@/content/destinations";
+import { sitePath } from "@/lib/paths";
+import styles from "./page.module.css";
+export const dynamicParams = false;
+export function generateStaticParams() {
+  return destinations.map((item) => ({ section: item.slug }));
+}
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ section: string }>;
+}): Promise<Metadata> {
+  const { section } = await params;
+  const item = destinations.find((destination) => destination.slug === section);
+  return {
+    title: `WEFT / PPL — ${item?.title ?? "内容尚未开放"}`,
+    robots: { index: false, follow: true },
+  };
+}
+export default async function Destination({
+  params,
+}: {
+  params: Promise<{ section: string }>;
+}) {
+  const { section } = await params;
+  const item = destinations.find((destination) => destination.slug === section);
+  if (!item) notFound();
+  return (
+    <div className={styles.page}>
+      <header>
+        <a href={sitePath("/")}>WEFT / PPL</a>
+        <span>PRODUCTION SYSTEM / 2026</span>
+      </header>
+      <main>
+        <p className={styles.index}>
+          {item.index} / {item.english}
+        </p>
+        <h1>{item.title}</h1>
+        <h2>内容尚未开放</h2>
+        <p className={styles.description}>{item.description}</p>
+        <a className={styles.back} href={sitePath("/")}>
+          返回首页 <span aria-hidden="true">↗</span>
+        </a>
+      </main>
+      <footer>WEFT / PPL · A Cross-DCC Production System</footer>
+    </div>
+  );
+}

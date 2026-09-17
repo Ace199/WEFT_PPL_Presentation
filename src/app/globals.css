@@ -1,0 +1,94 @@
+:root {
+  --paper: #f5f5ee;
+  --ink: #111411;
+  --charcoal: #1c201e;
+  --gray: #666d67;
+  --line: #92968e;
+  --mint: #9ce4c7;
+  --mint-ink: #17684e;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --body: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+  --mono: "Barlow Condensed", "Consolas", monospace;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  font: inherit;
+}
+a {
+  color: inherit;
+  text-underline-offset: 6px;
+}
+a,
+button,
+summary {
+  touch-action: manipulation;
+}
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--mint-ink);
+  outline-offset: 6px;
+}
+section[aria-labelledby="views-title"] :focus-visible {
+  outline-color: var(--mint);
+}
+::selection {
+  background: var(--mint);
+  color: var(--ink);
+}
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+h1,
+h2,
+h3,
+p,
+figure {
+  margin: 0;
+}
+button:disabled {
+  cursor: default;
+}
+.skip {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  transform: translateY(-150%);
+  padding: 12px;
+  background: var(--ink);
+  color: var(--paper);
+  z-index: 20;
+}
+.skip:focus {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *:before,
+  *:after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
