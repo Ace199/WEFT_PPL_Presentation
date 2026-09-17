@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, type ReactNode } from "react";
-import { motion } from "@/lib/motion";
 import { useReducedMotion } from "./useReducedMotion";
 import { useEditingActivity } from "./editor/TextPreview";
 export function MotionFigure({
@@ -18,6 +17,16 @@ export function MotionFigure({
   const editing = useEditingActivity();
   useEffect(() => {
     const root = ref.current;
+    if (root && kind === "footer") {
+      if (reduced || editing) return;
+      let cancelled = false;
+      let dispose: (() => void) | undefined;
+      void import("./footer-motion").then(({ createFooterMotion }) => {
+        if (cancelled) return;
+        dispose = createFooterMotion(root, !played.current, () => { played.current = true; });
+      });
+      return () => { cancelled = true; dispose?.(); };
+    }
     if (!root || reduced || editing || (played.current && kind !== "hero"))
       return;
     let cancelled = false;
@@ -56,7 +65,7 @@ export function MotionFigure({
               .from('[data-phase="0"]', { opacity: 0.2, duration: 0.5 }, 1)
               .from(
                 '[data-phase="1"]',
-                { opacity: 0.15, x: -15, duration: 0.65 },
+                { opacity: 0, x: -15, duration: 0.65 },
                 ">+=1",
               )
               .from(
@@ -64,10 +73,6 @@ export function MotionFigure({
                 { opacity: 0, x: -12, duration: 0.85 },
                 ">+=1",
               );
-          } else {
-            timeline
-              .from('[data-circle="0"]', { x: -16, duration: motion.normal }, 0)
-              .from('[data-circle="2"]', { x: 16, duration: motion.normal }, 0);
           }
         }, root);
         cleanup = () => {
@@ -85,7 +90,10 @@ export function MotionFigure({
     };
   }, [kind, reduced, editing]);
   return (
-    <div ref={ref} className={className} data-motion={kind}>
+    <div ref={ref} className={className} data-motion={kind}
+      role={kind === "footer" && !reduced && !editing ? "button" : undefined}
+      tabIndex={kind === "footer" && !reduced && !editing ? 0 : undefined}
+      aria-label={kind === "footer" && !reduced && !editing ? "人、数据与软件在同一生产系统中连接；重播动画" : undefined}>
       {children}
     </div>
   );

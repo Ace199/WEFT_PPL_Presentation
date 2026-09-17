@@ -5,7 +5,7 @@ import { useReducedMotion } from "./useReducedMotion";
 import styles from "./AutoHeader.module.css";
 
 export function AutoHeader({ children, className }: { children: ReactNode; className: string }) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const [ready, setReady] = useState(false);
   const [inHero, setInHero] = useState(true);
   const root = useRef<HTMLElement>(null);
@@ -13,29 +13,66 @@ export function AutoHeader({ children, className }: { children: ReactNode; class
   const hovering = useRef(false);
   const editing = useEditingActivity();
   const reduced = useReducedMotion();
+  const collapsed = !inHero && !revealed && !editing && !reduced;
+  const manual = (open: boolean) => {
+    if (root.current) root.current.dataset.scrollTracking = "false";
+    setRevealed(open);
+  };
   const cancel = () => clearTimeout(timer.current);
-  const reveal = () => { cancel(); setCollapsed(false); };
+  const reveal = () => { cancel(); manual(true); };
   const retire = (delay = 800) => {
     cancel();
-    if (editing || reduced || inHero) return;
+    // Hero visibility already keeps the header open. Do not carry a stale
+    // hover override into the first boundary crossing after the pointer left.
+    if (inHero) { manual(false); return; }
+    if (editing || reduced) return;
     timer.current = setTimeout(() => {
-      if (!hovering.current && !root.current?.contains(document.activeElement)) setCollapsed(true);
+      if (!hovering.current && !root.current?.contains(document.activeElement)) manual(false);
     }, delay);
   };
   useEffect(() => {
-    const hero = document.getElementById("hero-title")?.closest("section");
-    if (!hero) return;
-    const observer = new IntersectionObserver(([entry]) => setInHero(entry.isIntersecting));
-    observer.observe(hero);
-    return () => observer.disconnect();
+    const header = root.current;
+    const site = header?.parentElement;
+    const boundary = document.getElementById("summary");
+    if (!header || !site || !boundary) return;
+    let frame = 0;
+    let beforeBoundary = true;
+    const track = () => {
+      frame = 0;
+      const height = header.getBoundingClientRect().height;
+      const strip = innerWidth <= 800 ? 10 : 8;
+      const distance = Math.max(0, height - boundary.getBoundingClientRect().top);
+      header.style.setProperty("--header-scroll-offset", `${Math.min(distance, height - strip)}px`);
+      header.dataset.scrollTracking = "true";
+      const next = distance === 0;
+      if (next !== beforeBoundary) { beforeBoundary = next; setInHero(next); }
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(track); };
+    // The mobile navigation wraps and its status can change height. Reserve
+    // its actual size so the Hero ends exactly at the first viewport edge.
+    const measure = () => {
+      site.style.setProperty("--nav-height", `${header.getBoundingClientRect().height}px`);
+      schedule();
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    observer.observe(boundary);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      site.style.removeProperty("--nav-height");
+      header.style.removeProperty("--header-scroll-offset");
+    };
   }, []);
   useEffect(() => {
     setReady(true);
     clearTimeout(timer.current);
-    setCollapsed(false);
-    if (!editing && !reduced && !inHero) timer.current = setTimeout(() => {
-      if (!hovering.current && !root.current?.contains(document.activeElement)) setCollapsed(true);
-    }, 800);
+    if (inHero || editing || reduced) setRevealed(false);
     return () => clearTimeout(timer.current);
   }, [editing, reduced, inHero]);
   return (
@@ -49,19 +86,18 @@ export function AutoHeader({ children, className }: { children: ReactNode; class
           event.preventDefault();
           root.current?.querySelector<HTMLButtonElement>("[data-header-toggle]")?.focus({ preventScroll: true });
           cancel();
-          setCollapsed(true);
+          manual(false);
         }
       }}>
       {ready && !editing && !inHero ? <button type="button" data-header-toggle className={styles.handle}
         aria-label={collapsed ? "展开导航" : "收起导航"} aria-expanded={!collapsed}
-        onClick={() => { cancel(); setCollapsed((value) => !value); }} /> : null}
+        onClick={() => { cancel(); manual(collapsed); }} /> : null}
       {children}
     </header>
   );
 }
 
 export function HeaderStatus() {
-  const [paused, setPaused] = useState(false);
   const [hidden, setHidden] = useState(false);
   const reduced = useReducedMotion();
   const editing = useEditingActivity();
@@ -73,10 +109,8 @@ export function HeaderStatus() {
   }, []);
   const lines = [<>PRODUCTION SYSTEM</>, <>STATUS: <b>ACTIVE</b></>, <>2026</>];
   if (reduced || editing) return <div className={styles.staticStatus}>{lines.map((line, i) => <span key={i}>{line}</span>)}</div>;
-  return <button type="button" className={styles.status} data-status-paused={paused || hidden}
-    aria-label={`${paused ? "继续" : "暂停"}状态轮播：PRODUCTION SYSTEM，STATUS: ACTIVE，2026`}
-    onClick={() => setPaused((value) => !value)}>
+  return <div className={styles.status} data-status-ticker data-document-hidden={hidden}
+    role="group" aria-label="生产状态：PRODUCTION SYSTEM，STATUS: ACTIVE，2026">
     <span className={styles.window} aria-hidden="true">{lines.map((line, i) => <span className={styles.slide} key={i}>{line}</span>)}</span>
-    <span className={styles.pause} aria-hidden="true">{paused ? "▶" : "Ⅱ"}</span>
-  </button>;
+  </div>;
 }

@@ -21,6 +21,14 @@ Read the relevant sources before changing content, visuals, or implementation:
 
 Explicit user decisions take precedence. Do not silently rewrite the historical documents or infer authority solely from version numbers. Ask the user about new substantive conflicts before implementing a disputed decision. Reference-site analysis is inspiration, not a product requirement or evidence of WEFT / PPL capabilities.
 
+## Session handoff and later confirmed refinements
+
+Before continuing implementation, read [Development Handoff — 2026-09-17](doc/WEFT_PPL_Development_Handoff_2026-09-17.md). It records user preferences observed in this project, explicit later decisions, code entry points, reproduced bugs, verification limits, and work still pending. Keep observations distinct from binding user instructions; inspect current code and Git status before editing.
+
+The following explicit later decisions override conflicting earlier visual / interaction wording below: remove decorative plus / crop marks; keep natural irregular tissue cells and distance-based per-glyph Hero feedback; allow green-node hover Bloom (current radii 8 / 24px). Navigation plus Hero fills the first viewport. The desktop Master Canvas fits one viewport with its model disclosure closed; an open disclosure flows below. Navigation follows the Summary top boundary upward after it meets the header bottom, retaining a thin white strip, with manual reveal available. Do not reintroduce the obsolete leave-Hero idle-collapse rule or the status ticker pause button. The footer three-circle animation waits 1.5 seconds on first visible entry, then supports hover / keyboard / touch replay. Reduced-motion and editing behavior remain supported.
+
+Preserve these refinements when referring to `ref/final.png`; the reference does not override later user corrections. Update this existing `AGENTS.md`, never create a duplicate lowercase `agent.md` / `Agent.md`.
+
 ## Final homepage visual target
 
 **[ref/final.png](ref/final.png) is the user-designated final homepage visual target**, not merely a mood-board reference. Verified path: `C:\Users\63201\Documents\prj\WEFT_PPL_Presentation\ref\final.png`.

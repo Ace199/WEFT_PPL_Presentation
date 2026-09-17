@@ -148,27 +148,25 @@
   content: "";
   position: absolute;
   border-top: 1px solid #d9dfdb;
-  width: 86px;
+  width: clamp(48px, 8svh, 86px);
   transform-origin: left;
   pointer-events: none;
   opacity: 0.65;
 }
 .organize:after {
-  left: 96%;
-  top: 28px;
-  transform: rotate(57deg);
+  left: calc(100% + 24px);
+  top: 20px;
+  transform: rotate(45deg);
 }
 .transform:after {
-  left: -22px;
-  top: 28px;
-  width: 155px;
-  transform: rotate(117deg);
+  left: -24px;
+  top: 20px;
+  transform: rotate(135deg);
 }
 .extend:after {
-  left: 8px;
-  top: 0;
-  width: 74px;
-  transform: rotate(235deg);
+  left: -24px;
+  top: 20px;
+  transform: rotate(225deg);
 }
 .explanation {
   position: absolute;
@@ -252,9 +250,48 @@
 .noScript {
   font-size: 14px;
 }
-@media (min-width: 1600px) {
+/* Fit the desktop poster below the header, including the closed disclosure.
+   Short windows may scroll rather than clipping text or shrinking controls. */
+@media (min-width: 1001px) {
   .composition {
-    min-height: 1100px;
+    --poster-height: max(560px, calc(100svh - 136px));
+    height: var(--poster-height);
+    min-height: 0;
+    padding-top: clamp(24px, 3.5svh, 40px);
+    padding-bottom: 12px;
+  }
+  .heading h2 {
+    font-size: clamp(32px, 5.2svh, 56px);
+  }
+  .heading p {
+    font-size: clamp(20px, 2.8svh, 28px);
+    margin: 10px 0;
+  }
+  .stage {
+    position: absolute;
+    top: 88px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(90%, calc((var(--poster-height) - 104px) * 1100 / 680));
+    margin: 0;
+  }
+  .controlIndex {
+    font-size: clamp(14px, 2svh, 21px);
+  }
+  .control strong {
+    font-size: clamp(18px, 2.5svh, 26px);
+  }
+  .nodeLabel {
+    font-size: 16px;
+  }
+  .explanation {
+    bottom: 72px;
+  }
+  .extend {
+    bottom: 66px;
+  }
+  .textModel {
+    margin-bottom: 20px;
   }
 }
 @media (max-width: 1000px) {
@@ -284,9 +321,6 @@
   }
   .hint {
     display: none;
-  }
-  .transform:after {
-    width: 90px;
   }
 }
 @media (max-width: 600px) {

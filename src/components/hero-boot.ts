@@ -146,7 +146,7 @@ export function createHeroBoot(
         // Keep the filter off at rest; the existing cleanup restores SVG styles.
         cluster.hub.style.filter =
           cluster.hover > 0.005
-            ? `drop-shadow(0 0 4px rgba(38, 231, 141, ${(cluster.hover * 0.85).toFixed(3)})) drop-shadow(0 0 12px rgba(62, 232, 156, ${(cluster.hover * 0.6).toFixed(3)}))`
+            ? `drop-shadow(0 0 8px rgba(38, 231, 141, ${(cluster.hover * 0.85).toFixed(3)})) drop-shadow(0 0 24px rgba(62, 232, 156, ${(cluster.hover * 0.6).toFixed(3)}))`
             : "none";
         cluster.hub.dataset.hoverStrength = cluster.hover.toFixed(3);
       }

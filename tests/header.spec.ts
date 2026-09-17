@@ -1,6 +1,59 @@
 import { test, expect } from "@playwright/test";
 
 test.use({ video: "on" });
+test("first scroll after refresh follows the boundary after hovering the Hero navigation", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+  await page.reload();
+  await page.evaluate(() => document.fonts.ready);
+  const header = page.locator('[data-site-header]');
+  await expect(header).toHaveAttribute("data-in-hero", "true");
+  await expect(header).toHaveCSS("--header-scroll-offset", "0px");
+  await page.mouse.move(200, 20);
+  await page.mouse.move(200, 300);
+  const height = (await header.boundingBox())!.height;
+  const boundary = await page.locator('#summary').evaluate(el => scrollY + el.getBoundingClientRect().top);
+  await page.evaluate(top => window.scrollTo({ top, behavior: "instant" }), boundary - height + 30);
+  await expect(header).toHaveAttribute("data-in-hero", "false");
+  await expect.poll(async () => Math.abs((await header.boundingBox())!.y + 30)).toBeLessThan(1);
+  // It must also work after returning to Hero and passing over the nav again.
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await expect(header).toHaveAttribute("data-in-hero", "true");
+  await page.mouse.move(200, 20);
+  await page.mouse.move(200, 300);
+  await page.evaluate(top => window.scrollTo({ top, behavior: "instant" }), boundary + 20);
+  await expect.poll(async () => (await header.boundingBox())!.y + height).toBeLessThanOrEqual(9);
+});
+
+for (const width of [390, 768, 1440]) {
+  test(`header follows the section boundary in both scroll directions at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    await page.mouse.move(width / 2, 300);
+    const header = page.locator('[data-site-header]');
+    const height = (await header.boundingBox())!.height;
+    const strip = width <= 800 ? 10 : 8;
+    const travel = height - strip;
+    const boundary = await page.locator('#summary').evaluate(el => scrollY + el.getBoundingClientRect().top);
+    for (const distance of [-20, 0, travel / 4, travel / 2, travel, travel + 90, travel / 2, 0, -20]) {
+      await page.evaluate(top => window.scrollTo({ top, behavior: "instant" }), boundary - height + distance);
+      const expected = -Math.min(travel, Math.max(0, distance));
+      await expect.poll(async () => Math.abs((await header.boundingBox())!.y - expected)).toBeLessThan(1);
+      if (distance === travel / 2) {
+        const top = (await header.boundingBox())!.y;
+        await page.waitForTimeout(250); // A stopped scroll must hold its partial reveal.
+        expect(Math.abs((await header.boundingBox())!.y - top)).toBeLessThan(1);
+        await page.screenshot({ path: `artifacts/header-boundary-half-${width}.png` });
+      }
+    }
+    await page.evaluate(top => window.scrollTo({ top, behavior: "instant" }), boundary + 50);
+    await expect.poll(async () => (await header.boundingBox())!.y + height).toBeLessThanOrEqual(strip + 1);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await expect.poll(async () => (await header.boundingBox())!.y).toBe(0);
+  });
+}
+
 for (const width of [390, 768, 1440]) {
   test(`compact header retracts and reveals with pointer, touch and keyboard at ${width}px`, async ({ browser }) => {
     const context = await browser.newContext({ viewport: { width, height: 1000 }, hasTouch: true });
@@ -57,23 +110,23 @@ for (const width of [390, 768, 1440]) {
   });
 }
 
-test("status rolls upward, can pause, and preserves navigation destinations", async ({ page }) => {
+test("status keeps rolling on hover and click without a pause button", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
   const header = page.locator('[data-site-header]');
   await header.getByRole("link", { name: "00 / 项目概览" }).focus();
-  const status = header.locator('[data-status-paused]');
+  const status = header.locator('[data-status-ticker]');
+  await expect(header.getByRole("button", { name: /状态轮播/ })).toHaveCount(0);
   const first = status.locator('[aria-hidden="true"] > span').first();
   const transform = () => first.evaluate((element) => getComputedStyle(element).transform);
   const initial = await transform();
   await expect.poll(transform, { timeout: 6000 }).not.toBe(initial);
+  await status.hover();
+  await expect(first).toHaveCSS("animation-play-state", "running");
   await status.click();
-  await expect(status).toHaveAttribute("data-status-paused", "true");
-  await header.getByRole("link", { name: "00 / 项目概览" }).focus();
-  await page.mouse.move(20, 300);
-  await expect(first).toHaveCSS("animation-play-state", "paused");
-  await status.click();
-  await expect(status).toHaveAttribute("data-status-paused", "false");
+  await expect(first).toHaveCSS("animation-play-state", "running");
+  const afterClick = await transform();
+  await expect.poll(transform, { timeout: 6000 }).not.toBe(afterClick);
   await header.getByRole("link", { name: "01 / 系统思考" }).click();
   await expect(page).toHaveURL(/\/systematic-thinking\/$/);
 });

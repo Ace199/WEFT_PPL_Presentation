@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-17T01:01:26.427Z",
+  "date": "2026-09-17T02:47:20.506Z",
   "environment": {
     "browser": "153.0.4234.32",
     "os": "win32 10.0.26200",
@@ -9,16 +9,16 @@
     "reducedMotion": false
   },
   "metrics": {
-    "TTFB": 2.7999999970197678,
-    "FCP": 108,
-    "LCP": 108,
-    "CLS": 0.010970428466796876,
+    "TTFB": 3,
+    "FCP": 124,
+    "LCP": 124,
+    "CLS": 0.013146324025848765,
     "INP": 40
   },
   "frames": {
     "sampleFrames": 119,
-    "averageFps": 60.01311210852791,
-    "p95FrameMs": 16.90000000000009,
+    "averageFps": 60.007059654076954,
+    "p95FrameMs": 16.800000000000182,
     "over33ms": 0
   },
   "resources": [
@@ -27,12 +27,16 @@
       "bytes": 1836
     },
     {
-      "name": "/_next/static/css/d4318452f1358391.css",
-      "bytes": 24897
+      "name": "/_next/static/css/46992a2fea0dcee9.css",
+      "bytes": 25577
     },
     {
-      "name": "/_next/static/chunks/webpack-f92c0517eb91a7c3.js",
-      "bytes": 3560
+      "name": "/_next/static/chunks/webpack-81963625b6ecacbb.js",
+      "bytes": 3583
+    },
+    {
+      "name": "/_next/static/chunks/794-bd75e607e02db8a4.js",
+      "bytes": 241299
     },
     {
       "name": "/_next/static/chunks/4bd1b696-92152b0f5947070d.js",
@@ -43,20 +47,16 @@
       "bytes": 513
     },
     {
-      "name": "/_next/static/chunks/app/page-9d76cb850ae8005b.js",
-      "bytes": 34702
-    },
-    {
-      "name": "/_next/static/chunks/794-bd75e607e02db8a4.js",
-      "bytes": 241299
-    },
-    {
-      "name": "/_next/static/media/barlow-condensed-latin-700-normal.e9811009.woff2",
-      "bytes": 22444
+      "name": "/_next/static/chunks/app/page-ffa5d9c2f42082d6.js",
+      "bytes": 35470
     },
     {
       "name": "/_next/static/media/barlow-condensed-latin-500-normal.6440fe73.woff2",
       "bytes": 21424
+    },
+    {
+      "name": "/_next/static/media/barlow-condensed-latin-700-normal.e9811009.woff2",
+      "bytes": 22444
     },
     {
       "name": "/_next/static/chunks/c15bf2b0.0826bdf262a0ccf2.js",
@@ -67,11 +67,15 @@
       "bytes": 19438
     },
     {
+      "name": "/_next/static/chunks/900.d0efb9448b7f3395.js",
+      "bytes": 1489
+    },
+    {
       "name": "/_next/static/chunks/18.f08ccba3ed6bc63c.js",
       "bytes": 43335
     },
     {
-      "name": "/_next/static/chunks/719.83c639ad3bd45e01.js",
+      "name": "/_next/static/chunks/719.d86e4bc8f840710d.js",
       "bytes": 5735
     },
     {
