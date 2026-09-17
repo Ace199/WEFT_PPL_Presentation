@@ -1,0 +1,13 @@
+.trigger { position: relative; width: 100%; padding: 0; cursor: zoom-in; }
+.hint { position: absolute; right: 10px; bottom: 10px; padding: 5px 9px; color: var(--paper); background: #1c201eee; font: 13px var(--body); }
+.dialog { width: min(94vw, 116dvh, 1320px); max-width: none; max-height: none; padding: 10px; border: 1px solid #455249; border-radius: 5px; overflow: hidden; background-color: #111713; background-image: radial-gradient(circle, #89978c99 .65px, transparent .85px); background-size: 3px 3px; color: var(--paper); }
+.dialog[data-format="portrait"] { width: min(94vw, 57.2dvh, 680px); }
+.dialog::backdrop { background: #0a100de6; }
+.panel { position: relative; }
+.stage { display: block; width: 100%; background: #fff; border: 0; padding: 0; position: relative; overflow: hidden; cursor: pointer; }
+.stage img, .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.stage img { object-fit: fill; }
+.stage canvas { pointer-events: none; }
+.dialog button:focus-visible { outline: 2px solid var(--mint); outline-offset: -3px; }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.error { position: absolute; bottom: 12px; left: 12px; right: 12px; background: #1c201eee; padding: 10px; font-size: 14px; }

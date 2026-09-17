@@ -27,18 +27,13 @@ for (const [width, height] of [[1024, 768], [1366, 768], [1440, 800], [1920, 108
         const clipped = boxes.some(b => b.top < bounds.top || b.bottom > bounds.bottom || b.left < 0 || b.right > innerWidth);
         const overlaps = boxes.some((a, i) => boxes.slice(i + 1).some(b =>
           a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top));
-        const alignment = [...root.querySelectorAll<SVGGElement>('[data-node]')]
-          .filter(node => Number(getComputedStyle(node).opacity) > 0)
-          .map(node => {
-            const matrix = node.getScreenCTM()!;
-            const hit = root.querySelector(`[data-hit="${node.dataset.node}"]`)!.getBoundingClientRect();
-            return Math.hypot(matrix.e - hit.x - hit.width / 2, matrix.f - hit.y - hit.height / 2);
-          });
-        return { clipped, overlaps, alignment: Math.max(...alignment) };
+        const hits = [...root.querySelectorAll('[data-hit]')].map(el=>el.getBoundingClientRect());
+        const inspectable = hits.length >= 8 && hits.every(b=>b.width>0 && b.height>0 && b.left>=bounds.left && b.right<=bounds.right && b.bottom<=bounds.bottom);
+        return { clipped, overlaps, inspectable };
       });
       // Focus and Enter each dispatch a view update; wait for the rendered
       // geometry, rather than sampling between React and the GSAP effect.
-      await expect.poll(async () => (await inspect()).alignment).toBeLessThan(2);
+      await expect.poll(async () => (await inspect()).inspectable).toBe(true);
       const problems = await inspect();
       expect(problems.clipped).toBe(false);
       expect(problems.overlaps).toBe(false);

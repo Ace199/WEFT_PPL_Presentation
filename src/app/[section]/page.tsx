@@ -1,3 +1,4 @@
+import { LanguageSwitch, LocalizedText as T } from "@/components/Language";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { destinations } from "@/content/destinations";
@@ -32,16 +33,17 @@ export default async function Destination({
       <header>
         <a href={sitePath("/")}>WEFT / PPL</a>
         <span>PRODUCTION SYSTEM / 2026</span>
+        <LanguageSwitch />
       </header>
       <main>
         <p className={styles.index}>
           {item.index} / {item.english}
         </p>
-        <h1>{item.title}</h1>
-        <h2>内容尚未开放</h2>
-        <p className={styles.description}>{item.description}</p>
+        <h1>{<T text={item.title} />}</h1>
+        <h2><T text="内容尚未开放" /></h2>
+        <p className={styles.description}>{<T text={item.description} />}</p>
         <a className={styles.back} href={sitePath("/")}>
-          返回首页 <span aria-hidden="true">↗</span>
+          <T text="返回首页" /> <span aria-hidden="true">↗</span>
         </a>
       </main>
       <footer>WEFT / PPL · A Cross-DCC Production System</footer>

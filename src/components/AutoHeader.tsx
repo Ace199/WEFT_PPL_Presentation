@@ -1,10 +1,12 @@
 "use client";
+import { useLanguage } from "./Language";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useEditingActivity } from "./editor/TextPreview";
 import { useReducedMotion } from "./useReducedMotion";
 import styles from "./AutoHeader.module.css";
 
 export function AutoHeader({ children, className }: { children: ReactNode; className: string }) {
+  const {t} = useLanguage();
   const [revealed, setRevealed] = useState(false);
   const [ready, setReady] = useState(false);
   const [inHero, setInHero] = useState(true);
@@ -90,7 +92,7 @@ export function AutoHeader({ children, className }: { children: ReactNode; class
         }
       }}>
       {ready && !editing && !inHero ? <button type="button" data-header-toggle className={styles.handle}
-        aria-label={collapsed ? "展开导航" : "收起导航"} aria-expanded={!collapsed}
+        aria-label={collapsed ? t("展开导航") : t("收起导航")} aria-expanded={!collapsed}
         onClick={() => { cancel(); manual(collapsed); }} /> : null}
       {children}
     </header>
@@ -98,6 +100,7 @@ export function AutoHeader({ children, className }: { children: ReactNode; class
 }
 
 export function HeaderStatus() {
+  const {t} = useLanguage();
   const [hidden, setHidden] = useState(false);
   const reduced = useReducedMotion();
   const editing = useEditingActivity();
@@ -110,7 +113,7 @@ export function HeaderStatus() {
   const lines = [<>PRODUCTION SYSTEM</>, <>STATUS: <b>ACTIVE</b></>, <>2026</>];
   if (reduced || editing) return <div className={styles.staticStatus}>{lines.map((line, i) => <span key={i}>{line}</span>)}</div>;
   return <div className={styles.status} data-status-ticker data-document-hidden={hidden}
-    role="group" aria-label="生产状态：PRODUCTION SYSTEM，STATUS: ACTIVE，2026">
+    role="group" aria-label={t("生产状态：PRODUCTION SYSTEM，STATUS: ACTIVE，2026")}>
     <span className={styles.window} aria-hidden="true">{lines.map((line, i) => <span className={styles.slide} key={i}>{line}</span>)}</span>
   </div>;
 }

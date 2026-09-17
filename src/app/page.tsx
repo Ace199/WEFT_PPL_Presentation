@@ -1,3 +1,4 @@
+import { LanguageSwitch, LocalizedText as T, LocalizedElement } from "@/components/Language";
 import { home, editableFields } from "@/content/home";
 import { destinations } from "@/content/destinations";
 import { sitePath } from "@/lib/paths";
@@ -16,6 +17,7 @@ import {
   ProductionFactsMotion,
 } from "@/components/HeroFactsMotion";
 import { AutoHeader, HeaderStatus } from "@/components/AutoHeader";
+import { ProofImage } from "@/components/ProofImage";
 
 export default function HomePage() {
   const homepagePath = sitePath("/");
@@ -23,27 +25,30 @@ export default function HomePage() {
     <TextPreviewProvider fields={editableFields}>
       <div id="top" className={styles.site}>
         <a className="skip" href="#main">
-          跳至正文
+          <T text="跳至正文" />
         </a>
         <AutoHeader className={styles.header}>
           <a
             href={homepagePath}
             className={styles.wordmark}
-            aria-label="WEFT / PPL 首页"
+            aria-label="WEFT / PPL"
           >
             {home.name}
           </a>
-          <nav aria-label="章节导航">
+          <LocalizedElement as="nav" label="章节导航">
             <a href={homepagePath} aria-current="page">
-              00 / 项目概览
+              {<T text="00 / 项目概览" />}
             </a>
             {destinations.slice(0, 3).map((item) => (
               <a href={sitePath(`/${item.slug}/`)} key={item.slug}>
-                {item.index} / {item.title}
+                {item.index} / {<T text={item.title} />}
               </a>
             ))}
-          </nav>
-          <HeaderStatus />
+          </LocalizedElement>
+          <div className={styles.headerUtilities}>
+            <HeaderStatus />
+            <LanguageSwitch />
+          </div>
         </AutoHeader>
         <main id="main">
           <section className={styles.hero} aria-labelledby="hero-title">
@@ -80,9 +85,9 @@ export default function HomePage() {
                 <SummaryDiagram />
               </MotionFigure>
               <ol>
-                <li>分散的成果</li>
-                <li>有序的组织</li>
-                <li>协同的生产</li>
+                <li>{<T text="分散的成果" />}</li>
+                <li>{<T text="有序的组织" />}</li>
+                <li>{<T text="协同的生产" />}</li>
               </ol>
             </div>
             <div className={styles.summaryCopy}>
@@ -119,7 +124,6 @@ export default function HomePage() {
                   </div>
                 ))}
               </ProductionFactsMotion>
-              <span className={styles.pending}>EVIDENCE / 待补真实素材</span>
               <a className={styles.evidenceLink} href={sitePath("/evidence/")}>
                 VIEW EVIDENCE ↗
               </a>
@@ -136,14 +140,15 @@ export default function HomePage() {
                     }
                   />
                 </h3>
-                <div
-                  className={styles.placeholder}
-                  role="img"
-                  aria-label={`${figure.title} 真实生产截图尚未提供，此处为占位框`}
-                >
-                  <span>{figure.status}</span>
-                  <small>AWAITING REDACTED CAPTURE</small>
-                </div>
+                <ProofImage
+                  className={styles.proofCapture}
+                  title={figure.title}
+                  image={figure.image}
+                  prototype={figure.prototype}
+                  width={figure.width}
+                  height={figure.height}
+                  alt={figure.alt}
+                />
                 <figcaption>
                   <EditableText
                     id={
@@ -156,8 +161,8 @@ export default function HomePage() {
               </figure>
             ))}
             <div className={styles.provenance}>
-              <p>{home.proof.attribution}</p>
-              <p>{home.proof.note}</p>
+              <p>{<T text={home.proof.attribution} />}</p>
+              <p>{<T text={home.proof.note} />}</p>
             </div>
           </section>
         </main>
@@ -169,10 +174,10 @@ export default function HomePage() {
             </p>
           </div>
           <MotionFigure kind="footer" className={styles.footerDiagram}>
-            <svg
+            <LocalizedElement as="svg"
               viewBox="0 0 330 140"
               role="img"
-              aria-label="人、数据与软件在同一生产系统中连接"
+              label="人、数据与软件在同一生产系统中连接"
             >
               <g fill="none" stroke="currentColor" strokeWidth="1">
                 <circle data-circle="0" cx="100" cy="60" r="43" />
@@ -196,7 +201,7 @@ export default function HomePage() {
                   SOFTWARE
                 </text>
               </g>
-            </svg>
+            </LocalizedElement>
           </MotionFigure>
           <div className={styles.footerLinks}>
             <a href={sitePath("/evidence/")}>

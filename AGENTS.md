@@ -29,7 +29,23 @@ The following explicit later decisions override conflicting earlier visual / int
 
 Preserve these refinements when referring to `ref/final.png`; the reference does not override later user corrections. Update this existing `AGENTS.md`, never create a duplicate lowercase `agent.md` / `Agent.md`.
 
+User-approved Master Canvas direction on 2026-09-17: use `ref/mid_1.png`, `mid_2.png`, and `mid_3.png` as illustrative direction for independent production modules → shared organization → composed workspace. Build the camera, set, and neutral character procedurally with a shared projection; replace the illustrative “布料” label with “角色” and refine the camera frustum. All views reuse the same scene. Keep these diagrams explicitly illustrative, not production evidence. Current implementation places model inspection buttons below the scene and the three preview / EXPLORE controls in a row below it; mobile uses a vertical scene. This is a reviewable implementation, not final user visual acceptance.
+
+Later user correction on 2026-09-17: replace the neutral character in the Master Canvas with the folded, dotted cloth-like surface shown in the mid references, but label it “资产” (Asset). Apply the surface to the independent module, version preview, and composed workspace. This overrides the earlier character decision above.
+
+Later user confirmation on 2026-09-17: restore bidirectional inspection between the production scene and the model labels. Hover / keyboard focus highlights corresponding objects and relationships and updates the explanation; clicking / tapping pins a selection. A second click, blank-scene click, or Escape clears inspection. Changing views clears obsolete inspection. Inspection must not restart the view's geometry animation. Keep touch targets separated in the vertical mobile scene.
+
 ## Final homepage visual target
+
+Latest crop correction: remove top white/window-title chrome rather than using centered cover/zoom cropping. Use the final image's remaining aspect ratio as the shared frame; contain the prototype proportionally and extend any unused area with white. Preserve remaining tool content and use identical crop/fit calculations during character transitions.
+
+Further viewer refinement: no visible X/close button; dismiss via backdrop click/tap or Escape. Add a narrow dotted outer frame. Dissolve uses fewer, larger continuous regions, and glyphs change independently in place at varied intervals (no scrolling or synchronized character sequence).
+
+Latest image-viewer correction: remove visible surrounding titles, captions and replay text. Keep only an in-image close icon, backdrop/Escape dismissal and image-click replay. Fit prototype/final into the same fixed frame per tool with light edge cropping. Transition in two stages: prototype dissolves into a dense full-frame code field, then that field dissolves into the final image; no directional sweep. Current glyph spacing is 8×12 CSS pixels.
+
+Later user refinement: clicking a Production Proof thumbnail opens a large image viewer showing the prototype first. Clicking that image reveals the final implementation through a short character-grid transition (# / * / other symbols). Keep the resting homepage simple; no inline comparison controls or annotation system. Support close/Escape, replay, keyboard focus containment, and immediate switching with reduced motion.
+
+User-confirmed on 2026-09-17: keep homepage Production Proof simple: show the supplied Shot Builder and Publish final screenshots with short captions, without prototype switches or interactive annotations. Deeper comparisons belong in later chapters. The user explicitly confirmed that the project, shot and asset names visible in these supplied screenshots may be public; retain the original images without redaction.
 
 **[ref/final.png](ref/final.png) is the user-designated final homepage visual target**, not merely a mood-board reference. Verified path: `C:\Users\63201\Documents\prj\WEFT_PPL_Presentation\ref\final.png`.
 

@@ -152,6 +152,22 @@ function DotCloud({
     </g>
   );
 }
+function DispersedDots({ phase }: { phase: string }) {
+  const rand = random(91);
+  const dots = Array.from({ length: 116 }, () => ({
+    x: 25 + rand() * 126,
+    y: 22 + rand() * 156,
+    r: 0.55 + rand() * 1.15,
+    opacity: 0.38 + rand() * 0.62,
+  }));
+  return (
+    <g data-phase={phase} fill="currentColor" stroke="none">
+      {dots.map((dot, i) => (
+        <circle key={i} cx={dot.x} cy={dot.y} r={dot.r} opacity={dot.opacity} />
+      ))}
+    </g>
+  );
+}
 function connectionCurve(
   x1: number,
   y1: number,
@@ -300,14 +316,35 @@ export function SummaryDiagram() {
         strokeWidth="1.6"
         strokeLinecap="round"
       >
-        <DotCloud phase="0" clouds={[[88, 100, 84, 87, 230, 5]]} />
-        <DotCloud phase="1" clouds={[[315, 100, 79, 78, 350, 12]]} />
+        <DispersedDots phase="0" />
+        <DotCloud
+          phase="1"
+          clouds={[
+            [285, 100, 46, 58, 185, 12],
+            [347, 100, 48, 58, 185, 18],
+          ]}
+        />
         <g data-phase="2">
           <g strokeWidth=".4" opacity=".25">
             {Array.from({ length: 20 }, (_, i) => (
               <path
                 key={i}
-                d={`M${530 + Math.sin(i) * 28} ${100 + Math.cos(i) * 32}L${654 + Math.sin(i) * 20} ${48 + Math.cos(i) * 28} M${530 + Math.sin(i) * 28} ${100 + Math.cos(i) * 32}L${654 + Math.sin(i) * 20} ${153 + Math.cos(i) * 28}`}
+                d={
+                  connectionCurve(
+                    530 + Math.sin(i) * 28,
+                    100 + Math.cos(i) * 32,
+                    654 + Math.sin(i) * 20,
+                    48 + Math.cos(i) * 28,
+                    -11 + (i % 5) * 5,
+                  ) +
+                  connectionCurve(
+                    530 + Math.sin(i) * 28,
+                    100 + Math.cos(i) * 32,
+                    654 + Math.sin(i) * 20,
+                    153 + Math.cos(i) * 28,
+                    11 - (i % 5) * 5,
+                  )
+                }
               />
             ))}
           </g>

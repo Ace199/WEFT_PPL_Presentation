@@ -1,4 +1,5 @@
 "use client";
+import { useLanguage } from "./Language";
 import { useEffect, useRef, type ReactNode } from "react";
 import { useReducedMotion } from "./useReducedMotion";
 import { useEditingActivity } from "./editor/TextPreview";
@@ -11,6 +12,7 @@ export function MotionFigure({
   children: ReactNode;
   className?: string;
 }) {
+  const {t} = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
   const played = useRef(false);
   const reduced = useReducedMotion();
@@ -93,7 +95,7 @@ export function MotionFigure({
     <div ref={ref} className={className} data-motion={kind}
       role={kind === "footer" && !reduced && !editing ? "button" : undefined}
       tabIndex={kind === "footer" && !reduced && !editing ? 0 : undefined}
-      aria-label={kind === "footer" && !reduced && !editing ? "人、数据与软件在同一生产系统中连接；重播动画" : undefined}>
+      aria-label={kind === "footer" && !reduced && !editing ? t("人、数据与软件在同一生产系统中连接；重播动画") : undefined}>
       {children}
     </div>
   );

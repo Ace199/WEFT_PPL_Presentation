@@ -1,4 +1,5 @@
 "use client";
+import { useLanguage } from "../Language";
 import {
   createContext,
   useContext,
@@ -50,22 +51,31 @@ export function EditableText({
 }
 
 export function TextPreviewProvider({
-  fields,
+  fields: baselineFields,
   children,
 }: {
   fields: FieldRegistry;
   children: ReactNode;
 }) {
+  const {language, t} = useLanguage();
+  const fields = Object.fromEntries(Object.entries(baselineFields).map(([id, field]) =>
+    [id, {...field, label: t(field.label), baseline: t(field.baseline)}])) as FieldRegistry;
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<EditableFieldId>("hero.description");
-  const [overrides, setOverrides] = useState<TextOverrides>({});
+  const [localizedOverrides, setLocalizedOverrides] = useState<Record<"zh" | "en", TextOverrides>>({zh: {}, en: {}});
+  const overrides = localizedOverrides[language];
+  const setOverrides = (value: TextOverrides | ((previous: TextOverrides) => TextOverrides)) =>
+    setLocalizedOverrides(previous => ({...previous, [language]: typeof value === "function" ? value(previous[language]) : value}));
   const [message, setMessage] = useState("");
   const [showList, setShowList] = useState(false);
   const panel = useRef<HTMLElement>(null);
   const launcher = useRef<HTMLButtonElement>(null);
   const input = useRef<HTMLInputElement & HTMLTextAreaElement>(null);
   const output = useRef<HTMLTextAreaElement>(null);
-  const list = changeList(fields, overrides);
+  const baselineList = changeList(fields, overrides);
+  const list = language === "en"
+    ? {...baselineList, schemaVersion: 2, language, source: "src/content/translations.ts"}
+    : baselineList;
   const serialized = JSON.stringify(list, null, 2);
   const current = fields[selected];
   const selectVisibleField = () => {
@@ -73,7 +83,7 @@ export function TextPreviewProvider({
       `[data-editable="${selected}"]`,
     );
     if (!element) {
-      setMessage("该说明随对应视角显示；在画布中选择该视角即可预览。");
+      setMessage(t("该说明随对应视角显示；在画布中选择该视角即可预览。"));
       return;
     }
     const panelBottom = panel.current?.getBoundingClientRect().bottom ?? 0;
@@ -108,20 +118,20 @@ export function TextPreviewProvider({
   };
   const resetAll = () => {
     setOverrides({});
-    setMessage("已恢复全部正式文案。");
+    setMessage(t("已恢复全部正式文案。"));
     setShowList(false);
   };
   const copy = async () => {
     if (!list.changes.length) {
-      setMessage("暂无实际修改。");
+      setMessage(t("暂无实际修改。"));
       setShowList(false);
       return;
     }
     try {
       await navigator.clipboard.writeText(serialized);
-      setMessage("已复制修改清单；尚未保存或发布。");
+      setMessage(t("已复制修改清单；尚未保存或发布。"));
     } catch {
-      setMessage("复制失败，请在下方选择清单并手动复制。");
+      setMessage(t("复制失败，请在下方选择清单并手动复制。"));
       setShowList(true);
       requestAnimationFrame(() => {
         output.current?.focus();
@@ -137,7 +147,7 @@ export function TextPreviewProvider({
             <aside
               ref={panel}
               className={styles.panel}
-              aria-label="临时内容编辑"
+              aria-label={t("临时内容编辑")}
               onKeyDown={(event) => {
                 if (event.key === "Escape") {
                   event.stopPropagation();
@@ -147,16 +157,14 @@ export function TextPreviewProvider({
             >
               <div className={styles.panelTop}>
                 <div>
-                  <strong>试编辑</strong>
-                  <span>临时预览，刷新后恢复</span>
+                  <strong>{t("试编辑")}</strong>
+                  <span>{t("临时预览，刷新后恢复")}</span>
                 </div>
-                <button onClick={close} aria-label="关闭编辑面板">
-                  关闭 ×
-                </button>
+                <button onClick={close} aria-label={t("关闭编辑面板")}>{t("关闭 ×")}</button>
               </div>
               <div className={styles.fields}>
                 <div className={styles.select}>
-                  <label htmlFor="preview-field">选择字段</label>
+                  <label htmlFor="preview-field">{t("选择字段")}</label>
                   <select
                     id="preview-field"
                     value={selected}
@@ -171,12 +179,12 @@ export function TextPreviewProvider({
                     {(Object.keys(fields) as EditableFieldId[]).map((id) => (
                       <option value={id} key={id}>
                         {fields[id].label}
-                        {overrides[id] !== undefined ? " · 已修改" : ""}
+                        {overrides[id] !== undefined ? t(" · 已修改") : ""}
                       </option>
                     ))}
                   </select>
                   <code>{selected}</code>
-                  <button onClick={selectVisibleField}>定位页面文案 ↓</button>
+                  <button onClick={selectVisibleField}>{t("定位页面文案 ↓")}</button>
                 </div>
                 <div className={styles.input}>
                   <label htmlFor="preview-value">{current.label}</label>
@@ -199,32 +207,24 @@ export function TextPreviewProvider({
                       spellCheck={false}
                     />
                   )}
-                  <small>
-                    仅在本页预览纯文本，不改变正式内容或已核实事实。
-                  </small>
+                  <small>{t("仅在本页预览纯文本，不改变正式内容或已核实事实。")}</small>
                 </div>
                 <div className={styles.actions}>
-                  <button onClick={() => update(current.baseline)}>
-                    恢复此字段
-                  </button>
-                  <button onClick={resetAll}>恢复全部</button>
-                  <button className={styles.copy} onClick={copy}>
-                    复制修改清单
-                  </button>
+                  <button onClick={() => update(current.baseline)}>{t("恢复此字段")}</button>
+                  <button onClick={resetAll}>{t("恢复全部")}</button>
+                  <button className={styles.copy} onClick={copy}>{t("复制修改清单")}</button>
                   <button onClick={() => setShowList((value) => !value)}>
-                    查看清单（{list.changes.length}）
+                    {t("查看清单")} ({list.changes.length})
                   </button>
                 </div>
               </div>
               <p className={styles.message} role="status">
                 {message ||
-                  `${list.changes.length} 个字段有临时修改。正式更新需由维护者核对源值后修改代码。`}
+                  (language === "en" ? `${list.changes.length} fields changed locally. Permanent updates require source review and code changes.` : `${list.changes.length} 个字段有临时修改。正式更新需由维护者核对源值后修改代码。`)}
               </p>
               {showList ? (
                 <div className={styles.export}>
-                  <label htmlFor="preview-changes">
-                    修改清单（可手动选择复制）
-                  </label>
+                  <label htmlFor="preview-changes">{t("修改清单（可手动选择复制）")}</label>
                   <textarea
                     id="preview-changes"
                     ref={output}
@@ -243,13 +243,12 @@ export function TextPreviewProvider({
               {list.changes.length ? (
                 <>
                   <span role="status">
-                    临时预览，刷新后恢复 · {list.changes.length} 项
+                    {t("临时预览，刷新后恢复")} · {list.changes.length}
                   </span>
-                  <button onClick={resetAll}>恢复全部</button>
+                  <button onClick={resetAll}>{t("恢复全部")}</button>
                 </>
               ) : null}
-              <button ref={launcher} onClick={() => setOpen(true)}>
-                试编辑 <span aria-hidden="true">↗</span>
+              <button ref={launcher} onClick={() => setOpen(true)}>{t("试编辑")}<span aria-hidden="true">↗</span>
               </button>
             </div>
           ) : null}

@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdir } from "node:fs/promises";
-import { presets } from "../src/data/graph";
 const sizes = [390, 768, 1440];
 test("chapter navigation does not masquerade as homepage section links", async ({
   page,
@@ -85,13 +84,8 @@ test("shared graph survives 12 rapid switches, inspection, keyboard and resize",
   for (let i = 0; i < 12; i++) await buttons[i % 3].click();
   await expect(region).toHaveAttribute("data-mode", "extend");
   await expect(region).toHaveAttribute("data-settled", "true");
-  for (const [id, position] of Object.entries(presets.extend.positions)) {
-    await expect(region.locator(`[data-node="${id}"]`)).toHaveAttribute(
-      "transform",
-      `translate(${position.x} ${position.y})`,
-    );
-  }
-  expect(await region.locator("[data-node]").count()).toBe(13);
+  expect(await region.locator("[data-hit]").count()).toBe(13);
+  await expect(region.locator("[data-production-scene]")).toBeVisible();
   await expect(
     page.getByRole("button", { name: "检查 GOVERNANCE", exact: true }),
   ).toBeVisible();
@@ -105,7 +99,7 @@ test("shared graph survives 12 rapid switches, inspection, keyboard and resize",
   await expect(region).toHaveAttribute("data-mode", "overview");
   await expect(region).toHaveAttribute("data-settled", "true");
   const futureOpacity = await region
-    .locator('[data-edge^="future-edge"]')
+    .locator('[data-future]')
     .evaluateAll((els) => els.map((el) => getComputedStyle(el).opacity));
   expect(futureOpacity.every((o) => o === "0")).toBeTruthy();
   await page.getByRole("button", { name: "检查 PRODUCT", exact: true }).focus();
@@ -123,23 +117,9 @@ test("shared graph survives 12 rapid switches, inspection, keyboard and resize",
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBeTruthy();
-  const alignment = await region.evaluate((element) =>
-    [...element.querySelectorAll<SVGGElement>("[data-node]")]
-      .filter((node) => Number(getComputedStyle(node).opacity) > 0)
-      .map((node) => {
-        const matrix = node.getScreenCTM()!;
-        const hit = element
-          .querySelector<HTMLButtonElement>(
-            `[data-hit="${node.dataset.node}"]`,
-          )!
-          .getBoundingClientRect();
-        return Math.hypot(
-          matrix.e - hit.x - hit.width / 2,
-          matrix.f - hit.y - hit.height / 2,
-        );
-      }),
-  );
-  expect(Math.max(...alignment)).toBeLessThan(2);
+  const modelButtons = region.locator("[data-hit]");
+  await expect(modelButtons).toHaveCount(8);
+  for(const button of await modelButtons.all()) await expect(button).toBeVisible();
 });
 
 test("touch and live reduced-motion changes keep views usable", async ({
@@ -163,47 +143,17 @@ test("touch and live reduced-motion changes keep views usable", async ({
   await context.close();
 });
 
-test("ambient pauses offscreen and while the document is hidden", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 850 });
+test("production diagram settles without a continuous background canvas", async ({page})=>{
   await page.goto("/");
-  const region = page.getByRole("region", { name: "ONE SYSTEM / THREE VIEWS" });
+  const region=page.locator("#views");
+  await region.locator('[data-control="transform"]').click();
+  await expect(region).toHaveAttribute("data-settled","true");
+  await expect(region.locator("canvas")).toHaveCount(0);
+  await expect(region.locator("[data-character-result]")).toHaveCSS("opacity","1");
+  await page.evaluate(()=>window.scrollTo({top:0,behavior:"instant"}));
   await region.scrollIntoViewIfNeeded();
-  const canvas = region.locator("canvas");
-  await expect(canvas).toHaveAttribute("data-running", "true");
-  await expect
-    .poll(async () => Number(await canvas.getAttribute("data-frames")))
-    .toBeGreaterThan(3);
-  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
-  await expect(canvas).toHaveAttribute("data-running", "false");
-  const frame = await canvas.getAttribute("data-frames");
-  await page.evaluate(
-    () =>
-      new Promise((resolve) =>
-        requestAnimationFrame(() => requestAnimationFrame(resolve)),
-      ),
-  );
-  expect(await canvas.getAttribute("data-frames")).toBe(frame);
-  await region.scrollIntoViewIfNeeded();
-  await expect(canvas).toHaveAttribute("data-running", "true");
-  // Chromium headless does not switch OS tabs. Exercise the visibility handler explicitly.
-  await page.evaluate(() => {
-    Object.defineProperty(document, "hidden", {
-      configurable: true,
-      get: () => true,
-    });
-    document.dispatchEvent(new Event("visibilitychange"));
-  });
-  await expect(canvas).toHaveAttribute("data-running", "false");
-  await page.evaluate(() => {
-    Object.defineProperty(document, "hidden", {
-      configurable: true,
-      get: () => false,
-    });
-    document.dispatchEvent(new Event("visibilitychange"));
-  });
-  await expect(canvas).toHaveAttribute("data-running", "true");
+  await expect(region).toHaveAttribute("data-mode","transform");
+  await expect(region).toHaveAttribute("data-settled","true");
 });
 
 test("HTML remains informative without JavaScript", async ({ browser }) => {

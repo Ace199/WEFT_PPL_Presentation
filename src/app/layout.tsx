@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@fontsource/barlow-condensed/latin-500.css";
 import "@fontsource/barlow-condensed/latin-700.css";
 import "./globals.css";
+import { LanguageProvider } from "@/components/Language";
 export const metadata: Metadata = {
   title: "WEFT / PPL — 跨软件协作的动画生产系统",
   description:
@@ -12,7 +13,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN">
-      <body>{children}</body>
+      <body><LanguageProvider>{children}</LanguageProvider></body>
     </html>
   );
 }
