@@ -1,0 +1,53 @@
+import {test, expect} from "@playwright/test";
+
+test("production characters share appearance, move only in view and respect reduced motion", async ({page}) => {
+  await page.setViewportSize({width:1440,height:1100});
+  await page.goto("/systematic-thinking/");
+  const network=page.locator('[data-reveal]').first();
+  await network.scrollIntoViewIfNeeded();
+  await expect(network).toHaveAttribute('data-motion','complete',{timeout:15000});
+  await expect(network.locator('[data-character="white"]')).toHaveCount(2);
+  await expect(network.locator('[data-character="colored"]')).toHaveCount(3);
+  const body=network.locator('[data-character="white"][data-walking="true"] > g');
+  const transform=()=>body.evaluate(el=>getComputedStyle(el).transform);
+  const before=await transform();
+  await expect.poll(transform,{intervals:[100]}).not.toBe(before);
+  const staticBody=network.locator('[data-character="white"][data-walking="false"] > g');
+  await expect(staticBody).toHaveCSS('animation-name','none');
+  const flowers = network.locator('[data-fx-flowers] > g > g');
+  await expect(flowers).toHaveCount(57);
+  await expect(network.locator('[data-render-flowers]')).toHaveCount(2);
+  const firstFlower = flowers.first();
+  const flowerTransform = () => firstFlower.evaluate(el => getComputedStyle(el).transform);
+  const flowerBefore = await flowerTransform();
+  await expect.poll(flowerTransform, {intervals:[100]}).not.toBe(flowerBefore);
+  await network.screenshot({path:'artifacts/systematic-characters.png'});
+  await page.evaluate(()=>window.scrollTo({top:document.body.scrollHeight,behavior:'instant'}));
+  await expect(body).toHaveCSS('animation-play-state','paused');
+  await expect(firstFlower).toHaveCSS('animation-play-state','paused');
+  await network.scrollIntoViewIfNeeded();
+  await expect(body).toHaveCSS('animation-play-state','running');
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await expect(body).toHaveCSS('animation-name','none');
+  await expect(firstFlower).toHaveCSS('animation-name','none');
+});
+
+test("each animated node starts moving on entry before the network finishes", async ({page}) => {
+  await page.setViewportSize({width:1440,height:1100});
+  await page.goto('/systematic-thinking/');
+  const network = page.locator('[data-reveal]').first();
+  await network.scrollIntoViewIfNeeded();
+  const walking = network.locator('[data-step="16"] [data-walking="true"] > g');
+  const fx = network.locator('[data-step="18"] [data-fx-flowers] > g > g').first();
+  const render = network.locator('[data-step="22"] [data-walking="true"] > g');
+  await expect(walking).toHaveCSS('animation-play-state','paused');
+  await expect(walking).toHaveCSS('animation-play-state','running',{timeout:8000});
+  await expect(network).toHaveAttribute('data-motion','ready');
+  await expect(fx).toHaveCSS('animation-play-state','paused');
+  await expect(fx).toHaveCSS('animation-play-state','running');
+  await expect(network).toHaveAttribute('data-motion','ready');
+  await expect(render).toHaveCSS('animation-play-state','paused');
+  await expect(render).toHaveCSS('animation-play-state','running');
+  await expect(network.locator('[data-step="22"] [data-fx-flowers] > g > g').first()).toHaveCSS('animation-play-state','running');
+  await expect(network).toHaveAttribute('data-motion','ready');
+});

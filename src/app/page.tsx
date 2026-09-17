@@ -1,6 +1,5 @@
-import { LanguageSwitch, LocalizedText as T, LocalizedElement } from "@/components/Language";
+import { LocalizedText as T, LocalizedElement } from "@/components/Language";
 import { home, editableFields } from "@/content/home";
-import { destinations } from "@/content/destinations";
 import { sitePath } from "@/lib/paths";
 import {
   EditableText,
@@ -16,40 +15,17 @@ import {
   HeroFactsMotion,
   ProductionFactsMotion,
 } from "@/components/HeroFactsMotion";
-import { AutoHeader, HeaderStatus } from "@/components/AutoHeader";
+import { SiteHeader } from "@/components/SiteHeader";
 import { ProofImage } from "@/components/ProofImage";
 
 export default function HomePage() {
-  const homepagePath = sitePath("/");
   return (
     <TextPreviewProvider fields={editableFields}>
       <div id="top" className={styles.site}>
         <a className="skip" href="#main">
           <T text="跳至正文" />
         </a>
-        <AutoHeader className={styles.header}>
-          <a
-            href={homepagePath}
-            className={styles.wordmark}
-            aria-label="WEFT / PPL"
-          >
-            {home.name}
-          </a>
-          <LocalizedElement as="nav" label="章节导航">
-            <a href={homepagePath} aria-current="page">
-              {<T text="00 / 项目概览" />}
-            </a>
-            {destinations.slice(0, 3).map((item) => (
-              <a href={sitePath(`/${item.slug}/`)} key={item.slug}>
-                {item.index} / {<T text={item.title} />}
-              </a>
-            ))}
-          </LocalizedElement>
-          <div className={styles.headerUtilities}>
-            <HeaderStatus />
-            <LanguageSwitch />
-          </div>
-        </AutoHeader>
+        <SiteHeader />
         <main id="main">
           <section className={styles.hero} aria-labelledby="hero-title">
             <HeroTextMotion />

@@ -1,0 +1,47 @@
+.bulb { fill: #81d9b8; fill-opacity: 0; }
+.hoverVisual {
+  transform-origin: 0 0;
+  transition: transform .2s ease-out;
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hoverTarget:hover > .hoverVisual { transform: scale(2); }
+}
+.rays { transform-origin: 0 -9px; }
+.ideaShake { transform-origin: 0 18px; }
+:global([data-entered="true"]) .ideaShake {
+  animation: ideaShake .85s ease-out both;
+  animation-play-state: var(--character-motion-state, paused);
+}
+@keyframes ideaShake {
+  0%, 65%, 100% { transform: rotate(0deg); }
+  12% { transform: rotate(-7deg); }
+  25% { transform: rotate(6deg); }
+  38% { transform: rotate(-4deg); }
+  51% { transform: rotate(2deg); }
+}
+:global([data-entered="true"]) .bulb {
+  animation: ideaFlash .85s ease-out both;
+  animation-play-state: var(--character-motion-state, paused);
+}
+:global([data-entered="true"]) .rays {
+  animation: ideaRays .85s ease-out both;
+  animation-play-state: var(--character-motion-state, paused);
+}
+@keyframes ideaFlash {
+  0% { fill-opacity: 0; }
+  24% { fill-opacity: .7; }
+  48% { fill-opacity: .4; }
+  100% { fill-opacity: 0; }
+}
+@keyframes ideaRays {
+  0% { opacity: .2; transform: scale(.82); }
+  28% { opacity: 1; transform: scale(1.14); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hoverVisual { transition: none; }
+  :global([data-entered="true"]) .bulb,
+  :global([data-entered="true"]) .ideaShake,
+  :global([data-entered="true"]) .rays { animation: none; }
+}

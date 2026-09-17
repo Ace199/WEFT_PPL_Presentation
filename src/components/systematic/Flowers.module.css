@@ -1,0 +1,19 @@
+.bloom {
+  transform-origin: 0 0;
+  opacity: .7;
+  animation: blossom var(--bloom-duration) ease-in-out var(--bloom-delay) infinite;
+  animation-play-state: paused;
+}
+:global(:is([data-entered="true"], [data-motion="complete"])) .bloom {
+  animation-play-state: var(--character-motion-state, paused);
+}
+@keyframes blossom {
+  0% { transform: scale(.08) rotate(-18deg); opacity: 0; }
+  16% { opacity: .8; }
+  58% { transform: scale(1) rotate(10deg); opacity: .72; }
+  80% { transform: scale(1.13) rotate(17deg); opacity: .4; }
+  100% { transform: scale(1.2) rotate(22deg); opacity: 0; }
+}
+@media(prefers-reduced-motion: reduce) {
+  .bloom { animation: none; opacity: .6; }
+}

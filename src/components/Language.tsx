@@ -3,9 +3,29 @@ import { createContext, useContext, useEffect, useState, createElement, type Rea
 import { english } from "@/content/translations";
 import styles from "./Language.module.css";
 type Language = "zh" | "en";
+const languagePreferenceKey = "weft-ppl.language";
 const Context = createContext({ language: "zh" as Language, setLanguage: (_: Language) => {} });
 export function LanguageProvider({children}: {children: ReactNode}) {
-  const [language, setLanguage] = useState<Language>("zh");
+  const [language, updateLanguage] = useState<Language>("zh");
+  useEffect(() => {
+    const restore = () => {
+      try {
+        const saved = localStorage.getItem(languagePreferenceKey);
+        if (saved === "zh" || saved === "en") updateLanguage(saved);
+      } catch { /* Storage restrictions must not prevent in-page switching. */ }
+    };
+    restore();
+    const synchronize = (event: StorageEvent) => {
+      if (event.key === languagePreferenceKey) restore();
+    };
+    window.addEventListener("storage", synchronize);
+    return () => window.removeEventListener("storage", synchronize);
+  }, []);
+  const setLanguage = (next: Language) => {
+    updateLanguage(next);
+    try { localStorage.setItem(languagePreferenceKey, next); }
+    catch { /* The current page still works when storage is unavailable. */ }
+  };
   useEffect(() => { document.documentElement.lang = language === "zh" ? "zh-CN" : "en"; }, [language]);
   return <Context.Provider value={{language, setLanguage}}>{children}</Context.Provider>;
 }

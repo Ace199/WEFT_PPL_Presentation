@@ -5,7 +5,7 @@ import { useEditingActivity } from "./editor/TextPreview";
 import { useReducedMotion } from "./useReducedMotion";
 import styles from "./AutoHeader.module.css";
 
-export function AutoHeader({ children, className }: { children: ReactNode; className: string }) {
+export function AutoHeader({ children, className, boundaryId = "summary" }: { children: ReactNode; className: string; boundaryId?: string }) {
   const {t} = useLanguage();
   const [revealed, setRevealed] = useState(false);
   const [ready, setReady] = useState(false);
@@ -35,7 +35,7 @@ export function AutoHeader({ children, className }: { children: ReactNode; class
   useEffect(() => {
     const header = root.current;
     const site = header?.parentElement;
-    const boundary = document.getElementById("summary");
+    const boundary = document.getElementById(boundaryId);
     if (!header || !site || !boundary) return;
     let frame = 0;
     let beforeBoundary = true;
@@ -70,7 +70,7 @@ export function AutoHeader({ children, className }: { children: ReactNode; class
       site.style.removeProperty("--nav-height");
       header.style.removeProperty("--header-scroll-offset");
     };
-  }, []);
+  }, [boundaryId]);
   useEffect(() => {
     setReady(true);
     clearTimeout(timer.current);

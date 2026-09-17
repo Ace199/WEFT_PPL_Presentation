@@ -1,0 +1,37 @@
+.figure { --suit: #fffefa; --limb: #eeefea; --boot: #e2e5df; }
+.colored { --suit: #81d9b8; --limb: #f8faf3; --boot: #929e99; }
+.walkLeg { animation: stride 1.2s linear infinite; }
+.walkArm { animation: armSwing 1.2s ease-in-out infinite; }
+.knee { animation: kneeLift 1.2s linear infinite; }
+.far { animation-delay: -.6s; }
+.moving .body { animation: bounce .6s ease-in-out infinite; }
+.walkLeg, .walkArm, .knee, .moving .body {
+  transform-origin: 0 0;
+  animation-play-state: paused;
+}
+:global(:is([data-entered="true"], [data-motion="complete"])) .walkLeg,
+:global(:is([data-entered="true"], [data-motion="complete"])) .walkArm,
+:global(:is([data-entered="true"], [data-motion="complete"])) .knee,
+:global(:is([data-entered="true"], [data-motion="complete"])) .moving .body { animation-play-state: var(--character-motion-state, paused); }
+/* Each arm opposes its same-side thigh; the knee folds during recovery. */
+@keyframes stride {
+  0%, 100% { transform: rotate(-26deg); }
+  50% { transform: rotate(26deg); }
+  75% { transform: rotate(0deg); }
+}
+@keyframes armSwing {
+  0%, 100% { transform: rotate(24deg); }
+  50% { transform: rotate(-24deg); }
+}
+@keyframes kneeLift {
+  0%, 50%, 100% { transform: rotate(0deg); }
+  65% { transform: rotate(48deg); }
+  80% { transform: rotate(30deg); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.5px); }
+}
+@media(prefers-reduced-motion: reduce) {
+  .walkLeg, .walkArm, .knee, .moving .body { animation: none; }
+}

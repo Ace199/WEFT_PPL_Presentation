@@ -1,0 +1,98 @@
+export const systematicEnglish: Record<string, string> = {
+  正在做什么: "Work context",
+  哪次发布: "Which release",
+  完整状态: "Complete state",
+  交付规则: "Delivery rules",
+  依赖输入: "Required inputs",
+  成果身份: "Product identity",
+  "人员 / 任务": "People / tasks",
+  "导演 / 艺术家 / 技术 / 制作": "Directors / artists / TDs / producers",
+  "任务 / 协作 / 决策": "Tasks / collaboration / decisions",
+  制作成果: "Production products",
+  "镜头 / 场景 / 资产 / 其他": "Shots / sets / assets / more",
+  共享的生产语义: "Shared production semantics",
+  "Context、Product、Version、Dependency、State、Validation 六个共享语义组成生产模型。":
+    "Six shared semantics form the production model: Context, Product, Version, Dependency, State and Validation.",
+  执行层: "Execution layer",
+  "构建 / 加载": "Build / load",
+  发布: "Publish",
+  解析依赖: "Resolve dependencies",
+  组合生成: "Compose products",
+  "检查 / 审阅": "Check / review",
+  跳到正文: "Skip to content",
+  "动画生产，不是一条线，": "Animation production is not a line.",
+  "而是一套协作系统。": "It is a collaborative system.",
+  "不同的人、软件与制作环节，持续产生、修改、交接和组合制作成果。":
+    "People, tools and departments continuously create, revise, hand off and combine production work.",
+  概念示意: "Conceptual illustration",
+  "生产依赖网络，小屏可横向滚动":
+    "Production dependency network. Scroll horizontally on small screens.",
+  "每一次交接，都不只是传一个文件。": "Every handoff carries more than a file.",
+  "真正复杂的，": "The real challenge:",
+  "是让独立演进的成果始终正确协作。":
+    "keeping independently evolving work compatible.",
+  "模型、动画、材质、镜头资源和生产规则，都以不同节奏持续演进。":
+    "Models, animation, materials, shot resources and production rules evolve at different rates.",
+  "Production System 需要保证：历史成果仍然有效，局部变化不会扩大影响范围、生产规则真正进入执行过程。":
+    "A production system must preserve valid historical work, contain the impact of local changes, and put rules into practice.",
+  "怎样让不同节奏的生产持续向前，而不破坏已经成立的成果、状态和规则？":
+    "How can production keep moving without breaking established results, states and rules?",
+  三个核心生产问题: "Three core production problems",
+  "上游持续演进，历史成果仍要保持有效。":
+    "Upstream evolution must preserve valid historical work.",
+  "工作阶段跟随最新；已发布成果保留历史兼容。":
+    "Work with the latest; preserve compatibility for published results.",
+  "局部变化，不应该要求整体重新发布。":
+    "A local change should not require a global republish.",
+  "本次变化，不等于当前完整状态。":
+    "This change is not the complete current state.",
+  "生产规则，需要进入执行边界。": "Production rules need execution points.",
+  "统一的不是软件，": "Different software.",
+  "而是生产语义。": "Shared production semantics.",
+  "Maya 与 Houdini 执行不同操作，但共享对 Context、Product、Version、Dependency、State 和 Validation 的理解。":
+    "Maya and Houdini perform different operations, but share an understanding of Context, Product, Version, Dependency, State and Validation.",
+  "问题被重新建模，": "Reframe the problem.",
+  "默认假设也需要重新审视。": "Reconsider the assumptions.",
+  动画生产的分支与依赖网络: "Branches and dependencies in animation production",
+  "资产生产分为材质和绑定；绑定进入动画，材质跨接灯光。镜头中的相机、动画及特效在下游组合，渲染再进入后期。概念示意。":
+    "Asset production branches into surfacing and rigging. Rigs feed animation; surfaces connect to lighting. Camera, animation and effects combine downstream, followed by rendering and post-production. Conceptual illustration.",
+  "/ 前期": "/ Planning",
+  创意: "Idea",
+  故事: "Story",
+  分镜: "Storyboard",
+  动态预演: "Animatic",
+  设计: "Design",
+  布局: "Layout",
+  "PRODUCTION / 生产制作": "PRODUCTION / Making the work",
+  资产生产: "Asset development",
+  镜头生产: "Shot development",
+  建模: "Modeling",
+  "材质 / 外观": "Surfacing / Look",
+  绑定: "Rigging",
+  动画: "Animation",
+  灯光: "Lighting",
+  "布局 / 相机": "Layout / Camera",
+  渲染: "Rendering",
+  反馈与迭代: "Feedback & iteration",
+  "/ 后期": "/ Finishing",
+  合成: "Compositing",
+  调色: "Color",
+  最终交付: "Final output",
+  "历史成果保留 G2 依赖，新工作使用 G3；两者同时有效。概念示意。":
+    "Historical work keeps its G2 dependencies while new work uses G3. Both remain valid. Conceptual illustration.",
+  "资产 / 绑定": "Asset / Rig",
+  已发布成果: "Published work",
+  "保留 G2 依赖": "Keeps G2",
+  新工作: "New work",
+  "使用 G3": "Uses G3",
+  "只更新 A 从 v2 到 v3，B、Camera 和 Set 保持原版本；本次变化不等于完整状态。概念示意。":
+    "Only A changes from v2 to v3. B, Camera and Set keep their versions. This change is not the complete state. Conceptual illustration.",
+  "UNCHANGED / 保持不变": "UNCHANGED / Retained",
+  "变化范围 ≠": "Change scope ≠",
+  整体范围: "Full scope",
+  "CHANGED / 本次变化": "CHANGED / This update",
+  "Builder 建立正确起点，Publish 和 QC 在交付边界执行校验。概念示意。":
+    "Builder establishes a correct starting point. Publish and QC validate the delivery boundary. Conceptual illustration.",
+  正确起点: "Correct start",
+  交付校验: "Delivery checks",
+};

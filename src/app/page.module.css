@@ -7,6 +7,10 @@
     var(--paper);
 }
 .header {
+  --header-height: 78px;
+  --ink: #111411;
+  color: var(--ink);
+  line-height: normal;
   height: var(--header-height);
   display: flex;
   align-items: center;
@@ -343,6 +347,7 @@
     --header-height: 70px;
   }
   .header {
+    --header-height: 70px;
     height: var(--header-height);
     gap: 20px;
   }

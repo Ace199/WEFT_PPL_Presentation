@@ -5,7 +5,7 @@ export const destinations = [
     title: "系统思考",
     english: "SYSTEMATIC THINKING",
     description:
-      "该章节的详细内容尚未开放。当前可在首页查看系统概览与 Organize 交互预览。",
+      "从动画生产的依赖网络、历史兼容、局部变化与执行规则，理解 WEFT / PPL 的共享生产语义。",
   },
   {
     slug: "design-innovation",

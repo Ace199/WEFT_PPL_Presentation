@@ -74,7 +74,7 @@ for (const width of [390, 768, 1440]) {
     await page.touchscreen.tap(hitArea.x + hitArea.width / 2, hitArea.y + hitArea.height / 2);
     await expect(header).toHaveAttribute("data-collapsed", "false");
     await page.keyboard.press("Tab");
-    await expect(header.getByRole("link", { name: "WEFT / PPL 首页" })).toBeFocused();
+    await expect(header.getByRole("link", { name: "WEFT / PPL", exact: true })).toBeFocused();
     await expect(header).toHaveAttribute("data-in-hero", "false");
     await page.keyboard.press("Escape");
     await expect(header).toHaveAttribute("data-collapsed", "true");
@@ -120,13 +120,14 @@ test("status keeps rolling on hover and click without a pause button", async ({ 
   const first = status.locator('[aria-hidden="true"] > span').first();
   const transform = () => first.evaluate((element) => getComputedStyle(element).transform);
   const initial = await transform();
-  await expect.poll(transform, { timeout: 6000 }).not.toBe(initial);
+  // Observe a complete 9-second cycle, including its offscreen hold.
+  await expect.poll(transform, { timeout: 11000, intervals: [100] }).not.toBe(initial);
   await status.hover();
   await expect(first).toHaveCSS("animation-play-state", "running");
   await status.click();
   await expect(first).toHaveCSS("animation-play-state", "running");
   const afterClick = await transform();
-  await expect.poll(transform, { timeout: 6000 }).not.toBe(afterClick);
+  await expect.poll(transform, { timeout: 11000, intervals: [100] }).not.toBe(afterClick);
   await header.getByRole("link", { name: "01 / 系统思考" }).click();
   await expect(page).toHaveURL(/\/systematic-thinking\/$/);
 });

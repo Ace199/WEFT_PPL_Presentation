@@ -1,0 +1,532 @@
+.page {
+  --header-height: 78px;
+  --diagram-mint: #009f88;
+  --ink: #142030;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 30% 8%, #fff9 0, transparent 45%), #f5f5ee;
+  font-size: clamp(14px, 1.28vw, 19px);
+  line-height: 1.6;
+}
+:global(html[lang="en"]) .page h1,
+:global(html[lang="en"]) .change h2,
+:global(html[lang="en"]) .dark h2,
+:global(html[lang="en"]) .next h2 {
+  font-family: var(--display);
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+:global(html[lang="en"]) .model small,
+:global(html[lang="en"]) .subtle {
+  letter-spacing: 0;
+  font-family: var(--display);
+}
+@media (max-width: 560px) {
+  :global(html[lang="en"]) .networkScroll:after {
+    content: "Scroll to explore the full network →";
+  }
+}
+.header,
+.hero,
+.change,
+.problems,
+.next,
+.footer {
+  padding-left: 4.35%;
+  padding-right: 4.35%;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 78px;
+  gap: 25px;
+  position: relative;
+}
+.header:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 4.35%;
+  right: 4.35%;
+  border-bottom: 1px solid #7a858b;
+}
+.brand {
+  font: 700 29px var(--display);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.header nav {
+  display: flex;
+  gap: clamp(16px, 2.5vw, 42px);
+  font-size: 14px;
+}
+.header nav a {
+  text-decoration: none;
+  padding: 10px 0;
+}
+.header nav a[aria-current] {
+  border-bottom: 1px solid;
+}
+.eyebrow {
+  font: 500 clamp(14px, 1.4vw, 21px)/1.4 var(--display);
+  letter-spacing: 0.025em;
+}
+.hero {
+  padding-top: 38px;
+}
+.hero h1 {
+  font-size: clamp(35px, 4.9vw, 76px);
+  line-height: 1.2;
+  letter-spacing: 0.035em;
+  margin: 13px 0 17px;
+  font-weight: 700;
+}
+.lead {
+  font-size: clamp(16px, 1.9vw, 28px);
+  color: #49515b;
+}
+.network {
+  margin-top: 36px;
+}
+.network figcaption {
+  display: flex;
+  justify-content: space-between;
+}
+.network figcaption span {
+  font: 12px var(--body);
+  color: #737a7a;
+}
+.networkScroll {
+  margin-top: 17px;
+}
+.networkScroll:focus-visible {
+  outline: 2px solid var(--diagram-mint);
+  outline-offset: 4px;
+}
+.page svg text {
+  font-family: var(--display), var(--body);
+  font-size: 17px;
+  fill: currentColor;
+}
+.page svg text[fill] {
+  fill: revert-layer;
+}
+.handoff {
+  border-top: 1px solid #7a858b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  padding: 16px 0 26px;
+}
+.handoff strong {
+  font-size: clamp(17px, 1.95vw, 28px);
+}
+.handoff p {
+  font-family: var(--display);
+  font-size: clamp(12px, 1.25vw, 18px);
+}
+.change {
+  background: #192622;
+  color: #f0f4eb;
+  border-top: 1px solid #7a858b;
+  border-bottom: 1px solid #7a858b;
+  padding-top: 42px;
+  padding-bottom: 33px;
+}
+.change h2 {
+  font-size: clamp(29px, 4.1vw, 61px);
+  line-height: 1.25;
+  letter-spacing: 0.015em;
+}
+.change > p {
+  margin-top: 19px;
+  color: #c1cec7;
+  font-size: clamp(15px, 1.8vw, 25px);
+}
+.change h3 {
+  font-size: clamp(19px, 2.2vw, 32px);
+  margin-top: 22px;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+}
+.problems {
+  padding-top: 25px;
+}
+.problem {
+  display: grid;
+  grid-template-columns: 36.7% 1fr;
+  gap: 22px;
+  border-bottom: 1px solid #acb4b4;
+  padding: 24px 0;
+  align-items: center;
+}
+.problem:last-child {
+  border-bottom: 0;
+}
+.problem > div:first-child {
+  border-right: 1px solid #b9c0c0;
+  padding-right: 18px;
+  align-self: stretch;
+}
+.problem h2 {
+  font: 500 clamp(26px, 3vw, 43px)/1.02 var(--display);
+  margin: 8px 0 9px;
+}
+.problem h3 {
+  font-size: clamp(15px, 1.62vw, 23px);
+  font-weight: 600;
+  line-height: 1.45;
+}
+.problem p:not(.eyebrow) {
+  font-size: clamp(13px, 1.35vw, 19px);
+  margin-top: 18px;
+  color: #626b73;
+}
+.problem svg {
+  overflow: visible;
+}
+.dark {
+  background:
+    radial-gradient(ellipse at 40% 65%, #22352d70, transparent 70%), #192622;
+  color: #f0f4eb;
+  padding: 30px 4.35% 15px;
+}
+.dark h2 {
+  font-size: clamp(32px, 4.05vw, 61px);
+  line-height: 1.25;
+  margin-top: 13px;
+}
+.model {
+  display: grid;
+  grid-template-columns: 34% 41% 25%;
+  margin-top: 24px;
+}
+.model > div {
+  padding: 0 8%;
+}
+.model > div:first-child {
+  padding-left: 0;
+}
+.model > div + div {
+  border-left: 1px solid #97a99e;
+}
+.model small {
+  display: block;
+  font-family: var(--body);
+  font-size: clamp(12px, 1.3vw, 17px);
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+}
+.realityGroup {
+  margin-top: 31px;
+  border-left: 1px solid #a6b4ab;
+  padding-left: 17px;
+}
+.realityGroup > p:first-child {
+  font-family: var(--display);
+}
+.realityGroup svg {
+  max-width: 310px;
+}
+.subtle {
+  font-size: clamp(12px, 1.3vw, 18px);
+  letter-spacing: 0.08em;
+}
+.semantics svg {
+  margin-top: 16px;
+}
+.executionRow {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-top: 12px;
+  font: 500 clamp(14px, 1.6vw, 22px)/1.15 var(--display);
+}
+.executionRow svg {
+  width: 38px;
+  flex-shrink: 0;
+}
+.dcc {
+  display: flex;
+  gap: 14px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #9aada0;
+}
+.dcc span {
+  border: 1px solid #cad8ce;
+  border-radius: 2px;
+  flex: 1;
+  text-align: center;
+  font: 500 17px var(--display);
+  padding: 8px 4px;
+}
+.modelNote {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  font: 500 clamp(11px, 1.2vw, 16px)/1.6 var(--display);
+  margin-top: 25px;
+}
+.modelNote p:last-child {
+  max-width: 72%;
+  font-size: clamp(10px, 1.05vw, 15px);
+}
+.next {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 25px;
+  padding-bottom: 22px;
+  gap: 30px;
+}
+.next h2 {
+  font-size: clamp(25px, 3.05vw, 46px);
+  line-height: 1.25;
+  margin-top: 9px;
+}
+.next > div:last-child {
+  font-family: var(--display);
+  text-align: right;
+  font-size: clamp(13px, 1.35vw, 20px);
+}
+.next a {
+  display: inline-block;
+  margin-top: 36px;
+  text-decoration: none;
+  border-bottom: 1px solid;
+  padding-bottom: 5px;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font: 500 13px var(--display);
+  padding-top: 12px;
+  padding-bottom: 15px;
+  border-top: 1px solid #7a858b;
+}
+.footer a {
+  text-decoration: none;
+}
+.page svg g[fill="var(--diagram-mint)"] text {
+  fill: #00705e;
+}
+.reality,
+.semantics {
+  position: relative;
+}
+.reality:after,
+.semantics:after {
+  content: "→";
+  position: absolute;
+  right: -13px;
+  top: 49%;
+  font: 22px var(--display);
+  background: #192622;
+  padding: 4px;
+  color: #96e0ca;
+  z-index: 1;
+}
+@media (min-width: 1600px) {
+  .page {
+    max-width: 1800px;
+    margin: auto;
+  }
+}
+@media (max-width: 800px) {
+  .header {
+    flex-wrap: wrap;
+    padding-top: 18px;
+    padding-bottom: 12px;
+    gap: 6px;
+  }
+  .brand {
+    font-size: 24px;
+  }
+  .header nav {
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 11px;
+  }
+  .hero {
+    padding-top: 25px;
+  }
+  .handoff {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .model {
+    grid-template-columns: 30% 43% 27%;
+  }
+  .model > div {
+    padding: 0 5%;
+  }
+  .executionRow {
+    gap: 8px;
+  }
+  .executionRow svg {
+    width: 28px;
+  }
+  .realityGroup {
+    padding-left: 8px;
+  }
+  .dcc {
+    gap: 6px;
+  }
+  .dcc span {
+    font-size: 13px;
+  }
+  .problem {
+    gap: 15px;
+  }
+  .modelNote {
+    gap: 12px;
+  }
+}
+@media (max-width: 560px) {
+  .hero h1 {
+    font-size: 35px;
+  }
+  .networkScroll {
+    overflow-x: auto;
+    padding-bottom: 12px;
+  }
+  .networkScroll > svg {
+    min-width: 800px;
+  }
+  .network figcaption {
+    font-size: 12px;
+  }
+  .network figcaption span {
+    font-size: 10px;
+  }
+  .change {
+    padding-top: 30px;
+    padding-bottom: 27px;
+  }
+  .change h2 {
+    font-size: 29px;
+  }
+  .problem {
+    grid-template-columns: 1fr;
+    padding: 25px 0;
+    gap: 20px;
+  }
+  .problem > div:first-child {
+    border-right: 0;
+  }
+  .problem h2 {
+    font-size: 32px;
+  }
+  .problem p:not(.eyebrow) {
+    margin-top: 9px;
+  }
+  .problem svg text {
+    font-size: 18px;
+  }
+  .dark {
+    padding-top: 28px;
+    padding-bottom: 23px;
+  }
+  .model {
+    grid-template-columns: 1fr;
+    margin-top: 26px;
+    gap: 27px;
+  }
+  .model > div {
+    padding: 0 !important;
+  }
+  .model > div + div {
+    border-left: 0;
+    border-top: 1px solid #97a99e;
+    padding-top: 23px !important;
+  }
+  .reality {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .reality > .eyebrow {
+    grid-column: 1/-1;
+  }
+  .realityGroup {
+    margin-top: 9px;
+  }
+  .semantics svg {
+    max-width: 370px;
+    margin: 15px auto 0;
+  }
+  .execution {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .execution > .eyebrow,
+  .dcc {
+    grid-column: 1/-1;
+  }
+  .executionRow {
+    margin: 0;
+    font-size: 17px;
+  }
+  .executionRow svg {
+    width: 34px;
+  }
+  .model small {
+    font-size: 12px;
+  }
+  .modelNote {
+    display: block;
+  }
+  .modelNote p:last-child {
+    max-width: none;
+    font-size: 11px;
+    margin-top: 10px;
+  }
+  .next {
+    display: block;
+  }
+  .next > div:last-child {
+    text-align: left;
+    margin-top: 22px;
+  }
+  .next a {
+    margin-top: 20px;
+  }
+  .footer {
+    font-size: 11px;
+  }
+}
+@media (max-width: 560px) {
+  .hero h1 {
+    font-size: clamp(25px, 7.5vw, 40px);
+    letter-spacing: 0;
+  }
+  .reality:after,
+  .semantics:after {
+    content: "↓";
+    top: auto;
+    bottom: -43px;
+    right: 50%;
+    padding: 1px 8px;
+  }
+  .networkScroll:after {
+    content: "左右滑动查看完整关系 →";
+    position: sticky;
+    left: 0;
+    display: block;
+    width: 240px;
+    font-size: 12px;
+    margin-top: 10px;
+    color: #586773;
+  }
+  .problem svg text {
+    font-size: 23px;
+  }
+  .problem svg text tspan {
+    font-size: 21px;
+  }
+}

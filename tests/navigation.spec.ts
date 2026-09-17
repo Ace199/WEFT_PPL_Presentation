@@ -37,13 +37,23 @@ test("navigation and separate CTAs open real exported destinations and survive r
       .click();
     await expect(page).toHaveURL(new RegExp(`/${route.slug}/$`));
     await page.reload();
-    await expect(
-      page.getByRole("heading", { name: route.title, exact: true }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "内容尚未开放" }),
-    ).toBeVisible();
-    await page.getByRole("link", { name: "返回首页" }).click();
+    if (route.slug === "systematic-thinking") {
+      await expect(page.getByRole("heading", { level: 1 })).toContainText(
+        "动画生产",
+      );
+      await expect(
+        page.getByRole("heading", { name: "内容尚未开放" }),
+      ).toHaveCount(0);
+      await page.getByRole("link", { name: "WEFT / PPL", exact: true }).click();
+    } else {
+      await expect(
+        page.getByRole("heading", { name: route.title, exact: true }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("heading", { name: "内容尚未开放" }),
+      ).toBeVisible();
+      await page.getByRole("link", { name: "返回首页" }).click();
+    }
     await expect(page).toHaveURL("http://127.0.0.1:4173/");
     await page
       .getByRole("button", {

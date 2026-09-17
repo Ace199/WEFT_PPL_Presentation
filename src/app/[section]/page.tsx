@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { destinations } from "@/content/destinations";
 import { sitePath } from "@/lib/paths";
 import styles from "./page.module.css";
+import { SystematicPage } from "@/components/systematic/SystematicPage";
 export const dynamicParams = false;
 export function generateStaticParams() {
   return destinations.map((item) => ({ section: item.slug }));
@@ -17,7 +18,7 @@ export async function generateMetadata({
   const item = destinations.find((destination) => destination.slug === section);
   return {
     title: `WEFT / PPL — ${item?.title ?? "内容尚未开放"}`,
-    robots: { index: false, follow: true },
+    robots: { index: section === "systematic-thinking", follow: true },
   };
 }
 export default async function Destination({
@@ -28,6 +29,7 @@ export default async function Destination({
   const { section } = await params;
   const item = destinations.find((destination) => destination.slug === section);
   if (!item) notFound();
+  if (section === "systematic-thinking") return <SystematicPage />;
   return (
     <div className={styles.page}>
       <header>
