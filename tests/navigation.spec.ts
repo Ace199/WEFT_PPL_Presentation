@@ -66,7 +66,7 @@ test("navigation and separate CTAs open real exported destinations and survive r
   }
   await page.goto("/");
   await page
-    .getByRole("link", { name: /VIEW EVIDENCE/ })
+    .getByRole("link", { name: /HOW IT WORKS IN PRODUCTION/ })
     .first()
     .click();
   await expect(page).toHaveURL(/\/evidence\/$/);

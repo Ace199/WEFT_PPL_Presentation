@@ -1,0 +1,38 @@
+import { test, expect } from "@playwright/test";
+
+test("dandelion seeds preserve hero motion, pointer response and static fallback", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.setViewportSize({ width: 1888, height: 910 });
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  const hero = page.locator('[data-motion="hero"]');
+  const canvas = hero.locator("canvas");
+  await expect(hero.locator("[data-dandelion-cloud]")).toHaveCount(8);
+  await expect(page.locator('#summary [data-dandelion-cloud]')).toHaveCount(0);
+  await expect(hero).toHaveAttribute("data-hero-stage", "complete", {timeout: 15000});
+  await expect(page.locator('ul[data-typing]')).toHaveAttribute("data-typing", "complete", {timeout: 15000});
+  const breath = await canvas.getAttribute("data-breath");
+  await expect.poll(() => canvas.getAttribute("data-breath")).not.toBe(breath);
+  await page.screenshot({ path: "artifacts/hero-dandelion-desktop.png" });
+  const hub = hero.locator('[data-hero-hub][cx="560"]');
+  const box = (await hub.boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await expect.poll(async () => Number(await canvas.getAttribute("data-max-lens"))).toBeGreaterThan(1.8);
+  await expect(hub).not.toHaveCSS("filter", "none");
+  await page.screenshot({ path: "artifacts/hero-dandelion-hover.png" });
+  await page.mouse.move(10, 10);
+  await expect.poll(async () => Number(await canvas.getAttribute("data-max-lens"))).toBeLessThan(1.01);
+  await page.locator("footer").scrollIntoViewIfNeeded();
+  await expect(canvas).toHaveAttribute("data-running", "false");
+  await page.evaluate(() => window.scrollTo({top: 0, behavior: "instant"}));
+  await expect(canvas).toHaveAttribute("data-running", "true");
+  await page.emulateMedia({reducedMotion: "reduce"});
+  await expect(canvas).toHaveCount(0);
+  await expect(hero.locator('[data-boot="points"]')).toHaveCSS("opacity", "1");
+  await page.screenshot({ path: "artifacts/hero-dandelion-static.png" });
+  await page.setViewportSize({width: 390, height: 844});
+  await page.screenshot({ path: "artifacts/hero-dandelion-mobile.png" });
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+  expect(errors).toEqual([]);
+});

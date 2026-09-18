@@ -1,6 +1,6 @@
 export const systematicEnglish: Record<string, string> = {
   正在做什么: "Work context",
-  哪次发布: "Which release",
+  发布版本: "Published version",
   完整状态: "Complete state",
   交付规则: "Delivery rules",
   依赖输入: "Required inputs",
@@ -59,7 +59,7 @@ export const systematicEnglish: Record<string, string> = {
   "/ 前期": "/ Planning",
   创意: "Idea",
   故事: "Story",
-  分镜: "Storyboard",
+  "分镜&剪辑": "Storyboard & Editorial",
   动态预演: "Animatic",
   设计: "Design",
   布局: "Layout",

@@ -355,7 +355,7 @@ export function Network() {
       <g data-step="1"><Arrow d="M265 60H330" /></g>
       <g data-step="2"><Node x={380} y={60} kind="document" label="故事" /></g>
       <g data-step="3"><Arrow d="M425 60H493" /></g>
-      <g data-step="4"><Node x={555} y={60} kind="story" label="分镜" /></g>
+      <g data-step="4"><Node x={555} y={60} kind="story" label="分镜&剪辑" /></g>
       <g data-step="5"><Arrow d="M616 60H694" /></g>
       <g data-step="6"><Node x={760} y={60} kind="cloth" label="动态预演" /></g>
       <g data-step="7"><Arrow d="M817 60H865Q880 60 880 45V32Q880 20 894 20H959M880 60V96Q880 108 895 108H959" /></g>
@@ -560,13 +560,23 @@ export function Enforcement() {
       <g data-step="1">
         <path
           data-draw
-          d="M162 40H245M372 40H481"
+          d="M162 40H245"
           fill="none"
           stroke="currentColor"
         />
-        <Icon x={312} y={40} kind="gear" />
       </g>
       <g data-step="2">
+        <Icon x={312} y={40} kind="gear" />
+      </g>
+      <g data-step="3">
+        <path
+          data-draw
+          d="M372 40H481"
+          fill="none"
+          stroke="currentColor"
+        />
+      </g>
+      <g data-step="4">
         <Icon x={546} y={40} kind="check" />
         <text x="546" y="86" textAnchor="middle">
           PUBLISH · QC

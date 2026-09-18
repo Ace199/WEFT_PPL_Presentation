@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.use({ video: "on" });
-test("summary waits until well inside the viewport, delays, and holds between phases", async ({ page }) => {
+test("summary plays at 1.5x with proportional delays and holds its final state", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 800 });
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
@@ -18,17 +17,18 @@ test("summary waits until well inside the viewport, delays, and holds between ph
   await page.waitForTimeout(1200);
   expect(await opacity(0)).toBe(0.2);
   await scrollToFraction(0.5);
-  await page.waitForTimeout(650);
+  await page.waitForTimeout(400);
   expect(await opacity(0)).toBe(0.2);
   for (const index of [0, 1]) {
     // Sample closely: default assertion backoff can notice completion half a
-    // second late and incorrectly shorten the measured one-second pause.
+    // second late and incorrectly shorten the measured two-thirds-second pause.
     await expect.poll(() => opacity(index), { intervals: [20] }).toBe(1);
     const finished = Date.now();
     const nextStart = 0;
     expect(await opacity(index + 1)).toBe(nextStart);
     await expect.poll(() => opacity(index + 1), { intervals: [20] }).toBeGreaterThan(nextStart);
-    expect(Date.now() - finished).toBeGreaterThanOrEqual(750);
+    expect(Date.now() - finished).toBeGreaterThanOrEqual(450);
+    expect(Date.now() - finished).toBeLessThan(900);
   }
   await expect(phases[2]).toHaveCSS("opacity", "1");
   await summary.screenshot({ path: "artifacts/summary-delayed-complete.png" });
@@ -39,7 +39,4 @@ test("summary waits until well inside the viewport, delays, and holds between ph
   await scrollToFraction(0.5);
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const phase of phases) await expect(phase).toHaveCSS("opacity", "1");
-  const video = page.video();
-  await page.close();
-  await video?.saveAs("artifacts/summary-delayed.webm");
 });

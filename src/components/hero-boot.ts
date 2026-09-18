@@ -62,18 +62,20 @@ export function createHeroBoot(
       Number(layer.parentElement?.getAttribute("opacity") ?? 1);
     return (layer.getAttribute("d")?.match(/M[^M]+/g) ?? []).map((d) => {
       const numbers = d.match(/-?[\d.]+/g)!.map(Number);
-      let x = 0,
-        y = 0;
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
       for (let i = 0; i < numbers.length; i += 2) {
-        x += numbers[i];
-        y += numbers[i + 1];
+        minX = Math.min(minX, numbers[i]);
+        maxX = Math.max(maxX, numbers[i]);
+        minY = Math.min(minY, numbers[i + 1]);
+        maxY = Math.max(maxY, numbers[i + 1]);
       }
-      x /= numbers.length / 2;
-      y /= numbers.length / 2;
+      // Center the full contour, including unusually long stems, in its tile.
+      const x = (minX + maxX) / 2, y = (minY + maxY) / 2;
       const path = new Path2D();
       path.addPath(new Path2D(d), new DOMMatrix().translate(-x, -y));
       return {
         path,
+        extent: Math.max(maxX - minX, maxY - minY) + 2,
         x,
         y,
         dx: viewBox.x + 24 + random() * (viewBox.width - 48) - x,
@@ -89,9 +91,9 @@ export function createHeroBoot(
   // Rasterize each unique contour once at 3× resolution. Reusing an atlas
   // avoids thousands of vector tessellations every breathing/inspection frame.
   const atlas = document.createElement("canvas");
-  const tile = 40,
-    columns = 32,
-    rasterScale = 3;
+  const rasterScale = 3,
+    tile = Math.ceil(Math.max(...particles.map(particle => particle.extent)) * rasterScale),
+    columns = 32;
   atlas.width = tile * columns;
   atlas.height = tile * Math.ceil(particles.length / columns);
   const atlasContext = atlas.getContext("2d")!;

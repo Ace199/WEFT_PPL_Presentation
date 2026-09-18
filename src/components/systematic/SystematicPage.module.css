@@ -8,6 +8,12 @@
   font-size: clamp(14px, 1.28vw, 19px);
   line-height: 1.6;
 }
+/* Keep the server-rendered diagram geometry in the layout, but do not expose
+   completed steps before the client timeline has established its first frame. */
+.page :global([data-reveal][data-motion="pending"] [data-step]) { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .page :global([data-reveal][data-motion="pending"] [data-step]) { opacity: 1; }
+}
 :global(html[lang="en"]) .page h1,
 :global(html[lang="en"]) .change h2,
 :global(html[lang="en"]) .dark h2,
@@ -251,16 +257,16 @@
 .dcc {
   display: flex;
   gap: 14px;
+  align-items: center;
   margin-top: 20px;
   padding-top: 15px;
   border-top: 1px solid #9aada0;
 }
-.dcc span {
-  border: 1px solid #cad8ce;
-  border-radius: 2px;
-  flex: 1;
-  text-align: center;
-  font: 500 17px var(--display);
+.dcc img {
+  display: block;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
   padding: 8px 4px;
 }
 .modelNote {
@@ -376,9 +382,7 @@
   .dcc {
     gap: 6px;
   }
-  .dcc span {
-    font-size: 13px;
-  }
+  .dcc img { width: 38px; height: 38px; }
   .problem {
     gap: 15px;
   }

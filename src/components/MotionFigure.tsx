@@ -64,6 +64,7 @@ export function MotionFigure({
             cleanupHero = heroBoot?.createHeroBoot(root, timeline, intro);
           } else if (kind === "summary") {
             timeline
+              .timeScale(1.5)
               .from('[data-phase="0"]', { opacity: 0.2, duration: 0.5 }, 1)
               .from(
                 '[data-phase="1"]',

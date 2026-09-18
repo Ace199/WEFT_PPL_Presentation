@@ -13,7 +13,7 @@ export const destinations = [
     title: "设计与创新",
     english: "DESIGN & INNOVATION",
     description:
-      "该章节的完整设计案例尚未开放。当前可在首页查看 Transform 简短预览。",
+      "兼容历史、可组合模块、完整状态与可执行规则：四项并列的生产模型设计决策。",
   },
   {
     slug: "next",
@@ -26,10 +26,17 @@ export const destinations = [
   {
     slug: "evidence",
     index: "04",
-    title: "生产证据",
-    english: "PRODUCTION EVIDENCE",
+    title: "真实生产中的实践",
+    english: "IN PRODUCTION",
     description:
-      "完整证据内容尚未开放，真实生产截图仍待脱敏补充。此页不代表生产证据验收已经完成。",
+      "这里将介绍这些设计在真实生产系统中如何工作。详细内容正在整理，当前可在首页查看实际工具界面。",
+  },
+  {
+    slug: "in-production",
+    index: "02",
+    title: "设计如何进入真实生产",
+    english: "IN PRODUCTION",
+    description: "四项设计决策对应的生产结构、记录语义与实际工具界面。",
   },
 ] as const;
 export const viewRoutes = {

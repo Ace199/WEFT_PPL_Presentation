@@ -113,7 +113,9 @@ export function MasterCanvas({ views }: { views: ViewContent[] }) {
           </p>
         </header>
         <div className={styles.stage}>
-          <ProductionScene mode={state.mode} quiet={reduced || editing}
+          {/* A view owns its SVG instance. This prevents GSAP's previous inline
+              attributes from flashing for one paint before the next timeline resets. */}
+          <ProductionScene key={state.mode} mode={state.mode} quiet={reduced || editing}
             focusedNode={state.focusedNode} pinnedNode={state.pinnedNode}
             onInspect={inspect} onSelect={selectNode}
             onClear={() => dispatch({type: "CLEAR_NODE"})} />

@@ -1,0 +1,277 @@
+"use client";
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type KeyboardEvent,
+  type PointerEvent,
+} from "react";
+import { gsap } from "gsap";
+import { decisions } from "@/content/decisions";
+import { useLanguage } from "@/components/Language";
+import { useReducedMotion } from "@/components/useReducedMotion";
+import styles from "./DesignPage.module.css";
+
+export function DecisionDeck({
+  cards,
+  children,
+}: {
+  cards: ReactNode[];
+  children: ReactNode;
+}) {
+  const [active, setActive] = useState(0);
+  const { language } = useLanguage();
+  const reduced = useReducedMotion();
+  const root = useRef<HTMLDivElement>(null);
+  const previous = useRef(0);
+  const touch = useRef<{ x: number; y: number; id: number } | null>(null);
+  const select = (index: number) =>
+    setActive(Math.max(0, Math.min(decisions.length - 1, index)));
+
+  useLayoutEffect(() => {
+    const panels = Array.from(
+      root.current?.querySelectorAll<HTMLElement>("[data-panel]") ?? [],
+    );
+    const incoming = panels[active];
+    const oldIndex = previous.current;
+    previous.current = active;
+    if (!incoming) return;
+    const context = gsap.context(() => {
+      gsap.set(panels, { autoAlpha: 0, xPercent: 0 });
+      gsap.set(incoming, { autoAlpha: 1 });
+      if (reduced || oldIndex === active) return;
+      const outgoing = panels[oldIndex];
+      const direction = active > oldIndex ? 1 : -1;
+      const timeline = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+      gsap.set(outgoing, { autoAlpha: 1 });
+      gsap.set(incoming, { autoAlpha: 0, xPercent: 6 * direction });
+      timeline
+        .to(
+          outgoing.querySelectorAll("[data-relation]"),
+          { opacity: 0.15, duration: 0.13 },
+          0,
+        )
+        .to(
+          outgoing.querySelectorAll("[data-diagram]"),
+          { scaleX: 0.97, transformOrigin: "50% 50%", duration: 0.22 },
+          0,
+        )
+        .to(
+          outgoing,
+          { autoAlpha: 0, xPercent: -6 * direction, duration: 0.25 },
+          0.04,
+        )
+        .to(incoming, { autoAlpha: 1, xPercent: 0, duration: 0.39 }, 0.23)
+        .fromTo(
+          incoming.querySelectorAll("[data-line]"),
+          { strokeDasharray: "900", strokeDashoffset: 900 },
+          {
+            strokeDashoffset: 0,
+            duration: 0.38,
+            clearProps: "strokeDasharray,strokeDashoffset",
+          },
+          0.25,
+        )
+        .fromTo(
+          incoming.querySelectorAll("[data-node]"),
+          { opacity: 0 },
+          { opacity: 1, duration: 0.2, stagger: 0.018, clearProps: "opacity" },
+          0.3,
+        )
+        .fromTo(
+          incoming.querySelectorAll("[data-relation]"),
+          { opacity: 0.1 },
+          { opacity: 1, duration: 0.18 },
+          0.48,
+        );
+    }, root);
+    // Revert every owned property before an interrupted transition or unmount.
+    return () => context.revert();
+  }, [active, reduced]);
+
+  function keyboard(event: KeyboardEvent<HTMLElement>) {
+    if (
+      event.altKey ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.target instanceof HTMLInputElement ||
+      event.target instanceof HTMLTextAreaElement
+    )
+      return;
+    const next =
+      event.key === "ArrowRight"
+        ? active + 1
+        : event.key === "ArrowLeft"
+          ? active - 1
+          : event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? 3
+              : null;
+    if (next === null) return;
+    event.preventDefault();
+    select(next);
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>(
+      "[data-index]",
+    );
+    if (button)
+      button.parentElement
+        ?.querySelectorAll<HTMLButtonElement>("button")
+        [Math.max(0, Math.min(3, next))]?.focus({ preventScroll: true });
+  }
+  function pointerStart(event: PointerEvent) {
+    if (
+      event.pointerType === "mouse" ||
+      (event.target as HTMLElement).closest("a,button")
+    )
+      return;
+    touch.current = { x: event.clientX, y: event.clientY, id: event.pointerId };
+  }
+  function pointerEnd(event: PointerEvent) {
+    const start = touch.current;
+    touch.current = null;
+    if (!start || start.id !== event.pointerId) return;
+    const dx = event.clientX - start.x,
+      dy = event.clientY - start.y;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4)
+      select(active + (dx < 0 ? 1 : -1));
+  }
+  return (
+    <div ref={root} data-active-decision={decisions[active].id}>
+      <div
+        className={styles.indexes}
+        role="group"
+        aria-label={
+          language === "zh" ? "设计决策索引" : "Design decision index"
+        }
+        onKeyDown={keyboard}
+      >
+        {decisions.map((decision, i) => (
+          <button
+            key={decision.id}
+            type="button"
+            data-index=""
+            aria-pressed={active === i}
+            aria-controls={`decision-${decision.id}`}
+            onClick={() => select(i)}
+          >
+            <span>
+              {decision.index} / {decision.category}
+            </span>
+            <span>{decision.label}</span>
+            <i aria-hidden="true" />
+          </button>
+        ))}
+      </div>
+      <section
+        className={styles.judgment}
+        id="design-model"
+        aria-labelledby="model-title"
+      >
+        <h2 id="model-title">
+          {language === "zh"
+            ? "问题，往往出在模型。"
+            : "The problem is often the model."}
+        </h2>
+        <p>
+          {language === "zh"
+            ? "表面问题往往来自更底层的 Production Model 判断。"
+            : "Surface problems often originate in deeper production model decisions."}
+        </p>
+      </section>
+      <section
+        className={styles.deck}
+        aria-labelledby="deck-title"
+        onKeyDown={keyboard}
+      >
+        <h2 className={styles.label} id="deck-title">
+          DESIGN DECISIONS / 04
+        </h2>
+        <div className={styles.deckFrame}>
+          <div
+            className={styles.poster}
+            tabIndex={0}
+            role="region"
+            aria-label={
+              language === "zh"
+                ? "设计决策卡片，左右方向键切换"
+                : "Design decision card; use left and right arrow keys"
+            }
+            onPointerDown={pointerStart}
+            onPointerUp={pointerEnd}
+            onPointerCancel={() => {
+              touch.current = null;
+            }}
+          >
+            <div className={styles.panels}>
+              {cards.map((card, i) => (
+                <div
+                  key={decisions[i].id}
+                  className={styles.panel}
+                  data-panel=""
+                  data-active={i === active}
+                  id={`decision-${decisions[i].id}`}
+                  aria-hidden={i !== active}
+                  inert={i !== active}
+                >
+                  {card}
+                </div>
+              ))}
+            </div>
+            <nav
+              className={styles.deckNav}
+              aria-label={
+                language === "zh" ? "卡片切换" : "Decision navigation"
+              }
+            >
+              <button
+                type="button"
+                disabled={active === 0}
+                onClick={() => select(active - 1)}
+              >
+                ← PREV
+              </button>
+              <div>
+                {decisions.map((d, i) => (
+                  <button
+                    key={d.id}
+                    type="button"
+                    aria-label={`${d.index} / ${d.category}`}
+                    aria-pressed={active === i}
+                    onClick={() => select(i)}
+                  >
+                    <i aria-hidden="true" />
+                    {d.index}
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                disabled={active === 3}
+                onClick={() => select(active + 1)}
+              >
+                NEXT →
+              </button>
+            </nav>
+          </div>
+          {active < 3 && (
+            <div className={styles.nextEdge} aria-hidden="true">
+              {decisions[active + 1].index} / {decisions[active + 1].category}
+            </div>
+          )}
+        </div>
+        <p
+          className={styles.srOnly}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {decisions[active].index} / {decisions[active].category} ·{" "}
+          {decisions[active].title[language]}
+        </p>
+      </section>
+      {children}
+    </div>
+  );
+}

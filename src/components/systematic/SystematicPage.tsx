@@ -13,7 +13,7 @@ import styles from "./SystematicPage.module.css";
 
 const semantics = [
   ["CONTEXT", "正在做什么", 180, 42],
-  ["VERSION", "哪次发布", 310, 119],
+  ["VERSION", "发布版本", 310, 119],
   ["STATE", "完整状态", 310, 240],
   ["VALIDATION", "交付规则", 180, 298],
   ["DEPENDENCY", "依赖输入", 48, 240],
@@ -149,8 +149,10 @@ function SharedModel() {
           </div>
         ))}
         <div data-step="3" className={styles.dcc}>
-          <span>MAYA</span>
-          <span>HOUDINI</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={sitePath("/images/logos/maya.png")} width="48" height="48" alt="Maya" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={sitePath("/images/logos/houdini.png")} width="48" height="48" alt="Houdini" />
         </div>
       </div>
     </Reveal>
@@ -160,6 +162,7 @@ function SharedModel() {
 export function SystematicPage() {
   return (
     <div className={styles.page} id="top">
+      <noscript><style>{`[data-reveal][data-motion="pending"] [data-step]{opacity:1!important}`}</style></noscript>
       <a className="skip" href="#systematic-main">
         <T text={"跳到正文"} />
       </a>
@@ -189,7 +192,7 @@ export function SystematicPage() {
                 <T text={"概念示意"} />
               </span>
             </figcaption>
-            <Reveal slow>
+            <Reveal slow maxScrollRate={10}>
               <ChapterElement
                 as="div"
                 className={styles.networkScroll}
@@ -255,7 +258,7 @@ export function SystematicPage() {
                 <T text={"生产规则，需要进入执行边界。"} />
               </h3>
             </div>
-            <Reveal>
+            <Reveal sequence={1} speed={2}>
               <Enforcement />
             </Reveal>
           </article>
@@ -273,7 +276,7 @@ export function SystematicPage() {
                 <T text={"本次变化，不等于当前完整状态。"} />
               </p>
             </div>
-            <Reveal>
+            <Reveal sequence={2}>
               <Granularity />
             </Reveal>
           </article>
@@ -292,7 +295,7 @@ export function SystematicPage() {
                 <T text={"工作阶段跟随最新；已发布成果保留历史兼容。"} />
               </p>
             </div>
-            <Reveal>
+            <Reveal sequence={3}>
               <History />
             </Reveal>
           </article>

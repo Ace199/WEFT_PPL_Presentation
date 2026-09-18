@@ -6,6 +6,8 @@ for (const width of [390, 768, 1440]) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
     const proof = page.locator("#production");
+    await expect(proof.getByRole("heading", { name: "IN PRODUCTION", exact: true })).toBeVisible();
+    await expect(proof.getByRole("link", { name: /HOW IT WORKS IN PRODUCTION/ })).toHaveAttribute("href", "/evidence/");
     await proof.scrollIntoViewIfNeeded();
     await page.evaluate(() => document.fonts.ready);
     const images = proof.locator("img");
@@ -25,3 +27,15 @@ for (const width of [390, 768, 1440]) {
     await expect(proof.getByRole("img", { name: /Actual Publish interface/ })).toHaveCount(1);
   });
 }
+
+test("production terminology remains welcoming across the destination languages", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("body")).not.toContainText(/\b(EVIDENCE|PROOF|VERIFICATION)\b/i);
+  await page.getByRole("link", { name: /HOW IT WORKS IN PRODUCTION/ }).click();
+  await expect(page).toHaveURL(/\/evidence\/$/);
+  await expect(page.getByRole("heading", { name: "真实生产中的实践" })).toBeVisible();
+  await expect(page.locator("body")).not.toContainText(/证据|验收/);
+  await page.getByRole("button", { name: "Switch to English" }).click();
+  await expect(page.getByRole("heading", { name: "How it works in production" })).toBeVisible();
+  await expect(page.locator("body")).not.toContainText(/\b(evidence|proof|verification)\b/i);
+});

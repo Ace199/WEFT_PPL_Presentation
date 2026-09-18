@@ -87,11 +87,11 @@ export function ProductionScene({mode, quiet, focusedNode, pinnedNode, onInspect
           .to("[data-organize]",{opacity:mode==="organize"?1:0,duration},0);
         t.set("[data-version-old]",{
           opacity:mode==="transform"?(quiet?.26:1):0,
-          attr:{transform:mode==="transform"&&quiet?"translate(390 435) scale(.38)":"translate(257 435) scale(.85)"}
+          attr:{transform:mode==="transform"&&quiet?"translate(161 435) scale(.45)":"translate(257 435) scale(.85)"}
         },0).set("[data-character-source]",{x:0,opacity:mode==="transform"&&!quiet?0:1},0);
         if(mode==="transform"&&!quiet) {
           t.to("[data-version-old]",{opacity:.26,
-            attr:{transform:"translate(390 435) scale(.38)"},duration:.85,ease:"power2.inOut"},.3)
+            attr:{transform:"translate(161 435) scale(.45)"},duration:.85,ease:"power2.inOut"},.3)
             .fromTo("[data-character-source]",{opacity:0,x:-12},
               {opacity:1,x:0,duration:.65,ease:"power2.out"},.95);
           t.fromTo("[data-update-route]",{strokeDasharray:"650",strokeDashoffset:650},{strokeDashoffset:0,duration:.85,ease:"power2.inOut"},.15)
@@ -138,8 +138,8 @@ export function ProductionScene({mode, quiet, focusedNode, pinnedNode, onInspect
       <ScenePart node="product" links={["product","version"]} label="资产" bounds={[18,348,384,137]}>
       <text x="28" y="442" className={styles.label}>{t("资产")}</text>
       <text x="28" y="466" className={styles.small}>{update?t("仅更新这一项"):t("独立制作成果")}</text>
-      <g data-version-old opacity={update?(quiet?.26:1):0} transform={update&&quiet?"translate(390 435) scale(.38)":"translate(257 435) scale(.85)"} stroke="#f2f1e8"><use href={`#${assetId}`}/><text x="-15" y="32" className={styles.small}>v1</text></g>
-      <g transform={update?"translate(240 435) scale(.72)":"translate(257 435) scale(.85)"}>
+      <g data-version-old opacity={update?(quiet?.26:1):0} transform={update&&quiet?"translate(161 435) scale(.45)":"translate(257 435) scale(.85)"} stroke="#f2f1e8"><use href={`#${assetId}`}/><text x="-15" y="32" className={styles.small}>v1</text></g>
+      <g transform={update?"translate(285 435) scale(.72)":"translate(257 435) scale(.85)"}>
         <g data-character-source opacity={update&&!quiet?0:1} stroke={update?"#a0e5cb":"currentColor"}><use href={`#${assetId}${update?"-updated":""}`}/></g>
       </g>
       </ScenePart>
@@ -157,8 +157,8 @@ export function ProductionScene({mode, quiet, focusedNode, pinnedNode, onInspect
       </g>
       </ScenePart>
       <ScenePart node="resolution" links={["dependency","resolution","validation","version"]}>
-      <path data-update-route d="M343 432H437Q467 432 467 406V344Q467 316 495 316H610"/>
-      <circle cx="343" cy="432" r="4" fill="#a0e5cb"/>
+      <path data-update-route d={`M${update?388:343} 432H437Q467 432 467 406V344Q467 316 495 316H610`}/>
+      <circle cx={update?388:343} cy="432" r="4" fill="#a0e5cb"/>
       </ScenePart>
       <ScenePart node="composition" links={["resolution","composition","state"]}>
       <path d="M718 290H838m-10-6 10 6-10 6"/>

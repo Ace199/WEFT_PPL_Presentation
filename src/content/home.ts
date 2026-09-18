@@ -48,7 +48,7 @@ export const home = {
     },
   ] satisfies ViewContent[],
   proof: {
-    title: "BUILT FOR PRODUCTION",
+    title: "IN PRODUCTION",
     description: "",
     facts: [
       ["HOSTS", "Maya 2022 / Houdini 21–22"],

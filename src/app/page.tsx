@@ -101,7 +101,7 @@ export default function HomePage() {
                 ))}
               </ProductionFactsMotion>
               <a className={styles.evidenceLink} href={sitePath("/evidence/")}>
-                VIEW EVIDENCE ↗
+                HOW IT WORKS IN PRODUCTION ↗
               </a>
             </div>
             {home.proof.figures.map((figure) => (
@@ -181,7 +181,7 @@ export default function HomePage() {
           </MotionFigure>
           <div className={styles.footerLinks}>
             <a href={sitePath("/evidence/")}>
-              VIEW EVIDENCE <span aria-hidden="true">↗</span>
+              IN PRODUCTION <span aria-hidden="true">↗</span>
             </a>
             <a href="#top">
               BACK TO TOP <span aria-hidden="true">↑</span>
