@@ -1,8 +1,8 @@
 # WEFT / PPL 开发交接：用户偏好、已确认行为与问题记录
 
-更新：2026-09-18。保留原文件名；新增 Systematic Thinking 完整章节、共享导航、全局语言偏好与本轮逐项视觉 / 动效调整。来源为用户明确指示、当前代码及实际验证记录。本文用于接续本项目，不将观察推断为其他项目偏好。
+更新：2026-09-18（首页蒲公英迭代、Design Decision Deck 与 Systematic Thinking 后续修正补全）。保留原文件名与历史记录；包含 Hero 蒲公英、Summary 提速、资产版本间距、公开文案，以及完整 02 章节的最新决定、实现入口和验证边界。来源为用户明确指示、当前代码及实际验证记录；其他任务的验证单独注明来源。本文用于接续本项目，不将观察推断为其他项目偏好。
 
-**接续摘要：** `/systematic-thinking/` 已实现，目标图为 `ref/final2.png`；三个核心问题按 **01 ENFORCEMENT → 02 GRANULARITY → 03 HISTORY** 排列。首张生产图逐节点展开，各动态图标出现即播放；部分图标支持 2 倍悬停放大，创意灯泡支持悬停重播闪光和轻晃。首页与章节共用导航，语言跨页 / 刷新保留。用户已授权更新本文并提交、推送 GitHub，源码发布与 Pages 上线须区分。新会话先读第 15–18 节；旧验证记录不代表当前全站重新验收。
+**接续摘要：** 新会话先读第 **19–24 节**，再按需读历史章节。首页 Hero 已换为程序化蒲公英种子，最新要求是杆长再增加 30%、数量再减少 25%，伞冠不变；Summary 仍用原细胞形态，播放速度为原来的 1.5 倍。首页 Transform 视图旧白色 v1 左移已落实，新绿色 v2 和连接端点已右移。用户可见主标题改用 IN PRODUCTION / HOW IT WORKS IN PRODUCTION。Systematic Thinking 已实现；本轮修复了主页与章节之间整页重载造成的旧画面闪现，并补齐图表首帧隐藏、按模块顺序展开、术语、DCC 图标与滚动速度规则（详见第 24 节）。Design & Innovation 已改为四个并列决策、一次显示一张海报的 Deck，复用全站导航，底部四入口索引已删除，卡片内生产内容和 `/in-production/` 四锚点仍保留。章节最终视觉仍待用户确认。本次请求仅更新交接文档，不新增提交、推送或部署授权；旧发布记录不代表本轮已发布。
 
 ## 1. 新会话先读什么
 
@@ -36,8 +36,8 @@
 
 ## 3. 当前不可误读的项目边界
 
-- 名称统一为 **WEFT / PPL**。原 V1 为首页六区；用户已明确扩展范围，实现 Systematic Thinking 完整章节。其余章节与完整 Evidence 仍未开放。
-- 导航是页面导航，不是首页锚点。Systematic Thinking 已有完整页面，其余章节和 Evidence 仍为明确“尚未开放”的最小目标页；不要删除这些路由或改成滚动到首页。
+- 名称统一为 **WEFT / PPL**。原 V1 为首页六区；Systematic Thinking 已实现。当前另一个开发任务已实现 Design & Innovation 与 `/in-production/`，来源与边界见第 21 节；What Comes Next 和旧 `/evidence/` 仍未开放。
+- 导航是页面导航，不是首页锚点。保留真实路由；`/in-production/` 已有内容不等于旧 `/evidence/` 已实现或重定向，不要擅自合并二者。
 - Master Canvas 的视角按钮切换预览，单独的 EXPLORE 才导航；四种模式使用同一张图。
 - Next.js App Router 静态导出；React、TypeScript、CSS Modules、GSAP、SVG、Canvas 2D。正文继续由 Server Components 提供。
 - 临时文本编辑对所有访客开放，仅内存覆盖，不接 CMS / 登录 / 后台，也不写浏览器存储或仓库。正式来源仍是 `src/content/home.ts`。
@@ -46,11 +46,11 @@
 
 ## 4. 已确认的最终视觉和交互
 
-### Hero：首屏与细胞图
+### Hero：首屏与蒲公英粒子（覆盖早期细胞图约定）
 
 - **导航 + Hero 铺满首屏，下方 Summary 不应露头。** 用户最后澄清了这个目标；不要回到“整体负 margin 上移一个导航高度”的中间方案。
 - Hero 高度按视口减实际导航高度计算，导航换行时用 ResizeObserver 更新；极矮窗口保留内容最小高度，允许滚动以避免遮字。
-- 图形是类似组织的**不规则细胞**，不是等大圆点，也不是完全规则点阵。间距相对稳定、自然有变化，中心总体更大、外围更小；不能外围随机混入很多大细胞。
+- 早期 Hero 使用不规则细胞；用户后来要求换成**蒲公英种子**。杆长、伞冠、整体大小及朝向存在独立差异，不是同一图形机械等比复制。只修改 Hero；Summary 保留原细胞。最新参数和迭代顺序见第 19 节，不恢复早期“外围不能有大细胞”的 Hero 约束。
 - 已移除左侧标题下的大背景簇，在标题右侧补紧凑簇。现有八簇布局已多次调整，不随意重新撒点。
 - 入场从整个 Hero 画布随机散落开始，先慢后快聚成簇，再进入连线 / Resolve。日常呼吸不依赖鼠标移动，各簇周期、相位和幅度不同。
 - 鼠标周围圆形影响区中，细胞越近越大；接近整个簇时，细胞还向远离簇中心的方向舒展。有绿色节点的簇同时增强绿色饱和度与 Bloom，移开平滑恢复。
@@ -84,11 +84,11 @@
 
 | 模块 | 当前参数 / 行为 | 主要文件 |
 | --- | --- | --- |
-| Hero 细胞、曲线、簇布局 | 固定种子与自然细胞轮廓 | `src/components/Diagrams.tsx` |
+| Hero 蒲公英、曲线、簇布局 | 固定随机种子；独立杆长 / 伞冠；八簇布局不变，最新参数见第 19 节 | `src/components/Diagrams.tsx` |
 | Hero 连续反馈 | 鼠标半径约 84px，局部细胞最多约 2.2 倍；簇舒展约 48%；Bloom 8 / 24px | `src/components/hero-boot.ts` |
 | 单字放大 | 半径约 84px，中心最多约 1.22 倍 | `HeroTextMotion.tsx`、`GlyphText.tsx` |
 | Hero / Production 打字 | Hero 字间 65–170ms、项间 1150ms；Production 字间 28–75ms、行间 600ms | `HeroFactsMotion.tsx` 与 CSS |
-| Summary | 初始等 1 秒，阶段间各等 1 秒，过渡 0.5 / 0.65 / 0.85 秒 | `MotionFigure.tsx` |
+| Summary | 原时间线初始 / 间隔各 1 秒，过渡 0.5 / 0.65 / 0.85 秒；整体 `timeScale(1.5)`，实际总时长约 3.33 秒 | `MotionFigure.tsx` |
 | 页脚三圆 | 初次等 1.5 秒；两侧圆偏移 ±16，过渡 0.65 秒；重播复用时间线 | `footer-motion.ts`、`MotionFigure.tsx` |
 | 首屏尺寸 | 实际导航高度 + 视口剩余高度 | `src/app/page.module.css`、`AutoHeader.tsx` |
 | 导航收起与轮播 | 边界跟随、手动展开、连续状态轮播 | `AutoHeader.tsx` 与 CSS |
@@ -117,7 +117,7 @@
 
 ## 7. 验证与运行注意事项
 
-- 2026-09-18 当前工作目录为 `C:\Users\63201\Documents\prj\WEFT_PPL_Presentation`。此前 `D:\SYCP_PPL\work_report` 属于另一环境；接续时以工具提供的实际 cwd 为准。
+- 本次实际工作目录为 `D:\SYCP_PPL\work_report`。历史章节开发曾位于 `C:\Users\63201\Documents\prj\WEFT_PPL_Presentation`；接续时以工具提供的实际 cwd 为准，不把历史绝对路径当成当前路径。
 - `npm run dev` 使用 3000；`npm run build` 导出到 `out/`；`npm run preview` 在 4173 读取导出结果。**改源码后刷新 4173 不会自动更新，必须先重建。**
 - Playwright 使用本机 Edge、单 worker，直接测静态服务器。带录像的检查可能需要工具的沙箱审批；审批失败不能记作测试通过。
 - 功能检查覆盖小屏、键盘、触屏、reduced motion、快速切换、编辑隔离、纯文本安全和清理；新增问题优先加入真实复现路径。
@@ -140,7 +140,7 @@
 ### 首页信息密度与合作方式
 
 - 用户明确：首页只是大致介绍 PPL，想了解更多应进入各自板块，因此不要把首页做得很复杂；先实现一版，再按实际效果修改。
-- 本节原先只完成首页的范围已被后续授权部分覆盖：Systematic Thinking 已实现；Design & Innovation、What Comes Next、Evidence 仍是占位页。其他规划文档不自动授权实现。
+- 本节历史范围已被后续开发覆盖：Systematic Thinking 已实现；Design & Innovation 和 In Production 的当前进度见第 21 节。What Comes Next 与旧 Evidence 路由仍是占位页。规划文档本身不自动授权扩大范围。
 - 用户通常逐项反馈，最新纠正优先于前一句。例如导航语言开关最终在右侧；旧版资产最终要求向左移动，而不是先前口误的向右。
 - 不把概念示意当成生产证据。系统图可以程序化绘制；生产 UI 使用用户真实截图，不用 AI 重绘。
 
@@ -151,7 +151,7 @@
 - 已加入程序化相机、场景和折叠点阵曲面，采用共享投影；用户后来明确否定角色形态，要求恢复布料式曲面，但文字叫“资产”，不叫“布料”或“角色”。
 - 01 为独立模块 → 共享组织 → 工作空间；02 强调只更新资产、保留相机和场景；03 保留现有结构，虚线表达未来方向，并有切换过渡。各视图复用同一场景。
 - 02 右侧要求从白色 v1 原形态变成新的绿色形态，已加入形态与颜色过渡。绿色新资产应鲜亮，不能一直是暗淡线条。
-- 02 左侧要求先显示大的白色 v1，在当前主位置开始；之后移到左侧原来 v1 的位置，变小变淡但保留，不是淡出消失；新绿色资产出现。**最后这项方向修正未落实，见第 13 节。**
+- 02 左侧要求先显示大的白色 v1，在当前主位置开始；之后移到左侧原来 v1 的位置，变小变淡但保留，不是淡出消失；新绿色资产出现。**当前已落实左移；绿色 v2 也已右移拉开间距，见第 20 节。**
 - 模型标签与下方 CONTEXT / PRODUCT / VERSION / DEPENDENCY / STATE / VALIDATION / RESOLUTION / COMPOSITION 已补双向联动：悬停/聚焦检查，点击固定选择，关联对象与路径强调，说明随选择变化。不要退回仅按钮变色的孤立交互。
 
 ### 双语导航
@@ -170,7 +170,7 @@
 | Publish | `ref/publish_ori.png`，451×676 | `ref/publish_final.png`，563×913 | `public/images/proof/publish-prototype.png`、`publish.png` |
 
 - public 文件保留原始图像内容；裁剪是显示层处理，不覆盖原图。项目、镜头、资产名称已获用户明确公开授权。
-- 首页仍为简洁的两张真实工具截图和短说明；现有 VIEW EVIDENCE 指向未开放页。
+- 首页仍为简洁的两张真实工具截图和短说明；可见入口文案已改为 IN PRODUCTION / HOW IT WORKS IN PRODUCTION，首页原 `/evidence/` 目的地仍是未开放页。不要把文案替换误记成目的地已完成。
 
 ### 大图查看器
 
@@ -245,11 +245,11 @@
 
 ## 13. 给下个会话的待办与不可误报事项
 
-1. **已确认但未落实：02 左侧 v1 应向左移动。** 本次核对 `ProductionScene.tsx` 仍有三处 `translate(390 435) scale(.38)`，即向右移；包含动画终点、quiet/reduced 静态位置及初始 JSX 分支。历史左侧位置可从 `translate(161 435) scale(.45)` 作为复核参考，但先看当前几何与用户截图，不盲改。需要同时保证普通动画、静态/reduced 和快速切换一致。不要说此项已修好。
+1. **历史待办已关闭：02 左侧 v1 向左移动。** 当前动画终点、quiet/reduced 静态位置及 JSX 均使用 `translate(161 435) scale(.45)`。不要按旧记录重复修复；后续新绿色 v2 右移参数见第 20 节。
 2. Proof 的历史请求已完成；后续用户授权的 Systematic Thinking 实施见第 15–18 节。不要据此自动重做首页或开发其他章节。
 3. 中英、三视图联动、导航排布、03 过渡等已实现，但本次交接只核对关键代码，不代表这些模块全部重新测试或最终视觉验收。
 4. 保留第 8 节限制：用户整体确认、真实读者测试、实体设备、联系方式、真实 GitHub Pages 配置/部署仍待完成。
-5. 此处为历史交接状态。2026-09-18 用户已再次明确授权整理并推送本轮改动；按第 18 节核对远程，不强推、不删除其他工作。
+5. 此处与第 18 节均为历史发布授权。最新请求只更新本文；本轮脏工作树尚未提交，不继承旧授权自动推送。
 
 ## 14. 交接之后的 GitHub 发布授权与检查
 
@@ -325,7 +325,7 @@
 - 悬停全部图标版本曾实际核对 19 个图标的 2 倍缩放、固定锚点和恢复；随后依用户要求缩减为 8 个，不把此前 19 项结果等同于最终版本全部重测。
 - 灯泡实际浏览器检查：连续两次移入均重启闪光、光线、轻晃三段 CSS 动画，reduced motion 保持静态。最后的绑定圆圈填充通过构建，未单独做像素对比。
 - 发布前本轮回归结果见第 18 节；不是全站全量测试、真实用户性能测试或用户最终视觉验收。
-- 仍未处理：首页 Transform 左侧旧资产 v1 应向左移动，`ProductionScene.tsx` 仍有三处 `translate(390 435) scale(.38)`。本次未擅自扩展修改首页动画。
+- 此处当时未处理的首页 Transform 左侧 v1 左移，现已落实；以第 20 节和当前代码为准，不再列为未完成。
 - 仍待用户整体验收、真实读者理解测试、实体手机 / 低性能设备验证、联系邮箱以及 GitHub Pages 真实上线配置。
 
 ## 18. 本次 GitHub 发布记录
@@ -335,3 +335,196 @@
 - 发布前已成功获取远程状态。项目仍没有 `.github/workflows` 的 Pages 部署配置，`next.config.ts` 保留通过 `NEXT_PUBLIC_BASE_PATH` 指定子路径的静态导出方式。本次发布指源码推送，不宣称网站上线。
 - 提交纳入本轮章节源码、共享导航 / 语言、回归测试、动效文档、AGENTS 决策和本交接文件；构建缓存、依赖与测试临时输出不提交。
 - 发布前 `git fetch origin` 成功，HEAD 与 origin/main 为 0 领先 / 0 落后。最后一次静态构建通过；本轮运行章节、人物、序列、语言跨页、首页语言及导航共 **15 项测试，全部通过**（约 1.7 分钟）。新生成的章节中英及三种宽度截图纳入提交；测试意外覆盖的旧首页截图恢复原文件。`git diff --check` 通过。实际提交号及推送结果以 Git 记录和本轮最终回复为准。
+
+## 19. 首页 Hero：蒲公英形态与最新偏好
+
+### 参考与范围
+
+- 用户提供的主参考为 `C:/Users/luoxufeng/.codex/generated_images/01a0a80b-657c-74c2-a886-8ea40edac98e/exec-8b4eb94b-6c02-443b-84fc-26d32f66d4ee.png`，以及手绘蒲公英图片 `C:/Users/LUOXUF~1/AppData/Local/Temp/codex-clipboard-0acf9a7d-5e83-4845-829d-33cf9fdede7e.png`。这些是环境路径，临时文件可能失效；不是仓库内生产素材。
+- 本轮只换 Hero 的种子形态，不改标题、八簇中心、灰色曲线、绿色节点和连接关系。保留散落 → 聚合 → Resolve、呼吸、鼠标逐粒子放大、簇舒展、Bloom、离屏暂停和 reduced motion。Summary 不改成蒲公英。
+- 保留程序化 SVG / Canvas，不把整个图换成 PNG，以维持逐粒子反馈。概念视觉不是生产系统运行时证据，也不能说已逐像素还原参考图。
+
+### 用户逐轮反馈（后一句优先）
+
+1. 初版种子太细、太均匀，整体明显不像参考。用户明确要求杆子长短不一、种子大小不一。
+2. 将杆长与伞冠宽度独立随机化，增加伞冠深色连接点；中心更密、外缘更疏，朝向与整体大小有差异。
+3. 用户要求伞冠和长度再大一些，实施为两者均增加约 50%。
+4. 用户明确要求降低密度、伞冠和杆长再放大约 30%；当轮数量减少约 25%，两者放大 30%。
+5. **最新要求：只将杆长再增加 30%、数量再减少 25%；伞冠保持第 4 步大小。** 已实现，不能再次把“杆长”理解成整颗种子一起放大。
+
+密度减少指每簇种子数量减少；长杆会增加线条交叠，因此视觉墨量不一定严格下降 25%。保留用户后续按截图调节的空间，不把这些比例写成不可变设计规范。
+
+### 当前实现参数与入口
+
+`src/components/Diagrams.tsx` 的 `dandelionCloud` / `DandelionCloud` 供 Hero `ResolveDiagram` 使用：
+
+| 参数 | 当前值（未乘单颗整体缩放） |
+| --- | --- |
+| 数量 | `round(rx * ry / 16 * .75)`；相较最初加密版本 `/12` 约减少 43.75%，不是减少 50% |
+| 杆长 | `6.3375 + pow(rand(), .7) * 25.35`，约 6.3375–31.6875 |
+| 伞冠 | `4.29 + rand() * 6.63`，约 4.29–10.92；单根绒丝另乘 0.8–1.2 |
+| 径向位置 | `pow(rand(), 1.3)`，中心密集，外缘疏松 |
+| 单颗大小 | `(.48 + radius * .32) * (.65 + rand() * .95)` |
+| 朝向 | 向外辐射为主，叠加独立随机扰动；杆有少量弯曲 |
+| 伞冠绒丝 | 9 根；五层 opacity 为 `.65 / .74 / .82 / .9 / .96` |
+
+- 固定随机种子确保服务端输出稳定，不每帧重新随机生成形状。
+- 每颗种子保持一个 `M...Z` 闭合轮廓；`hero-boot.ts` 按 `/M[^M]+/g` 切分粒子。不要随意为同颗种子增加多个 `M`，否则会被拆成独立粒子。
+- 每簇仍输出五个 `data-cell-size` 层；当前 Canvas 的 `Math.floor(layerIndex / 5)` 依赖这个约定。`data-cell-cloud` 名称保留是内部兼容，不代表图形仍是细胞。
+- Canvas 由坐标 / 控制点包围盒中心放置轮廓，不再对所有坐标求平均，以免长杆使居中偏向伞冠。每粒子 `extent = max(width, height) + 2`，图集 tile 按最大 extent × 3 自动计算；32 列，栅格倍率 3。不要恢复旧固定 40 / 48 / 84 tile，长杆可能被裁掉。
+- 图集仍以最大轮廓决定统一 tile；继续大幅增加尺寸可能提高内存占用。当前没有图集内存和低端设备帧率实测，不承诺 60fps。
+
+## 20. 同期首页其他已落地调整
+
+### Summary 1.5 倍速
+
+- 用户要求三阶段动画加速到 1.5 倍；`MotionFigure.tsx` 只对 Summary 加 `.timeScale(1.5)`，没有全局加速 Hero、页脚或 Master Canvas。
+- 原时间线含等待共 5 秒，实际约 3.33 秒；原 1 秒等待实际约 0.667 秒。保持先离散、再两个簇、最后协同关系，完成后保持。
+- 当轮构建和 `tests/summary-motion.spec.ts` 1 项通过；这是此前实际执行记录，本次文档更新没有重跑。
+
+### 02 资产版本间距
+
+- 白色 v1 从 `translate(257 435) scale(.85)` 开始，移到左侧 `translate(161 435) scale(.45)`，变小变淡但保留；普通动画、quiet/reduced 与 JSX 分支已一致。
+- 绿色 v2 从之前 x=240 移到 **x=285**，当前 `translate(285 435) scale(.72)`；该模式绿色连接路径起点与圆点同步从 x=343 改为 **x=388**。非更新模式仍为 x=343。
+- 用户目的：v1 / v2 不要叠在一起；保持新版本鲜亮。不要重新把旧版本移向右边或做消失淡出。
+- 当轮构建和生产场景 3 项测试通过；不是本次文档更新重新全量测试。
+
+### 对外文案统一
+
+- 用户不希望 Evidence / Proof / Verification 作为第一眼看到的主标题，统一用 **IN PRODUCTION** 或 **HOW IT WORKS IN PRODUCTION**，传达“这个设计在真实系统里如何工作”。
+- 已替换首页生产区标题、CTA、页脚入口及旧目标页公开标题 / 说明，并更新双语字典及相关测试。旧目标页中文为“真实生产中的实践”。
+- 内部仍可称 Evidence Layer；`ProofImage`、内容字段 ID、测试文件名及旧 `/evidence/` 路由不需要机械重命名。真实系统里的校验概念仍可使用 Validation，不是禁用所有技术术语。
+- 当轮构建和 Proof / 导航相关定向检查通过；其中 Proof 相关记录为 4 项通过。实际路由是否有完整内容与标题是否更名是两件事。
+
+## 21. 并行开发的当前代码状态（非本轮重新验收）
+
+- 本次核对已有 `src/components/design/`、`src/content/decisions.ts`、`tests/design-deck.spec.ts`，动态路由实际分发 `DesignPage` 与 `InProductionPage`。不再把 Design & Innovation 写成占位页。
+- 详细交接见 [Design Decision Deck implementation](WEFT_PPL_Design_Deck_Implementation_2026-09-18.md)。该任务记录用户授权完整 02 章节和单页 `/in-production/`，四个锚点为 compatibility / modularity / state / execution；本次仅读取来源与代码确认，不替其他任务补造授权过程。
+- 02 当前结构：Hero → 四个文字索引 → 简短模型判断 → 一个激活的决策海报 → Synthesis → 下一章 → 页脚。用户已移除底部整个 In Production 索引，不恢复。四项是并列决策，不是顺序流程。
+- 无自动播放或 hover 切卡；索引、指示器、Prev/Next、方向键、Home/End 与横向触控共用同一选择。约 660ms GSAP 过渡，可中断；语言切换不重置选择，reduced motion 立即切换。
+- **验证来源区别：** 该任务记录最终静态构建及 Edge 4 项通过（17.3 秒）；本次交接更新未重新执行该套测试。根目录 `design-qa.md` 当前属于此章节，不再是 Hero 报告，不要覆盖成首页 QA。
+- 共享 `SiteHeader` 已关闭自动 Next Link prefetch，原因是静态导出缺失 segment 文件请求；不要未复现就恢复。导航外观仍共用既有设计。
+- What Comes Next `/next/` 和旧 `/evidence/` 仍是最小未开放页。`/in-production/` 已实现，但尚未将首页旧入口全部迁移过去；未收到合并路由的明确指示，不在交接更新中擅改。
+
+## 22. 本轮验证、环境问题与下次接续
+
+### 实际验证
+
+- 最后一次“杆长 +30%、数量 −25%、伞冠不变”后：`npm run build` 通过；`npx playwright test tests/hero-dandelion.spec.ts` **1 项通过，18.7 秒**。这是包含多个断言的一个测试，不写成多个独立测试。
+- 覆盖：Hero 八簇、Summary 无蒲公英、聚合完成、呼吸、鼠标局部放大、绿色节点 Bloom、移开恢复、离屏暂停、reduced motion 静态回退、390px 无横向溢出、无 pageerror。
+- 截图：`artifacts/hero-dandelion-desktop.png`（1888×910）、`hero-dandelion-hover.png`、`hero-dandelion-static.png`、`hero-dandelion-mobile.png`（390×844）。每轮测试会覆盖同名文件，须按生成时间使用。
+- 最终桌面局部截图已实际检查长杆、伞冠和连接关系，未观察到图集裁切。没有将所有版本截图永久归档；不宣称与生成参考完全一致或用户已最终验收。
+- 本次仅修改交接文档，不重新运行全站测试；上述为刚完成的实现轮验证。仍未测真实用户性能、低端设备内存、实体手机或线上部署。
+
+### 本轮遇到的问题
+
+- 初版仅小幅随机缩放，视觉仍显得细小一致；需要杆长、伞冠和整体尺度各自变化。用户接连要求加大、减密度，以最新数值为准，不恢复中间版本。
+- 长杆不能继续沿用固定小图集格子，也不能简单对轮廓全部坐标求平均居中；现采用包围盒与动态 tile。未来换形状仍需验证最大轮廓而不是只看平均种子。
+- 首次移动端断言紧接 `setViewportSize` 读取宽度而失败；等待式断言通过响应式排版后稳定。没有为迎合测试修改产品布局；若真实设备持续溢出，应另行复现而非无限延时。
+- 本轮内置浏览器、普通终端、apply_patch / view_image 曾受沙箱初始化故障影响。用户明确同意改用项目现有 Playwright / 本机 Edge 检查。后续先尝试当前正常工具；审批范围应明确，不把本次故障视为永久环境规则。
+- 带录像的旧测试可能因缺 FFmpeg 启动失败；新 Hero 专项测试不强制录像。不能将未运行的旧套件算通过。
+- 大 PNG 通过工具读取可能被截断而无法查看，缩小为内存中的 JPEG 后可用于检查；未覆盖用户原始图片。浏览器截图仍保留 PNG。
+- 与另一开发任务共享脏工作树。曾发现 `design-qa.md` 已被其更新为 Design & Innovation，停止套用首页补丁；不能覆盖其他任务报告，或把共享截图 / 文档更新误当作自己的结果。
+
+### 当前 Git 与接续建议
+
+- 本次只读核对：HEAD 为 `5f966a6`（Systematic Thinking 交接提交），origin 的 fetch / push 均为 `https://github.com/Ace199/WEFT_PPL_Presentation.git`。第 18 节代理地址描述属于历史环境。
+- 当前有大量未提交修改和未跟踪章节源码、素材、截图、测试、文档。没有执行 fetch / commit / push；不能声称已与远程同步，也不能沿用旧授权自动发布。
+- **当前用户请求是更新本文。** 本次不修改产品行为、不提交、不推送、不部署。后续若要求发布，先重新核对差异、目标仓库和静态路径；勿强推、勿删除或覆盖其他任务成果。
+- 下一会话先读本节与 AGENTS，再检查当前代码 / Git；需要继续调花时仅改 Hero，核对伞冠是否也在本次需求中，避免误连带缩放。4173 读 `out/`，改源码后必须重建再刷新。
+- 未完成事项仍包括：用户整体视觉确认、真实读者理解测试、实体设备和性能验证、联系方式，以及实际 GitHub Pages 配置 / 上线检查。源码已存在或本地构建通过都不等于这些已完成。
+
+## 23. Design Decision Deck：本任务完整交接补充
+
+### 用户最新决定与准确范围
+
+- 用户口头称为「chapter03」，实际页面编号是 **02 / DESIGN & INNOVATION**，路由为 `/design-innovation/`；不要据此改成 03 或改动下一章编号。
+- 视觉主参考为仓库内 [ref/final3.png](../ref/final3.png)（860×1828），不是首页的 `final.png` 或 Systematic Thinking 的 `final2.png`。保留 Ivory / Black / Mint、Technical Editorial Poster System、细线图解、Technical Label 和小圆角。
+- 用户明确要求「nav 需要和其他 nav 保持一致」：复用 `SiteHeader`，保留同一套章节链接、状态区、语言开关和滚动行为，不另做参考图里的简化导航。章节收起边界为 `design-model`，深入页为 `production-details`。
+- 最新截图圈定删除的是 **Synthesis 后整个 IN PRODUCTION 四入口索引区**。已删除；Synthesis 后直接进入 Next Chapter。不要恢复此区，也不要把该请求扩大为删除每张卡内的 IN PRODUCTION 内容、CTA 或独立深入页。
+- 最终结构为 Hero → 四个纯文字 Decision Index →「问题，往往出在模型。」及一句说明 → DESIGN DECISIONS / 04（一个 Active Card）→ 黑色 Synthesis → Next Chapter → Footer。没有四张 mini diagram、公共症状表或纵向四篇决策长文。
+- 顶部索引、底部指示器、Prev / Next、左右键、Home / End 和横向滑动控制同一选择；首尾不循环。没有自动轮播、hover 切卡或切卡后自动滚页。
+
+### 四项决策的内容底线
+
+| 决策 | 必须保留的模型含义 | 卡内生产表达 / 对应锚点 |
+| --- | --- | --- |
+| 01 / COMPATIBILITY | 工作继续向前，已发布成果保留兼容历史；Shot A 保留 G2，Shot B 新工作使用 G3，两条都可有效。Mint 不代表只有最新正确 | RigCache USD：本地动画几何 + 逻辑 Surface 依赖 + 兼容约束；`#compatibility` |
+| 02 / MODULARITY | 独立模块通过显式组合进入 Workspace，仍保留 Identity / Version / Dependency / State，不重新变成不可拆分的大版本包 | 真实 Shot Builder 资源树、Version、State 节选；`#modularity` |
+| 03 / STATE | Previous State + Change / Delta → Merge → Current Full State；主图只高亮变化的 Groom，不以 Validation 作为核心中间步骤 | A / B / Cam 的 Previous Record + Publish Delta → Current Record 简化示例；`#state` |
+| 04 / EXECUTION | Rules 分别进入 Builder、Resolution、Publish / QC 执行点，交付检查分 Pass / Fail，不退回普通线性 Pipeline 图 | 真实 Publish / QC 节选；`#execution` |
+
+- 每张卡有自己的主判断、Summary、System Shift、概念图、Surface Symptom / Underlying Cause、生产内容及具体 CTA。公开标题不用 Evidence / Proof / Verification；内部技术命名可以保留。
+- 四个 CTA 分别为「查看兼容关系如何落地」「查看模块如何进入工作场景」「查看局部发布如何维护完整状态」「查看规则如何进入执行流程」，全部进入 **一个** `/in-production/` 页面及对应锚点，不创建四个详情页。链接和素材均经 `sitePath` 处理。
+- `/in-production/` 已有双语正文、四个真实锚点、较大的生产素材与实现边界说明，但不是独立生产运行时审计。旧 `/evidence/` 仍是占位，不自动重定向或迁移首页入口。
+- 概念图和简化记录不是生产原始数据；卡内不展示完整 SY_V1 URI。Task Record、Ani Master Record、显式删除等只在深入页解释。
+- Shot Builder 的 Hair 资源出现不等于完整 Hair Assembly 已完成。Publish 原图没有所要求的 QC Instance 标签，保留实际 Collect / QC Context / Pub Context 等内容，不补造 UI 或暗示所有检查通过。
+
+### 代码入口与动画所有权
+
+| 事项 | 文件 |
+| --- | --- |
+| 四卡双语内容、诊断与具体 CTA | `src/content/decisions.ts` |
+| Server Component 页面、卡片正文、Synthesis、下一章及页脚 | `src/components/design/DesignPage.tsx` |
+| 活动卡、各入口同步、键盘 / 触控、GSAP 清理 | `src/components/design/DecisionDeck.tsx` |
+| 四张概念 SVG 与动效节点 | `src/components/design/DecisionDiagrams.tsx` |
+| 真实截图显示层裁剪、RigCache 与 Record 简化结构 | `src/components/design/ProductionArtifact.tsx` |
+| 深入页四个锚点及当前边界 | `src/components/design/InProductionPage.tsx` |
+| 双语叶子组件 / 响应式与海报样式 | `src/components/design/DesignText.tsx`、`DesignPage.module.css` |
+| 路由分发 / 目的地注册 / 共享导航 | `src/app/[section]/page.tsx`、`src/content/destinations.ts`、`src/components/SiteHeader.tsx` |
+| 定向回归 / 视觉验收记录 | `tests/design-deck.spec.ts`、`design-qa.md` |
+
+- 正文由服务端渲染，Deck 仅为有界客户端控制器；不要把整页改为 Client Component。语言变化不重置当前选择或重播切换；活动卡本身不持久化。
+- 一个 GSAP context 管理切换：旧 Mint 关系变暗、图形横向轻缩至 97%、内容横移约 6%；新内容交叉淡入、线条绘制、节点出现、Mint 关系显现。总时长约 660ms，无 bounce、glow 或大幅滑动；中断 / 卸载用 `context.revert()` 清理。
+- 首次显示不强制入场，reduced motion 直接替换；非活动面板设 `inert` 和 `aria-hidden`，隐藏内容不进入键盘操作或屏幕阅读器阅读。
+- Desktop 海报约占内容宽度 95%，允许下一张窄边提示；960px 及以下改纵向排版，索引为 2×2。面板共用占位高度防止切卡时控件跳动，短卡可能有有意保留的空白。
+
+### 已遇问题、修复与不可倒退项
+
+- 平板双栏曾导致 State 标题孤行，已将纵向断点调整至 960px。不要只看桌面图后恢复窄屏双栏。
+- 曾因卡片 flex 高度调整造成 CTA 伸出面板，现恢复 article 正常流，并加入四卡平板 CTA 边界断言；不要直接重新添加整卡 flex column / 下半区 flex:1。
+- SVG 只有 viewBox 时曾因留白适配漏出裁剪区外内容。真实截图现有明确 `clipPath`；保留原图内容和状态色，不覆盖源素材。
+- 手机图解小字、Synthesis 圆点未对齐和小字对比度已修正；axe 检查只覆盖指定正文与四卡状态，不是全站无障碍认证。
+- 共享导航自动预取曾请求不存在的静态 segment 文件 `__next.$d$section.__PAGE__.txt`。当前三个 Next Link 表达式均设 `prefetch={false}`，实际导航仍可用；恢复预取前先复现并验证导出文件匹配，不以视觉修改为由回滚。
+- 全页截图前先回到顶部、移除焦点并等待 header 的 Hero 状态；否则 sticky 导航可能出现在截图中段，不能把捕获状态错误当成版式缺陷。
+
+### 实际验证、素材记录和下一步
+
+- 本节记录本任务此前实现轮结果，**本次文档更新没有重跑构建或浏览器测试**。最终 `npm run build` 通过；实现中 `npm run typecheck` 通过。
+- 最终命令 `npx playwright test tests/design-deck.spec.ts --output=artifacts/design-test-results --reporter=list`：**4 项通过，17.3 秒**。独立输出目录用于避免并行任务覆盖测试产物。
+- 覆盖 1440×1000 桌面、768×1024 平板、390×844 移动视口；索引 / Next / 指示器 / 方向键、快速切换后的稳定状态、hover 不切卡、隐藏面板 inert、模拟触控横滑与纵向移动、reduced motion、溢出与 CTA 边界、四个链接锚点、英语及刷新保留、共享导航实际跳转。导航场景未发现 pageerror、console error 或 HTTP 400 及以上响应。
+- 四张活动卡在 `#design-main` 范围的 axe WCAG 2 A/AA 检查通过。Home / End、首端 Prev 禁用等已有实现不代表每个分支都有独立自动断言；深入页没有另做全页 axe 审计。
+- 桌面实现与 `ref/final3.png` 曾按同宽并排比对；另外检查过平板 State / Modularity / Execution 与两张真实 UI 裁剪。截图为 `artifacts/design-deck-desktop.png`、`design-deck-english.png`、`design-deck-tablet-1.png` 至 `4.png`、`design-deck-mobile-1.png` 至 `4.png`。它们记录当时导出结果，后续改动应重新生成。
+- 内置浏览器当时受沙箱初始化故障阻挡；用户已明确允许使用项目现有 Playwright / Edge 自动验收。该授权不是已经检查实体触屏、其他浏览器、生产运行时或线上部署的证据。
+- 继续实现前核对当前工作树，按用户反馈调整指定区域；不要重复恢复底部索引或重做共享导航。预览 `/design-innovation/` 和 `/in-production/` 使用 4173 静态导出，源码变化后先 build 再刷新，不能假定此前服务仍在运行。
+- 保留 [章节实现简表](WEFT_PPL_Design_Deck_Implementation_2026-09-18.md) 与 [视觉 QA](../design-qa.md)；本次只更新本文，不覆盖首页或其他章节报告、不改产品代码、不提交 / 推送 / 部署。最终用户视觉确认、真实读者测试、性能、实体设备及生产运行时边界仍未完成。
+
+## 24. 2026-09-18：Systematic Thinking 后续修正
+
+### 跨页切换旧画面闪现：根因与修复
+
+- 用户观察到从主页经共享导航进入 `/systematic-thinking/`，以及返回主页时，会先短暂出现像是“缓存 / 预加载”的旧页面；返回主页时右上角状态区也会一闪而过旧的纵向布局。
+- 根因不是保留了旧页面缓存：共享导航此前使用普通 `<a>`，每次切换都会整页重新加载。在新页面 CSS 和客户端 GSAP 建立前，HTML 的默认首帧会被浏览器短暂绘制；首图完整 SVG 与状态区的未初始化样式因而可见。不要再用遮罩延迟来掩盖这个问题。
+- `SiteHeader.tsx` 已改用 Next `Link` 进行站内页面导航；保留静态导出兼容的 `prefetch={false}` 约定。`MasterCanvas` 也按模式重挂载，避免旧 GSAP 内联状态在视图变化后残留。
+- Systematic 的每个 `Reveal` 初始写入 `data-motion="pending"`，对应 CSS 在 GSAP 接管前隐藏所有 `data-step`；随后由 GSAP 控制逐步出现。`<noscript>` 与 reduced motion 显式恢复完整静态内容，不能为了防闪而牺牲无 JavaScript 可读性。
+- 此为代码级根因和修复记录；仍应由用户在真实浏览器中复查主页 ↔ Page2 的首次、连续和快速导航，不能把构建通过说成视觉问题已验收。
+
+### 内容、图标和展开顺序
+
+- 01 / ENFORCEMENT 的交接链严格为：BUILDER 图标 / 文案 → 第一条横线 → 齿轮 → 第二条横线 → PUBLISH · QC 图标 / 文案。不要恢复为所有元素一起出现。
+- 三个问题模块的整体顺序固定为 **01 / ENFORCEMENT → 02 / GRANULARITY → 03 / HISTORY**：前一个图完成，才解锁下一个；单个图仍至少 15% 进入视口后才可开始。不要把这一规则误解为页面加载即强制播放所有图。
+- 首张生产网络仍保持其内部的“节点 → 连线 → 下一个节点”依赖顺序；“分镜”公开标签已改为 **“分镜&剪辑”**，英文为 **“Storyboard & Editorial”**。
+- Shared Production Semantics 的 `VERSION / 哪次发布` 已改为 **“发布版本”**，英文为 **“Published version”**。
+- Systematic Page 的 DCC 标识不再是 MAYA / HOUDINI 文字按钮：Maya 使用用户提供的 Maya 图标，Houdini 使用已裁去白边的用户提供版本，文件为 `public/images/logos/maya.png` 与 `public/images/logos/houdini.png`。保持 `alt` 文本和固定尺寸；不使用带白边的旧 Houdini 素材。
+
+### Page2 滚动关联速度（只影响图表入场）
+
+- 该规则只作用于 `Reveal.tsx` 所有权下的 GSAP 图表入场；人物行走循环、花朵循环及其他独立 CSS 循环**不受影响**，不要把滚动速度变量接回这些动画。
+- 静止时和缓慢向下滚动时，图表时间线均为基础 **1.5×**。当前慢速上限为约 **1200px/s**；在这个范围内不能因轻微滚轮操作继续加速。
+- 超过该速度后，在约 **4800px/s** 时线性升至该图的最高倍率。首张 `01 / SYSTEMATIC THINKING` 生产网络最高 **10×**；其他图最高 **5×**。滚动停止约 160ms 后平滑回到 1.5×。这些是当前调试参数，不是未经后续确认不可改动的永久规范。
+- `01 / ENFORCEMENT` 右侧图标链的本身排程为其他图表步骤的 **2×**（`speed={2}`）；它仍会叠加上述滚动倍率。用户未要求把它变成独立循环或脱离可见性门槛。
+
+### 本轮验证与接续边界
+
+- 完成本节记录的最后一次滚动速度参数修改后，`npm run build` 通过（编译、类型检查和静态页面导出成功）。本轮没有重新执行完整跨页浏览器回归、视觉截图比对或实体设备检查。
+- 当前工作树可能同时含有其他任务的未提交内容与测试截图。更新交接文档不授权提交、推送、部署或清理这些文件；后续先检查 Git 状态，再按用户新反馈只改指定区域。
