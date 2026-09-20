@@ -16,8 +16,6 @@
   .eyebrow { font-size:25px; }
   .label { font-size:36px; }
   .small,.annotations { font-size:28px; }
-  .scene [data-future-label] { font-size:19px; }
-  :global(html[lang="en"]) .scene [data-future-label] { font-size:12px; }
   :global(html[lang="en"]) .label { font-size:24px; letter-spacing:0; }
   :global(html[lang="en"]) .small { font-size:16px; }
   :global(html[lang="en"]) .annotations { font-size:13px; }
@@ -29,7 +27,7 @@
 .part[data-link-state="muted"] { opacity: .28; }
 .part[data-link-state="related"] { opacity: .75; }
 .part[data-link-state="active"] { opacity: 1; }
-.part[data-link-state="active"] path:not([data-future-reveal]),
+.part[data-link-state="active"] path,
 .part[data-link-state="active"] use { stroke: var(--mint); }
 .part[data-link-state="active"] text { fill: var(--mint) !important; }
 .hitArea { fill: transparent; stroke: none; pointer-events: all; }
@@ -38,3 +36,12 @@
 .part:focus-visible { outline: 1px solid var(--mint); outline-offset: 4px; }
 .scene[data-quiet="true"] .part { transition: none; }
 @media (prefers-reduced-motion: reduce) { .part { transition: none; } }
+.toolLabel { font:18px var(--display) !important; letter-spacing:1px; }
+.hostLabel { font:19px var(--display) !important; letter-spacing:1.5px; }
+@media(max-width:600px) {
+  .scene[data-operating="true"] { aspect-ratio:1400/2750; }
+  .scene[data-operating="true"] .systemPanel { transform:translate(-800px,660px) scale(2.2); }
+  .scene[data-operating="true"] .workspacePanel { transform:translate(-825px,1870px) scale(1.4); }
+  .toolLabel { font-size:23px !important; }
+  .hostLabel { font-size:23px !important; }
+}

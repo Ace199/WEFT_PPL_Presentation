@@ -15,7 +15,7 @@ for (const [width, height] of [[1024, 768], [1366, 768], [1440, 800], [1920, 108
     expect(box.height + headerHeight).toBeLessThanOrEqual(height);
     expect(box.y + box.height).toBeLessThanOrEqual(height + 1);
 
-    for (const mode of ["organize", "transform", "extend", "overview"]) {
+    for (const mode of ["organize", "transform", "operate", "overview"]) {
       await region.locator(`[data-control="${mode}"]`).focus();
       await page.keyboard.press("Enter");
       await expect(region).toHaveAttribute("data-mode", mode);
@@ -41,6 +41,6 @@ for (const [width, height] of [[1024, 768], [1366, 768], [1440, 800], [1920, 108
     await region.evaluate((el, offset) => window.scrollTo({
       top: scrollY + el.getBoundingClientRect().top - offset, behavior: "instant",
     }), headerHeight);
-    await page.screenshot({ path: `artifacts/master-viewport-${width}.png` });
+    await page.screenshot({ path: `artifacts/operate-master-viewport-${width}.png` });
   });
 }

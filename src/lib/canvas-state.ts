@@ -1,6 +1,6 @@
 import { nodes, presets, type View } from "@/data/graph";
 export type MasterState =
-  | { mode: "overview" | "organize" | "extend"; focusedNode?: string; pinnedNode?: string }
+  | { mode: "overview" | "organize" | "operate"; focusedNode?: string; pinnedNode?: string }
   | { mode: "transform"; scene: "preview"; focusedNode?: string; pinnedNode?: string };
 export type CanvasEvent =
   | { type: "ENTER_VIEW"; view: View }

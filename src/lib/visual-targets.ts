@@ -27,15 +27,13 @@ export function visualTargets(state: MasterState) {
       ...e,
       a: preset.positions[e.source],
       b: preset.positions[e.target],
-      opacity: !preset.visibleNodes.includes(e.target)
+      opacity: !preset.visibleNodes.includes(e.source) || !preset.visibleNodes.includes(e.target)
         ? 0
         : state.focusedNode &&
             e.source !== state.focusedNode &&
             e.target !== state.focusedNode
           ? 0.16
-          : e.relation === "evolves"
-            ? 0.55
-            : 0.7,
+          : 0.7,
     })),
   };
 }

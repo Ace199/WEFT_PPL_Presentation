@@ -1112,13 +1112,9 @@
   margin: 0;
   padding: 9px 0 0;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   min-height: 0;
   min-width: 0;
-}
-.viewer .deck > h2 {
-  font-size: 13px;
-  margin-bottom: 8px;
 }
 .viewer .deckFrame {
   display: grid;
@@ -1164,7 +1160,7 @@
 }
 .viewer .card {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   gap: 0;
   min-height: 0;
 }

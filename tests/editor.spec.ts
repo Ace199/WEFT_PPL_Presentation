@@ -186,18 +186,18 @@ test("two pages are isolated; no persistence or writes; graph view survives edit
       configurable: true,
     });
   });
-  await page.getByRole("button", { name: /03 \/ WHAT/ }).click();
+  await page.getByRole("button", { name: /02 \/ DESIGN/ }).click();
   const region = page.getByRole("region", { name: "ONE SYSTEM / THREE VIEWS" });
-  await expect(region).toHaveAttribute("data-mode", "extend");
+  await expect(region).toHaveAttribute("data-mode", "transform");
   await page.getByRole("button", { name: "试编辑" }).click();
   await page.getByRole("textbox", { name: "Hero 说明" }).fill("仅本页面可见");
-  await expect(region).toHaveAttribute("data-mode", "extend");
+  await expect(region).toHaveAttribute("data-mode", "transform");
   await expect(region.locator("canvas")).toHaveCount(0);
   await expect(second.locator('[data-editable="hero.description"] [data-glyph-text]')).toHaveText(
     home.hero.description,
   );
   await page.getByRole("button", { name: "关闭编辑面板" }).click();
-  await expect(region).toHaveAttribute("data-mode", "extend");
+  await expect(region).toHaveAttribute("data-mode", "transform");
   expect(writes).toEqual([]);
   expect(errors).toEqual([]);
   const storage = await page.evaluate(() => ({

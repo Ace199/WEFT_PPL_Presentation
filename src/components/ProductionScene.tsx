@@ -55,6 +55,30 @@ function SetModule() {
 function AssetSurface({updated=false}:{updated?:boolean}) {
   return <g fill="none"><path d={updated?updatedAssetDots:assetDots} strokeWidth="1.15" vectorEffect="non-scaling-stroke" strokeLinecap="round"/><path d={updated?updatedAssetContours:assetContours} strokeWidth=".8" vectorEffect="non-scaling-stroke" opacity=".85"/></g>;
 }
+
+// Reuse the former third view's curved fan-out around the original stack.
+// Solid mint links now describe existing execution points, not future plans.
+function OperateBranches() {
+  return <g data-operate-network>
+    {(["builder", "loader", "publish", "review"] as const).map((id, i) => {
+      const x = 500 + i * 110, y = i === 0 || i === 3 ? 91 : 62;
+      const path = `M${641+i*16} 146C${641+i*16} 112 ${x} 133 ${x} ${y}`;
+      return <ScenePart key={id} node={id} bounds={[x-48,y-45,96,67]}>
+        <path data-operate-path d={path} pathLength="1" stroke="#a0e5cb" strokeWidth="1.15" fill="none"/>
+        <circle data-operate-tip cx={x} cy={y} r="5" fill="#19211c" stroke="#a0e5cb" strokeWidth="1.2"/>
+        <text data-operate-label x={x} y={y-17} textAnchor="middle" className={styles.toolLabel}>{id.toUpperCase()}</text>
+      </ScenePart>;
+    })}
+    {(["houdini", "maya"] as const).map((id, i) => {
+      const x = 570 + i * 190;
+      return <ScenePart key={id} node={id} links={[id,"composition"]} bounds={[x-65,425,130,78]}>
+        <path data-operate-path d={`M${653+i*24} 372C${653+i*24} 405 ${x} 405 ${x} 451`} pathLength="1" stroke="#a0e5cb" strokeWidth="1.15" fill="none"/>
+        <circle data-operate-tip cx={x} cy="451" r="5" fill="#19211c" stroke="#a0e5cb" strokeWidth="1.2"/>
+        <text data-operate-label x={x} y="482" textAnchor="middle" className={styles.hostLabel}>{id.toUpperCase()}</text>
+      </ScenePart>;
+    })}
+  </g>;
+}
 export function ProductionScene({mode, quiet, focusedNode, pinnedNode, onInspect, onSelect, onClear}:
   SceneInteraction & {mode:View;quiet:boolean;onClear:()=>void}) {
   const {t} = useLanguage();
@@ -82,9 +106,16 @@ export function ProductionScene({mode, quiet, focusedNode, pinnedNode, onInspect
         t.set("[data-result-dots]",{attr:{d:mode==="transform"&&quiet?updatedAssetDots:assetDots}},0)
           .set("[data-result-contours]",{attr:{d:mode==="transform"&&quiet?updatedAssetContours:assetContours}},0)
           .set("[data-character-result]",{attr:{stroke:mode==="transform"&&quiet?"#a0e5cb":"#e1e4da"}},0);
-        t.to("[data-preserved]",{opacity:mode==="transform"?.38:1,duration},0)
-          .to("[data-future]",{opacity:mode==="extend"?1:0,duration},0)
-          .to("[data-organize]",{opacity:mode==="organize"?1:0,duration},0);
+        t.to("[data-preserved]",{opacity:mode==="transform"?.38:1,duration},0);
+        t.to("[data-organize]",{opacity:mode==="organize"?1:0,duration},0);
+        if(mode === "operate" && !quiet) {
+          t.fromTo("[data-operate-path]",{strokeDasharray:1,strokeDashoffset:1},
+            {strokeDashoffset:0,duration:.8,stagger:.12,ease:"power2.inOut"},.15)
+            .fromTo("[data-operate-tip]",{opacity:0,scale:.4,transformOrigin:"50% 50%"},
+              {opacity:1,scale:1,duration:.3,stagger:.12,ease:"power2.out"},.65)
+            .fromTo("[data-operate-label]",{opacity:0,y:7},
+              {opacity:1,y:0,duration:.35,stagger:.12,ease:"power2.out"},.8);
+        }
         t.set("[data-version-old]",{
           opacity:mode==="transform"?(quiet?.26:1):0,
           attr:{transform:mode==="transform"&&quiet?"translate(161 435) scale(.45)":"translate(257 435) scale(.85)"}
@@ -102,22 +133,13 @@ export function ProductionScene({mode, quiet, focusedNode, pinnedNode, onInspect
             .fromTo("[data-character-result]",{attr:{stroke:"#e1e4da"}},
               {attr:{stroke:"#a0e5cb"},duration:1.35,ease:"power2.inOut"},.85);
         }
-        if(mode==="extend"&&!quiet) {
-          // Reveal through masks so the future relationships stay dashed throughout.
-          t.fromTo("[data-future-reveal]",{attr:{"stroke-dashoffset":1}},
-            {attr:{"stroke-dashoffset":0},duration:.8,stagger:.12,ease:"power2.inOut"},.15)
-            .fromTo("[data-future-tip]",{opacity:0,scale:.4,transformOrigin:"50% 50%"},
-              {opacity:1,scale:1,duration:.3,stagger:.12,ease:"power2.out"},.65)
-            .fromTo("[data-future-label]",{opacity:0,y:7},
-              {opacity:1,y:0,duration:.35,stagger:.12,ease:"power2.out"},.8);
-        }
       },element);
     });
     return ()=>{cancelled=true;ctx?.revert();};
   },[mode,quiet]);
   const update=mode==="transform";
-  return <svg ref={root} className={styles.scene} viewBox={narrow?"0 0 1400 2500":"0 0 1400 540"} role="group" aria-label={t("检查生产模型节点")} data-production-scene
-    data-inspecting={!!focusedNode} data-quiet={quiet}
+  return <svg ref={root} className={styles.scene} viewBox={narrow?(mode==="operate"?"0 0 1400 2750":"0 0 1400 2500"):"0 0 1400 540"} role="group" aria-label={t("检查生产模型节点")} data-production-scene
+    data-inspecting={!!focusedNode} data-quiet={quiet} data-operating={mode==="operate"}
     onClick={event => {if(!(event.target as Element).closest("[data-scene-node]")) onClear();}}>
     <SceneContext.Provider value={{focusedNode, pinnedNode, onInspect, onSelect}}>
     <defs><g id={assetId}><AssetSurface/></g><g id={`${assetId}-updated`}><AssetSurface updated/></g></defs>
@@ -169,7 +191,7 @@ export function ProductionScene({mode, quiet, focusedNode, pinnedNode, onInspect
       <text x="665" y="169" textAnchor="middle" className={styles.eyebrow}>SHARED MODEL</text>
       </ScenePart>
       <ScenePart node="product" links={["context","product","version","dependency","validation","resolution"]} bounds={[610,213,108,128]}>
-      {[0,1,2].map(i=><g key={i} transform={`translate(665 ${257+i*28})`} stroke={update&&i!==2?"#89978e":"#a0e5cb"} fill="none">
+      {[0,1,2].map(i=><g data-shared-stack key={i} transform={`translate(665 ${257+i*28})`} stroke={update&&i!==2?"#89978e":"#a0e5cb"} fill="none">
         <path d={box(-34,0,-24,68,13,48)} strokeWidth="1.05"/>
       </g>)}
       </ScenePart>
@@ -184,28 +206,15 @@ export function ProductionScene({mode, quiet, focusedNode, pinnedNode, onInspect
         <text x="737" y="355">{t("校验")}</text><path d="M733 345l-26-19"/></ScenePart>
       </g>
       {update?<ScenePart node="validation" links={["validation","resolution"]} label="兼容检查" bounds={[483,319,100,40]}><g className={styles.annotations}><text x="493" y="343" fill="#a0e5cb">{t("兼容检查")}</text><circle cx="575" cy="316" r="5" fill="#a0e5cb"/></g></ScenePart>:null}
-      <ScenePart node="state" bounds={[542,376,247,79]}>
+      <ScenePart node="state" bounds={mode==="operate"?[630,341,70,57]:[542,376,247,79]}>
       <path d="M665 345v27" stroke="#718178"/>
+      {mode!=="operate" ? <>
       <circle cx="665" cy="390" r="4" fill="#a0e5cb"/>
       <text x="665" y="415" textAnchor="middle" className={styles.label}>{update?t("局部更新 / 完整状态"):t("完整的当前状态")}</text>
       <text x="665" y="443" textAnchor="middle" className={styles.small}>STATE</text>
+      </> : null}
       </ScenePart>
-      <g data-future opacity="0" className={styles.annotations}>
-        {[t("治理"),t("恢复"),t("可观测性"),t("回归验证"),t("规模协同")].map((label,i)=>{
-          const x=482+i*90,y=i%2?62:91;
-          const d=`M${641+i*12} 146C${641+i*12} 112 ${x} 133 ${x} ${y}`;
-          const maskId=`${assetId}-future-${i}`;
-          return <ScenePart key={i} node={`future-${i}`} enabled={mode==="extend"} bounds={[x-42,y-38,84,54]}>
-            <defs><mask id={maskId} maskUnits="userSpaceOnUse" x="450" y="40" width="450" height="130">
-              <path data-future-reveal d={d} pathLength="1" stroke="white" strokeWidth="5"
-                strokeDasharray="1" strokeDashoffset="0" fill="none"/>
-            </mask></defs>
-            <path d={d} mask={`url(#${maskId})`} strokeDasharray="4 5" fill="none"/>
-            <circle data-future-tip cx={x} cy={y} r="5" fill="#19211c"/>
-            <text data-future-label x={x} y={y-17} textAnchor="middle">{label}</text>
-          </ScenePart>;
-        })}
-      </g>
+      {mode==="operate" ? <OperateBranches/> : null}
     </g>
     <g className={styles.workspacePanel}>
       <ScenePart node="composition" bounds={[953,6,297,40]}>
@@ -243,7 +252,7 @@ export function ProductionScene({mode, quiet, focusedNode, pinnedNode, onInspect
     <g className={styles.caption}>
       <path d="M28 524H120M365 524H430M486 524H550M783 524H833M883 524H953M1260 524H1370" stroke="#5b6d60"/>
       <text x="244" y="530" textAnchor="middle">{t("独立的制作成果")}</text>
-      <text x="665" y="530" textAnchor="middle">{t("系统组织")}</text>
+      <text x="665" y="530" textAnchor="middle">{t(mode==="operate"?"执行共享模型":"系统组织")}</text>
       <text x="1100" y="530" textAnchor="middle">{t("协同的工作空间")}</text>
     </g>
     </SceneContext.Provider>

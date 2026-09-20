@@ -85,7 +85,7 @@ for (const language of ["zh", "en"]) {
       expect(await page.evaluate(() => scrollY)).toBe(pageY);
       await body.evaluate((el) => (el.scrollTop = el.scrollHeight));
       await expect(
-        page.locator(i === 3 ? '#decision-task-composition figcaption' : '[data-panel][data-active="true"] a'),
+        page.locator(i === 3 ? '#decision-task-composition figcaption' : '[data-panel][data-active="true"] [data-card-part="example"] figcaption').last(),
       ).toBeInViewport({ ratio: 1 });
       expect(
         await page
@@ -204,7 +204,7 @@ test("short and mobile cards expose scrollable content and retain navigation", a
       await body.evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
     ).toBe(true);
     await body.evaluate((el) => (el.scrollTop = el.scrollHeight));
-    await expect(panel.getByRole("link")).toBeInViewport({ ratio: 1 });
+    await expect(panel.locator('[data-card-part="example"] figcaption').last()).toBeInViewport({ ratio: 1 });
     expect(
       await panel.evaluate((el) => el.scrollHeight <= el.clientHeight + 1),
     ).toBe(true);

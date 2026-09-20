@@ -133,7 +133,7 @@ test("tablet cards remain readable and expose only the active content to assisti
   }
 });
 
-test("all cards, anchored destinations and global language work", async ({
+test("all cards retain examples without outgoing CTAs and global language works", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -151,14 +151,7 @@ test("all cards, anchored destinations and global language work", async ({
     await expect(
       panel.getByRole("heading", { name: "PART 03 / PROJECT EXAMPLE", exact: true }),
     ).toBeVisible();
-    await expect(panel.getByRole("link")).toHaveAttribute(
-      "href",
-      `/in-production/#${ids[i]}`,
-    );
-    await panel.getByRole("link").click();
-    await expect(page).toHaveURL(new RegExp(`/in-production/#${ids[i]}$`));
-    await expect(page.locator(`section#${ids[i]}`)).toBeVisible();
-    await page.goBack();
+    await expect(panel.getByRole("link")).toHaveCount(0);
   }
   await page.getByRole("button", { name: "Switch to English" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(

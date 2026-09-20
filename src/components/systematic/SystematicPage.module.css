@@ -216,6 +216,10 @@
   line-height: 1.25;
   margin-top: 13px;
 }
+.dark .sharedTitle {
+  font-size: clamp(25px, 4vw, 61px);
+  white-space: nowrap;
+}
 .model {
   display: grid;
   grid-template-columns: 34% 41% 25%;

@@ -10,13 +10,15 @@
 .heading h2 { font:700 clamp(30px,3.1vw,50px)/1 var(--display); letter-spacing:-.025em; margin:0; }
 .heading p { font-size:clamp(14px,1.5vw,21px); margin:0; color:#b9c5bc; }
 .stage { position:relative; width:100%; min-height:0; flex:1; aspect-ratio:1400/540; }
-.controllers { display:grid; grid-template-columns:repeat(3,1fr); gap:30px; order:1; }
-.control { position:relative; border-top:1px solid #627266; padding:13px 0 0; display:grid; grid-template-columns:1fr auto; gap:10px; }
+.controllers { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:30px; order:1; }
+.control { position:relative; border-top:1px solid #627266; padding:13px 0 0; display:grid; grid-template-columns:minmax(0,1fr) auto; align-content:start; gap:10px; }
 .previewControl { display:block; width:100%; border:0; background:none; padding:0; color:inherit; text-align:left; cursor:pointer; }
 .controlIndex { display:block; font:500 clamp(11px,1.05vw,16px)/1.4 var(--mono); color:#adbbb1; }
 .control strong { display:block; font-size:clamp(14px,1.35vw,20px); font-weight:500; margin-top:6px; line-height:1.5; }
 .dash { display:none; }
-.action { align-self:center; font:12px var(--mono); text-decoration:none; border-bottom:1px solid #7d9183; padding:6px 0; white-space:nowrap; }
+.controlMode { display:block; margin-top:10px; font:10px var(--mono); letter-spacing:1.4px; color:#adbbb1; }
+.control:has([aria-pressed="true"]) .controlMode { color:var(--mint); }
+.action { align-self:center; justify-self:start; font:12px var(--mono); text-decoration:none; border-bottom:1px solid #7d9183; padding:6px 0; white-space:nowrap; }
 .action span { font-size:18px; }
 .control:has([aria-pressed="true"]) { border-color:var(--mint); }
 .control:has([aria-pressed="true"]) .controlIndex,.control:has([aria-pressed="true"]) .action { color:var(--mint); }
@@ -56,7 +58,9 @@
   .composition { padding:30px 22px 18px; gap:18px; }
   .heading h2 { font-size:32px; }
   .heading p { font-size:16px; }
-  .stage { aspect-ratio:1400/2500; }
+  /* Reserve the tallest view so a view change cannot move another hover
+     control beneath a stationary pointer on a narrow desktop window. */
+  .stage { aspect-ratio:1400/2750; }
   .controllers { grid-template-columns:1fr; gap:0; }
   .control { padding:14px 0; display:grid; grid-template-columns:1fr auto; }
   .controlIndex { font-size:12px; }
@@ -64,13 +68,14 @@
   .action { margin-top:0; }
   .explanation { display:block; min-height:94px; font-size:14px; }
   .explanation p { margin-top:7px; }
-  .inspector { gap:6px 14px; }
+  .inspector { gap:6px 14px; min-height:102px; align-content:start; }
   .inspector button { min-height:30px; }
   .bottom { flex-wrap:wrap; gap:12px; }
   .hint { margin-left:0; width:100%; }
   .textModel { margin:0 22px 20px; }
   .textModel dl { grid-template-columns:1fr; }
 }
+@media(max-width:360px) { .inspector { min-height:138px; } }
 
 .inspector button[data-active="true"] { color: var(--mint); text-decoration: underline; text-underline-offset: 4px; }
 .inspector button[aria-pressed="true"] { box-shadow: inset 0 -1px var(--mint); }

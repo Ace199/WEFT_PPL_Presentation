@@ -44,10 +44,10 @@ test("model labels and scene regions link in both directions, pin and clear", as
   await page.keyboard.press("Escape");
   await expect(master).toHaveAttribute("data-pinned-node","");
   await expect(master).toHaveAttribute("data-mode","organize");
-  await page.locator('[data-control="extend"]').click();
-  await scene.locator('[data-scene-node="future-2"]').focus();
+  await page.locator('[data-control="transform"]').click();
+  await scene.locator('[data-scene-node="state"]').focus();
   await page.keyboard.press("Space");
-  await expect(page.locator('[data-hit="future-2"]')).toHaveAttribute("aria-pressed","true");
+  await expect(page.locator('[data-hit="state"]')).toHaveAttribute("aria-pressed","true");
   await page.locator('[data-control="organize"]').click();
   await expect(master).toHaveAttribute("data-pinned-node","");
   await expect(scene.locator('[data-future] [tabindex="0"]')).toHaveCount(0);
@@ -66,8 +66,8 @@ test("inspection does not replay 02 geometry or restart its timeline", async ({p
     await expect(master).toHaveAttribute("data-settled","true");
     expect(await dots.getAttribute("d")).toBe(updatedAssetDots);
   }
-  await page.locator('[data-control="extend"]').click();
-  await page.locator('[data-hit="future-0"]').hover();
+  await page.locator('[data-control="overview"]').click();
+  await page.locator('[data-hit="state"]').hover();
   await page.locator('[data-control="organize"]').click();
   await expect(master).toHaveAttribute("data-settled","true");
   await expect(master).toHaveAttribute("data-focused-node","");

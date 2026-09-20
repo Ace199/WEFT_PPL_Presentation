@@ -5,6 +5,7 @@ for (const width of [390, 768, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
     const region = page.getByRole("region", { name: "ONE SYSTEM / THREE VIEWS" });
     const disclosure = region.locator("details");
     const positions = () => region.evaluate((root) => {
@@ -19,7 +20,7 @@ for (const width of [390, 768, 1440]) {
     await page.keyboard.press("Enter");
     await expect(disclosure).toHaveAttribute("open", "");
     expect(await positions()).toEqual(before);
-    for (const mode of ["organize", "transform", "extend", "overview"]) {
+    for (const mode of ["organize", "transform", "operate", "overview"]) {
       await region.locator(`[data-control="${mode}"]`).focus();
       await page.keyboard.press("Enter");
       await expect(region).toHaveAttribute("data-mode", mode);
@@ -37,13 +38,20 @@ for (const width of [390, 768, 1440]) {
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await region.screenshot({
-      path: `artifacts/model-expanded-${width}.png`,
+      path: `artifacts/operate-model-expanded-${width}.png`,
       // Isolate the component capture from sticky page chrome during stitching.
       style: '[data-site-header], .skip { visibility: hidden; }',
     });
     await disclosure.locator("summary").focus();
     await page.keyboard.press("Space");
     await expect(disclosure).not.toHaveAttribute("open");
-    expect(await positions()).toEqual(before);
+    // Screenshot scrolling can snap text baselines by one CSS pixel in Edge.
+    const after = await positions();
+    expect(after).toHaveLength(before.length);
+    after.forEach((box, i) => {
+      for (const key of ["x", "y", "width", "height"] as const) {
+        expect(Math.abs(box[key] - before[i][key])).toBeLessThanOrEqual(1);
+      }
+    });
   });
 }

@@ -184,7 +184,7 @@ function SharedModel() {
 
 export function SystematicPage() {
   return (
-    <div className={styles.page} id="top">
+    <div className={styles.page} id="top" data-section-scroll-snap>
       <noscript><style>{`[data-reveal][data-motion="pending"] [data-step]{opacity:1!important}`}</style></noscript>
       <a className="skip" href="#systematic-main">
         <T text={"跳到正文"} />
@@ -325,10 +325,8 @@ export function SystematicPage() {
         </ChapterElement>
         <section className={styles.dark} aria-labelledby="shared-title">
           <p className={styles.eyebrow}>SHARED PRODUCTION MODEL</p>
-          <h2 id="shared-title">
-            <T text={"统一的不是软件，"} />
-            <br />
-            <T text={"而是生产语义。"} />
+          <h2 id="shared-title" className={styles.sharedTitle}>
+            <T text={"统一的不是软件，而是生产语义。"} />
           </h2>
           <SharedModel />
           <div className={styles.modelNote}>

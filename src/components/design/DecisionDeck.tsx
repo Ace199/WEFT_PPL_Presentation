@@ -185,12 +185,9 @@ export function DecisionDeck({
         </div>
         <section
           className={styles.deck}
-          aria-labelledby="deck-title"
+          aria-label={language === "zh" ? "设计决策" : "Design decisions"}
           onKeyDown={keyboard}
         >
-          <h2 className={styles.label} id="deck-title">
-            DESIGN DECISION VIEWER / {String(decisions.length).padStart(2, "0")}
-          </h2>
           <div className={styles.deckFrame}>
             <button
               type="button"

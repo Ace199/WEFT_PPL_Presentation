@@ -3,6 +3,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { useReducedMotion } from "./useReducedMotion";
 import { useEditingActivity } from "./editor/TextPreview";
 import styles from "./HeroFactsMotion.module.css";
+import { useLanguage } from "./Language";
 
 // Keep the complete server-rendered labels and their layout throughout typing.
 export function HeroFactsMotion({
@@ -33,6 +34,7 @@ function FactsMotion({
   variant: "hero" | "production";
 }) {
   const root = useRef<HTMLElement | null>(null);
+  const { language } = useLanguage();
   const played = useRef(false);
   const reduced = useReducedMotion();
   const editing = useEditingActivity();
@@ -124,7 +126,8 @@ function FactsMotion({
       // An interruption reveals the full facts and does not restart the sequence.
       played.current = true;
     };
-  }, [reduced, editing, variant]);
+  // Reveal translated facts instead of restarting typing with stale glyph refs.
+  }, [reduced, editing, variant, language]);
   const Tag = variant === "hero" ? "ul" : "dl";
   return (
     <Tag

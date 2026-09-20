@@ -51,6 +51,7 @@ export const systematicEnglish: Record<string, string> = {
   "生产规则，需要进入执行边界。": "Production rules need execution points.",
   "统一的不是软件，": "Different software.",
   "而是生产语义。": "Shared production semantics.",
+  "统一的不是软件，而是生产语义。": "Different software. Shared production semantics.",
   "Maya 与 Houdini 执行不同操作，但共享对 Context、Product、Version、Dependency、State 和 Validation 的理解。":
     "Maya and Houdini perform different operations, but share an understanding of Context, Product, Version, Dependency, State and Validation.",
   "问题被重新建模，": "Reframe the problem.",

@@ -17,12 +17,6 @@ function DecisionCard({
   const narrative = decisionCards[d.id];
   return (
     <article className={styles.card} aria-labelledby={`title-${d.id}`}>
-      <header className={styles.cardHeader}>
-        <span>
-          {d.index} / {d.category}
-        </span>
-        <span>FIG. 02.{d.index}</span>
-      </header>
       <div
         className={styles.cardBody}
         data-card-scroll=""
@@ -90,9 +84,6 @@ function DecisionCard({
           <h4 className={styles.partLabel}>PART 03 / PROJECT EXAMPLE</h4>
           <h5>{narrative.example}</h5>
           <ProductionSpecimen id={d.id} />
-          <a className={styles.more} href={sitePath(`/in-production/#${d.id}`)}>
-            <T {...d.cta} /> ↗
-          </a>
         </section>}
       </div>
     </article>
@@ -149,7 +140,7 @@ export function DesignFooter() {
 }
 export function DesignPage() {
   return (
-    <div className={styles.page} id="top">
+    <div className={styles.page} id="top" data-section-scroll-snap>
       <a className="skip" href="#design-main">
         <T zh="跳到正文" en="Skip to content" />
       </a>
@@ -180,18 +171,9 @@ export function DesignPage() {
         >
           <Synthesis />
         </DecisionDeck>
-        <section className={styles.next} aria-labelledby="next-title">
-          <div>
-            <h2 id="next-title">
-              <T
-                zh="从明确的模型，走向持续演进。"
-                en="From explicit models to continued evolution."
-              />
-            </h2>
-            <p>TRANSFORM IDEAS INTO A MORE RELIABLE PRODUCTION SYSTEM.</p>
-          </div>
-          <a href={sitePath("/next/")}>03 / WHAT COMES NEXT ↗</a>
-        </section>
+        <div className={styles.next}>
+          <a href={sitePath("/contact/")}>03 / CONTACT ↗</a>
+        </div>
       </main>
       <DesignFooter />
     </div>

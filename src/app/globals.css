@@ -17,6 +17,30 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 110px;
 }
+/* Overview / chapters 01–02: native proximity stops, no wheel lock or timer.
+ * Keep tall/mobile content and expanded reading surfaces freely scrollable.
+ * DOM scoping also removes the behavior automatically on chapter navigation. */
+@media (min-width: 1001px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html:has([data-section-scroll-snap] [data-scroll-tracking]):not(:has([data-editing="true"], dialog[open], #views details[open])) {
+    scroll-snap-type: y proximity;
+    scroll-padding-top: 8px;
+    /* Native wheel snapping already animates. A second smooth anchor scroll
+     * can be re-snapped to its origin in Chromium; keep anchor jumps direct. */
+    scroll-behavior: auto;
+  }
+  [data-section-scroll-snap] > main > section,
+  [data-section-scroll-snap] #design-viewer {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+    scroll-margin-top: 0;
+  }
+  [data-section-scroll-snap] > main > section:first-child {
+    scroll-margin-top: var(--nav-height, 78px);
+  }
+  html:has([data-section-scroll-snap] [data-scroll-tracking]):not(:has([data-editing="true"], dialog[open], #views details[open])) [data-site-header] :is(a, button) {
+    scroll-margin-top: -8px;
+  }
+}
 body {
   margin: 0;
   background: var(--paper);

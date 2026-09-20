@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("task composition retains provenance and states the publish-only boundary", async ({ page }) => {
+test("task composition retains responsibility and provenance without a detail-page CTA", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/design-innovation/");
   const index = page.locator("[data-index]").nth(3);
@@ -19,17 +19,11 @@ test("task composition retains provenance and states the publish-only boundary",
   await expect(panel.getByRole("heading", {name:"Camera / Layout Task"})).toHaveCount(1);
   await expect(panel).toContainText("task sources retained");
   await expect(panel).not.toContainText("Task_A");
-  await page.goto("/in-production/#task-composition");
-  await expect(page).toHaveURL(/\/in-production\/#task-composition$/);
-  const details = page.locator("section#task-composition");
-  await expect(details.locator("[data-task-example]")).toContainText("Main_Characters/");
-  await expect(details.locator("[data-task-example]")).toContainText("Secondary_Characters/");
-  await expect(details.locator("[data-task-example]")).toContainText("Camera/");
-  await expect(details).toContainText("当前范围：Publish 端汇总已实现。");
-  await expect(details).toContainText("Maya Ani Builder 当前还没有通过这个 Master Record 重建完整多任务镜头");
-  await expect(page.locator("section#execution")).toContainText("02.05 / EXECUTION");
+  await expect(page.locator('a[href*="in-production"]')).toHaveCount(0);
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
   await page.getByRole("button", { name: "Switch to English" }).click();
-  await expect(details).toContainText("does not yet rebuild a complete multi-task shot");
+  await expect(panel).toContainText("Single Shot Ani Task");
+  await expect(panel).toContainText("shared shot state");
 });
 
 test("five indexes stay compact and task content fits desktop and narrow cards", async ({ page }) => {

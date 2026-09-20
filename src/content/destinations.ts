@@ -16,31 +16,15 @@ export const destinations = [
       "兼容历史、可组合模块、完整状态、任务协作与可执行规则：五项生产模型设计决策。",
   },
   {
-    slug: "next",
+    slug: "contact",
     index: "03",
-    title: "下一步",
-    english: "WHAT COMES NEXT",
+    title: "联系",
+    english: "CONTACT",
     description:
-      "该章节的详细内容尚未开放。当前可在首页通过 Extend 查看现有结构与未来方向。",
-  },
-  {
-    slug: "evidence",
-    index: "04",
-    title: "真实生产中的实践",
-    english: "IN PRODUCTION",
-    description:
-      "这里将介绍这些设计在真实生产系统中如何工作。详细内容正在整理，当前可在首页查看实际工具界面。",
-  },
-  {
-    slug: "in-production",
-    index: "02",
-    title: "设计如何进入真实生产",
-    english: "IN PRODUCTION",
-    description: "五项设计决策对应的生产结构、记录语义、任务汇总与实际工具界面。",
+      "关于 WEFT / PPL、复杂生产系统与人和工具的协作。",
   },
 ] as const;
 export const viewRoutes = {
   organize: "/systematic-thinking/",
   transform: "/design-innovation/",
-  extend: "/next/",
 } as const;

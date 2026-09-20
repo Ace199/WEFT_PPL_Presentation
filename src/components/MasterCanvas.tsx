@@ -18,7 +18,7 @@ import { ProductionScene } from "./ProductionScene";
 import { useReducedMotion } from "./useReducedMotion";
 import { EditableText, useEditingActivity } from "./editor/TextPreview";
 import styles from "./MasterCanvas.module.css";
-const order: View[] = ["overview", "organize", "transform", "extend"];
+const order: View[] = ["overview", "organize", "transform", "operate"];
 export function MasterCanvas({ views }: { views: ViewContent[] }) {
   const {t} = useLanguage();
   const [state, dispatch] = useReducer(canvasReducer, { mode: "overview" });
@@ -64,11 +64,11 @@ export function MasterCanvas({ views }: { views: ViewContent[] }) {
   const keys = (event: KeyboardEvent<HTMLButtonElement>, current: View) => {
     let index = order.indexOf(current);
     if (event.key === "ArrowRight" || event.key === "ArrowDown")
-      index = (index + 1) % 4;
+      index = (index + 1) % order.length;
     else if (event.key === "ArrowLeft" || event.key === "ArrowUp")
-      index = (index + 3) % 4;
+      index = (index + order.length - 1) % order.length;
     else if (event.key === "Home") index = 0;
-    else if (event.key === "End") index = 3;
+    else if (event.key === "End") index = order.length - 1;
     else return;
     event.preventDefault();
     locked.current = true;
@@ -162,17 +162,18 @@ export function MasterCanvas({ views }: { views: ViewContent[] }) {
                 <strong>
                   <EditableText id={`views.${view.mode}.question`} />
                 </strong>
+                <span className={styles.controlMode}>{view.mode.toUpperCase()}</span>
               </button>
               <a
                 className={styles.action}
-                href={sitePath(viewRoutes[view.mode])}
-                aria-label={`EXPLORE ${view.title}`}
+                href={view.mode === "operate" ? "#production" : sitePath(viewRoutes[view.mode])}
+                aria-label={view.mode === "operate" ? "VIEW PRODUCTION" : `EXPLORE ${view.title}`}
                 onFocus={() => enter(view.mode)}
                 onPointerEnter={(event) => {
                   if (event.pointerType === "mouse") enter(view.mode);
                 }}
               >
-                EXPLORE <span aria-hidden="true">↗</span>
+                {view.mode === "operate" ? "VIEW PRODUCTION" : "EXPLORE"} <span aria-hidden="true">{view.mode === "operate" ? "↘" : "↗"}</span>
               </a>
             </div>
           ))}
@@ -186,10 +187,9 @@ export function MasterCanvas({ views }: { views: ViewContent[] }) {
           ) : selected ? (
             <>
               <b>
-                {state.mode === "extend"
-                  ? t("— 现有结构　┄ 未来方向")
-                  : state.mode === "transform"
+                {state.mode === "transform"
                     ? "TRANSFORM PREVIEW"
+                    : state.mode === "operate" ? "MODEL → PRACTICE"
                     : "COMPLEXITY → MODEL"}
               </b>
               <p>
@@ -222,7 +222,7 @@ export function MasterCanvas({ views }: { views: ViewContent[] }) {
               ? "TRANSFORM PREVIEW"
               : state.mode.toUpperCase()}
           </span>
-          <span className={styles.hint}>{t("结构示意 · 版本号仅作说明")}</span>
+          <span className={styles.hint}>{t(state.mode === "operate" ? "执行关系示意 · 非实时运行状态" : "结构示意 · 版本号仅作说明")}</span>
         </div>
       </div>
       <details className={styles.textModel}>

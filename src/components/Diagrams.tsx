@@ -157,7 +157,7 @@ function DotCloud({
 function dandelionCloud(cx: number, cy: number, rx: number, ry: number, seed: number) {
   const rand = random(seed);
   const layers = cellDiameters.map(() => "");
-  const count = Math.round(rx * ry / 16 * .75);
+  const count = Math.round(rx * ry / 16 * .75 * .7);
   for (let i = 0; i < count; i++) {
     // A dense heart and loose perimeter, without visible rings or a grid.
     const radius = Math.pow(rand(), 1.3);
@@ -169,21 +169,26 @@ function dandelionCloud(cx: number, cy: number, rx: number, ry: number, seed: nu
     const size = (.48 + radius * .32) * (.65 + rand() * .95);
     // Stem length and crown width vary independently, not as scaled copies.
     const stem = 6.3375 + Math.pow(rand(), .7) * 25.35;
-    const crown = 4.29 + rand() * 6.63;
+    const crown = (4.29 + rand() * 6.63) * 1.5;
     const bend = (rand() - .5) * 2.6;
+    // Widen each side around its centerline, without scaling the seed itself.
+    const thickness = 2;
+    const neck = .23 * thickness;
+    const stemHalfWidth = .25 * thickness;
+    const controlHalfWidth = .19 * thickness;
     const cos = Math.cos(rotation) * size, sin = Math.sin(rotation) * size;
     const pt = (a: number, b: number) => `${(x + a * cos - b * sin).toFixed(2)},${(y + a * sin + b * cos).toFixed(2)}`;
-    let path = `M${pt(bend,stem + 1.2)}Q${pt(bend - 1,stem)} ${pt(bend - .2,stem - 1)}Q${pt(-bend,stem * .45)} ${pt(-.18,0)}`;
+    let path = `M${pt(bend,stem + 1.2)}Q${pt(bend - 1,stem)} ${pt(bend - stemHalfWidth,stem - 1)}Q${pt(-bend + .19 - controlHalfWidth,stem * .45)} ${pt(-neck,0)}`;
     const filaments = 9;
     for (let j = 0; j < filaments; j++) {
       const a = -1.48 + j * 2.96 / (filaments - 1) + (rand() - .5) * .12;
       const length = crown * (.8 + rand() * .4);
       const tipX = Math.sin(a) * length, tipY = -Math.cos(a) * length;
-      path += `Q${pt(tipX * .62 - .18,-.6)} ${pt(tipX,tipY)}Q${pt(tipX * .62 + .18,-.9)} ${pt(.18,0)}`;
+      path += `Q${pt(tipX * .62 - neck,-.75 + controlHalfWidth)} ${pt(tipX,tipY)}Q${pt(tipX * .62 + neck,-.75 - controlHalfWidth)} ${pt(neck,0)}`;
     }
     // A dark crown joint makes each fine, airy fan legible at resting scale.
-    path += `Q${pt(.95,.25)} ${pt(.6,-.5)}Q${pt(0,-1.15)} ${pt(-.6,-.5)}Q${pt(-.95,.25)} ${pt(.18,0)}`;
-    path += `Q${pt(-bend + .3,stem * .45)} ${pt(bend + .2,stem - 1)}Q${pt(bend + 1,stem)} ${pt(bend,stem + 1.2)}Z`;
+    path += `Q${pt(.95,.25)} ${pt(.6,-.5)}Q${pt(0,-1.15)} ${pt(-.6,-.5)}Q${pt(-.95,.25)} ${pt(neck,0)}`;
+    path += `Q${pt(-bend + .19 + controlHalfWidth,stem * .45)} ${pt(bend + stemHalfWidth,stem - 1)}Q${pt(bend + 1,stem)} ${pt(bend,stem + 1.2)}Z`;
     layers[Math.min(4, Math.floor((1 - radius) * 5))] += path;
   }
   return layers;

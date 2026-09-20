@@ -1,5 +1,5 @@
 export interface ViewContent {
-  mode: "organize" | "transform" | "extend";
+  mode: "organize" | "transform" | "operate";
   index: string;
   title: string;
   question: string;
@@ -34,28 +34,28 @@ export const home = {
       mode: "transform",
       index: "02",
       title: "DESIGN & INNOVATION",
-      question: "重新审视生产的默认假设。",
+      question: "重新审视默认假设，由此形成新的设计判断。",
       description:
         "先确定兼容范围，再选择版本；让模块独立变化，让交付规则可以执行。",
     },
     {
-      mode: "extend",
+      mode: "operate",
       index: "03",
-      title: "WHAT COMES NEXT",
-      question: "让已有系统持续演进。",
-      description:
-        "实线表示现有结构；虚线表示治理、恢复、可观测性、回归与规模协同的未来方向。",
+      title: "IN PRACTICE",
+      question: "设计如何进入真实制作？",
+      description: "Builder、Loader、Publish 与跨 DCC 工作流如何执行同一套 Production Model。",
     },
   ] satisfies ViewContent[],
   proof: {
     title: "IN PRODUCTION",
     description: "",
     facts: [
-      ["HOSTS", "Maya 2022 / Houdini 21–22"],
-      ["SYSTEM", "Rez / Ftrack"],
-      ["WORKFLOW", "Build / Load / Publish / Dailes Review"],
-      ["FORMAT", "USD / Alembic"],
-      ["STATUS", "Active production / 2026"],
+      ["DCC Software", "Maya 2022 / Houdini 21–22"],
+      ["SYSTEM", "Rez / Ftrack / Pyblish"],
+      ["WORKFLOW", "Builder / Loader / Publish / Dailies"],
+      ["Production Format", "USD / Alembic"],
+      ["STATUS", "Active / 2026"],
+      ["PROJECT", "动画电影《赵子龙》"],
     ],
     figures: [
       {
@@ -80,8 +80,8 @@ export const home = {
       },
     ],
     attribution:
-      "2026.04–08 核心开发 · 两人团队。作者作为 Lead Pipeline TD / System Designer 主导架构与核心实现；另一位成员扩展 Production Modules，并主导 ASB 核心能力。",
-    note: "实际工具界面；CFX 与 Hair 路径仍在演进。",
+      "2026.04–08 核心开发 · 两人团队。作者作为 Lead Pipeline TD / System Designer 主导架构与核心实现；另一位成员扩展 Production Modules，并主导场景组装核心能力。",
+    note: "实际工具界面",
   },
   footer: { tagline: "SAME PIPELINE\nMORE POSSIBILITIES" },
 };
@@ -154,18 +154,18 @@ export const editableFields = {
     kind: "multi",
     baseline: home.views[1].description,
   },
-  "views.extend.title": {
-    label: "Extend 视角标题",
+  "views.operate.title": {
+    label: "Operate 视角标题",
     kind: "single",
     baseline: home.views[2].title,
   },
-  "views.extend.question": {
-    label: "Extend 引导文案",
+  "views.operate.question": {
+    label: "Operate 引导文案",
     kind: "multi",
     baseline: home.views[2].question,
   },
-  "views.extend.description": {
-    label: "Extend 说明",
+  "views.operate.description": {
+    label: "Operate 说明",
     kind: "multi",
     baseline: home.views[2].description,
   },

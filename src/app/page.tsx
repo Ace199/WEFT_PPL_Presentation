@@ -17,11 +17,12 @@ import {
 } from "@/components/HeroFactsMotion";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ProofImage } from "@/components/ProofImage";
+import { ProductionFactValue } from "@/components/ProductionFactValue";
 
 export default function HomePage() {
   return (
     <TextPreviewProvider fields={editableFields} showLauncher={false}>
-      <div id="top" className={styles.site}>
+      <div id="top" className={styles.site} data-section-scroll-snap>
         <a className="skip" href="#main">
           <T text="跳至正文" />
         </a>
@@ -95,14 +96,11 @@ export default function HomePage() {
                       <GlyphText text={key} hero={false} />
                     </dt>
                     <dd>
-                      <GlyphText text={value} hero={false} />
+                      <ProductionFactValue value={value} category={key} />
                     </dd>
                   </div>
                 ))}
               </ProductionFactsMotion>
-              <a className={styles.evidenceLink} href={sitePath("/evidence/")}>
-                HOW IT WORKS IN PRODUCTION ↗
-              </a>
             </div>
             {home.proof.figures.map((figure) => (
               <figure key={figure.id} className={styles.proofFigure}>
@@ -180,8 +178,8 @@ export default function HomePage() {
             </LocalizedElement>
           </MotionFigure>
           <div className={styles.footerLinks}>
-            <a href={sitePath("/evidence/")}>
-              IN PRODUCTION <span aria-hidden="true">↗</span>
+            <a href={sitePath("/contact/")}>
+              03 / CONTACT <span aria-hidden="true">↗</span>
             </a>
             <a href="#top">
               BACK TO TOP <span aria-hidden="true">↑</span>

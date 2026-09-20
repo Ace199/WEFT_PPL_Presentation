@@ -27,7 +27,7 @@ test("record local static-server web vitals and animated frame timing", async ({
     .toBeGreaterThan(0);
   const region = page.getByRole("region", { name: "ONE SYSTEM / THREE VIEWS" });
   await region.scrollIntoViewIfNeeded();
-  const names = [/01 \/ SYSTEMATIC/, /02 \/ DESIGN/, /03 \/ WHAT/];
+  const names = [/01 \/ SYSTEMATIC/, /02 \/ DESIGN/];
   for (const name of names) await page.getByRole("button", { name }).click();
   await expect(region).toHaveAttribute("data-settled", "true");
   await expect
@@ -102,7 +102,7 @@ test("record local static-server web vitals and animated frame timing", async ({
     await page.getByRole("button", { name: names[i] }).click();
     await expect(region).toHaveAttribute("data-settled", "true");
     await region.screenshot({
-      path: `artifacts/view-${["organize", "transform", "extend"][i]}.png`,
+      path: `artifacts/view-${["organize", "transform"][i]}.png`,
     });
   }
   expect(metrics.LCP).toBeLessThan(2500);

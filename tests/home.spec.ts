@@ -14,7 +14,7 @@ test("chapter navigation does not masquerade as homepage section links", async (
   await expect(navigation.getByRole("link")).toHaveCount(4);
   await expect(navigation).toContainText("系统思考");
   await expect(navigation).toContainText("设计&创新");
-  await expect(navigation).toContainText("下一步");
+  await expect(navigation).toContainText("联系");
 });
 for (const width of sizes) {
   test(`static homepage, accessibility and screenshot at ${width}px`, async ({
@@ -79,22 +79,21 @@ test("shared graph survives 12 rapid switches, inspection, keyboard and resize",
   const buttons = [
     page.getByRole("button", { name: /01 \/ SYSTEMATIC/ }),
     page.getByRole("button", { name: /02 \/ DESIGN/ }),
-    page.getByRole("button", { name: /03 \/ WHAT/ }),
   ];
-  for (let i = 0; i < 12; i++) await buttons[i % 3].click();
-  await expect(region).toHaveAttribute("data-mode", "extend");
+  for (let i = 0; i < 12; i++) await buttons[i % buttons.length].click();
+  await expect(region).toHaveAttribute("data-mode", "transform");
   await expect(region).toHaveAttribute("data-settled", "true");
-  expect(await region.locator("[data-hit]").count()).toBe(13);
+  expect(await region.locator("[data-hit]").count()).toBe(8);
   await expect(region.locator("[data-production-scene]")).toBeVisible();
   await expect(
     page.getByRole("button", { name: "检查 GOVERNANCE", exact: true }),
-  ).toBeVisible();
+  ).toHaveCount(0);
   await buttons[0].focus();
   await page.keyboard.press("ArrowRight");
   await expect(buttons[1]).toBeFocused();
   await expect(region).toHaveAttribute("data-mode", "transform");
   await page.keyboard.press("End");
-  await expect(buttons[2]).toBeFocused();
+  await expect(region.locator('[data-control="operate"]')).toBeFocused();
   await page.keyboard.press("Home");
   await expect(region).toHaveAttribute("data-mode", "overview");
   await expect(region).toHaveAttribute("data-settled", "true");
@@ -136,7 +135,7 @@ test("touch and live reduced-motion changes keep views usable", async ({
   await page.getByRole("button", { name: /02 \/ DESIGN/ }).tap();
   await expect(region).toHaveAttribute("data-mode", "transform");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.getByRole("button", { name: /03 \/ WHAT/ }).tap();
+  await page.getByRole("button", { name: /02 \/ DESIGN/ }).tap();
   await expect(region).toHaveAttribute("data-settled", "true");
   await expect(region.locator("canvas")).toHaveCount(0);
   await expect(region.locator("[aria-live]")).toContainText("未来方向");

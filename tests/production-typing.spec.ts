@@ -46,7 +46,7 @@ for (const width of [390, 768, 1440]) {
     expect({ width: after.width, height: after.height }).toEqual({ width: before.width, height: before.height });
     for (let i = 0; i < home.proof.facts.length; i++) {
       await expect(rows.nth(i).locator('dt [data-glyph-text]')).toHaveText(home.proof.facts[i][0]);
-      await expect(rows.nth(i).locator('dd [data-glyph-text]')).toHaveText(home.proof.facts[i][1]);
+      expect((await rows.nth(i).locator('dd [data-glyph-text]').allTextContents()).join('')).toBe(home.proof.facts[i][1]);
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));

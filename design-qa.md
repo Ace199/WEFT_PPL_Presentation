@@ -1,4 +1,64 @@
-# Design & Innovation — visual QA, 2026-09-18
+# WEFT / PPL — latest visual QA, 2026-09-20
+
+## Current scope: remove the entire decision-heading row
+
+- final result: passed
+- Visual truth: `C:/Users/LUOXUF~1/AppData/Local/Temp/codex-clipboard-cf9abeab-0573-4b23-88c1-b138e774cc0e.png` (initial move/remove FIG annotation), then `codex-clipboard-4b45f2e0-983b-43db-9619-3aaa21dd6085.png` (1433 × 766), overridden by the final explicit request to remove both title and DESIGN DECISION VIEWER / 05 completely.
+- Rendered evidence: `artifacts/design-no-heading-1433.png`, CSS viewport/pixels 1433 × 766, DPR 1; `artifacts/design-no-heading-390.png`, 390 × 900, DPR 1. Desktop shows Modularity Part 01; mobile shows Task Composition. Header chrome is hidden for captures only. Source appears zoomed/cropped and excludes the index; no absolute page-scale fidelity claim is made. The requested change is deletion, not recreating its crop or scale.
+- Full-view and focused evidence: source and current desktop are in one in-memory comparison, with a larger current index/card junction crop and mobile frame. Earlier moved-title and swapped-title images were inspected but superseded by user direction, not retained as final targets.
+- Typography: existing display/body fonts and statement sizes preserved; duplicate technical titles and FIG removed. Layout: indexes connect directly to the frame; no empty title-row track, body gains available height, fixed footer and side edges remain. Colors: Ivory / ink / Mint unchanged. Assets: existing authorized procedural diagrams and real media reused unchanged; no new assets or fabricated UI. Copy: only the requested labels/header deleted; Part 01 statements and all five decisions retained.
+- Findings: no actionable P0/P1/P2 mismatch in final scoped view. Accessible region naming now uses a bilingual aria-label, avoiding a dangling deck-title reference. No remaining polish request inferred.
+- Checks: build passed; five final tests passed in 18.0s (five cards, 320–1764px, scrolling, keyboard/rapid switching, mobile swipe, reduced motion and bilingual content). Prior intermediate 11-test run is not claimed as a final full regression. Capture script earlier reported no page errors; full repository and real-device testing not rerun.
+- Checklist complete: remove internal header/FIG; remove external title row; reclaim grid space; verify responsive card interaction; preserve historic QA below. No commit, push or deployment.
+
+## Historical QA follows
+
+## Current scope: In Practice fan-out and Contact copy
+
+### Visual truth and evidence
+
+- Primary source: `C:/Users/LUOXUF~1/AppData/Local/Temp/codex-clipboard-c3d3be9b-59be-4a03-8231-e137d62bf6d0.png`, 1672 × 776 pixels. The earlier `codex-clipboard-12e16f9c-1260-45cf-9837-b7bb3663e281.png` annotations specify four upper tools and two lower DCC hosts. Red marks are instructions, not UI assets.
+- Implementation: `http://127.0.0.1:4173/#views`; `artifacts/master-operate-reference-1672.png`, 1672 × 776 pixels, captured in Edge at 1672 × 860 CSS px, DPR 1. Operate selected, normal motion settled, Chinese, pointer/focus cleared, unrelated sticky chrome hidden for component capture.
+- Full comparison: source and final implementation displayed in one 1100 × 1022 in-memory composite, uniformly scaled to 1100 × 511 each. Same component pixel dimensions, no density mismatch. Source is the retired Extend state; its labels and third CTA are deliberately superseded by the user's current instructions, not expected to match.
+- Focused comparison: source's red-frame region (634,100,398,425) compared in the same composite with the rendered central group `artifacts/master-operate-panel.png`, both normalized to 500px high. Original stack, curved fan-out, typography and endpoints inspected at readable scale.
+- Responsive evidence: `artifacts/master-operate-{320,390,768,1024,1440}-{zh,en}.png`. Contact: `artifacts/contact-{320,375,414,768,1440}-{zh,en}.png`; desktop Chinese image visually opened. Email has a visible keyboard focus state in the Contact test capture.
+
+### Findings and fixes
+
+- [P1, resolved] Initial Operate draft replaced the layered central model with a rectangular hub. User supplied the original third-view reference: restored the exact shared stack geometry and original left/right scene; upper branches now BUILDER / LOADER / PUBLISH / REVIEW, lower HOUDINI / MAYA. Removed extra Resolver branch, USD/state block and status badge. Final full and focused comparison confirms this correction.
+- [P2, resolved] Separately stacked desktop CTAs consumed diagram height. Restored uniform side-by-side preview / CTA controls while retaining ORGANIZE / TRANSFORM / OPERATE. Final comparison shows the original poster organization; latest longer Transform sentence remains readable.
+- [P2, resolved] Enlarged narrow-screen Operate changed control positions and could trigger another hover view under a stationary mouse. Reserved the tallest scene/inspector footprint across narrow-screen modes. Pointer, touch and screenshot-after-state assertions pass.
+- Source's dashed future links intentionally become solid Mint existing relationships. Original curve/tip/label animation timing is reused (.8/.3/.35s, .12s stagger); reduced motion shows the final view immediately. No simulated live production checks.
+- User explicitly requested reuse of the existing procedural SVG scene and animation; these are the actual reference's source assets, not substitute raster artwork. No new images or icons were needed or generated.
+
+### Required fidelity surfaces
+
+- Typography: existing body/display/technical families retained; compact uppercase tools, original SHARED MODEL label, readable host labels. Contact keeps the large heading and adds a quiet English subtitle. No clipped labels or forced ellipsis in tested widths.
+- Spacing/layout: original central layered model and left/right modules retained. Upper four / lower two grouping is clear; no rectangular hub or annotation box remains. Current shared page padding, mode labels and inspection controls are retained, so this is not a claim of pixel-identical legacy page layout. Contact retains two desktop columns, a mobile stack and intentional footer whitespace.
+- Colors/tokens: established dark scene, Ivory Contact and Mint active relations; no red annotation color, glow or new palette. Scoped axe checks pass.
+- Asset fidelity: original camera, set, dotted asset surface and composed workspace geometry are reused unchanged; no invented production screenshot, icon, UI or runtime record.
+- Copy/content: homepage 02 now says “重新审视默认假设，由此形成新的设计判断。”; Chapter 02 Hero unchanged. 03 IN PRACTICE / OPERATE goes to the homepage production anchor. Contact has the supplied two About paragraphs, four interests including Agent Systems & Tool Orchestration, GET IN TOUCH / EMAIL and the confirmed address only.
+
+### Verification and limits
+
+- Final `npm run build` passed; export remains homepage, Systematic Thinking, Design & Innovation and Contact only.
+- After final copy change: 12 targeted tests passed in 30.4s, covering four desktop sizes, bilingual narrow layouts, navigation, six execution branches, unchanged stack/asset geometry, rapid switching, keyboard, reduced motion, touch, no-JavaScript anchor and Contact accessibility/mailto.
+- Earlier final-structure regression: 22 tests passed (1.2m), including the original Transform morph, inspection without animation replay and disclosure behavior. After desktop CTA alignment, 15 tests passed (33.1s). These are scoped runs, not full-repository/performance/physical-device acceptance.
+- Console page-error checks passed in the tested flows. No backend, external messages or deployment performed.
+
+### Implementation checklist
+
+- [x] Restore original shared model and curve fan-out.
+- [x] Four tools above; Houdini / Maya below; no future nodes.
+- [x] Preserve actual preview navigation and homepage production anchor.
+- [x] Apply latest homepage and Contact copy.
+- [x] Compare full and focused rendered evidence, check desktop/mobile, keyboard/touch and reduced motion.
+
+No remaining actionable P0/P1/P2 findings in this scoped change. Optional future polish: physical-device font rendering checks; no additional design expansion is needed.
+
+final result: passed
+
+# Historical: Design & Innovation — visual QA, 2026-09-18
 
 ## 2026-09-19 — Fixed card viewer (supersedes the layout notes below)
 
