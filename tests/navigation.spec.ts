@@ -3,7 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 
 const routes = [
   { label: "01 / 系统思考", slug: "systematic-thinking", heading: "动画生产", explore: "SYSTEMATIC THINKING" },
-  { label: "02 / 设计&创新", slug: "design-innovation", heading: "重新审视生产", explore: "DESIGN & INNOVATION" },
+  { label: "02 / 设计&创新", slug: "design-innovation", heading: "重新审视默认假设， 由此形成新的设计思路。", explore: "DESIGN & INNOVATION" },
   { label: "03 / 联系", slug: "contact", heading: "我们可以聊聊", explore: null },
 ];
 

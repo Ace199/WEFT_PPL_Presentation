@@ -150,8 +150,8 @@ export function DesignPage() {
           <p className={styles.label}>02 / DESIGN &amp; INNOVATION</p>
           <h1 id="design-title">
             <T
-              zh={"重新审视生产的\n默认假设。"}
-              en={"Rethinking the defaults\nof production."}
+              zh={"重新审视默认假设，\n由此形成新的设计思路。"}
+              en={"Revisit default assumptions.\nDiscover new design approaches."}
             />
           </h1>
           <p className={styles.heroEnglish}>
