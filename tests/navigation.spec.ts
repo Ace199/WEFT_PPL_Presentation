@@ -17,8 +17,8 @@ test("navigation and separate CTAs open real exported destinations and survive r
       explore: "SYSTEMATIC THINKING",
     },
     {
-      label: "02 / 设计与创新",
-      title: "设计与创新",
+      label: "02 / 设计/创新",
+      title: "设计/创新",
       slug: "design-innovation",
       explore: "DESIGN & INNOVATION",
     },

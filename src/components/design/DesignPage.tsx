@@ -6,6 +6,7 @@ import { DesignText as T } from "./DesignText";
 import { DecisionDeck } from "./DecisionDeck";
 import { DecisionDiagram } from "./DecisionDiagrams";
 import { ProductionSpecimen } from "./ProductionSpecimen";
+import { CompatibilityComparison } from "./CompatibilityComparison";
 import styles from "./DesignPage.module.css";
 
 function DecisionCard({
@@ -38,35 +39,48 @@ function DecisionCard({
             <T {...d.summary} />
           </p>
           <p className={styles.inlineShift}>
-            <span>SYSTEM SHIFT</span> {d.from} <span aria-hidden="true">→</span>{" "}
+            <span>{d.id === "state" ? "STATE MODEL" : "SYSTEM SHIFT"}</span> {d.from} <span aria-hidden="true">→</span>{" "}
             {d.to}
           </p>
         </section>
         <section
           className={styles.comparisonPart}
           data-card-part="comparison"
-          aria-label="Before → WEFT / PPL"
+          aria-label={d.id === "state" ? "Modular publish → Full shot state" : "Before → WEFT / PPL"}
         >
-          <h4 className={styles.partLabel}>PART 02 / BEFORE → WEFT / PPL</h4>
-          <div className={styles.comparisonGrid}>
-            <div className={styles.beforeModel}>
-              <h5>BEFORE</h5>
-              <pre>{narrative.before}</pre>
-              <p>
-                <T {...narrative.problem} />
-              </p>
-            </div>
+          <h4 className={styles.partLabel}>{d.id === "state" ? "PART 02 / MODULAR PUBLISH → FULL STATE" : "PART 02 / BEFORE → WEFT / PPL"}</h4>
+          {d.id === "compatibility" ? (
+            <CompatibilityComparison />
+          ) : d.id === "state" ? (
             <figure className={styles.afterModel}>
-              <h5>WEFT / PPL</h5>
+              <p className={styles.decisionSummary}><T {...narrative.problem} /></p>
               <DecisionDiagram id={d.id} />
               <figcaption>
                 <T {...narrative.takeaway} />
-                <small>
-                  <T zh="概念示意" en="CONCEPTUAL DIAGRAM" />
-                </small>
+                <small><T zh="概念示意" en="CONCEPTUAL DIAGRAM" /></small>
               </figcaption>
             </figure>
-          </div>
+          ) : (
+            <div className={styles.comparisonGrid}>
+              <div className={styles.beforeModel}>
+                <h5>BEFORE</h5>
+                <pre>{narrative.before}</pre>
+                <p>
+                  <T {...narrative.problem} />
+                </p>
+              </div>
+              <figure className={styles.afterModel}>
+                <h5>WEFT / PPL</h5>
+                <DecisionDiagram id={d.id} />
+                <figcaption>
+                  <T {...narrative.takeaway} />
+                  <small>
+                    <T zh="概念示意" en="CONCEPTUAL DIAGRAM" />
+                  </small>
+                </figcaption>
+              </figure>
+            </div>
+          )}
         </section>
         <section
           className={styles.examplePart}

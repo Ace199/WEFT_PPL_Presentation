@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import type { DecisionId } from "@/content/decisions";
+import { sitePath } from "@/lib/paths";
 import { DesignText as T } from "./DesignText";
 import { ArtifactState } from "./ArtifactState";
+import { PublishPreview } from "./PublishPreview";
 import styles from "./DesignPage.module.css";
 
 function Specimen({
@@ -155,7 +157,20 @@ export function ProductionSpecimen({ id }: { id: DecisionId }) {
   }
   return (
     <figure className={styles.specimenFigure}>
-      {content}
+      {id === "modularity" || id === "execution" ? (
+        <div className={styles.modularityExample} data-modularity-example={id === "modularity" ? "" : undefined} data-execution-example={id === "execution" ? "" : undefined}>
+          {content}
+          <div className={styles.builderExample}>
+            <div className={styles.specimenTitle}>
+              <span>{id === "modularity" ? "HOUDINI / Shot Builder" : "PUBLISH / QC"}</span>
+              <span><T zh="实际界面节选" en="ORIGINAL UI CROP" /></span>
+            </div>
+            {id === "modularity" ? <svg viewBox="0 128 1122 540" role="img" aria-label="Shot Builder — resource tree, version selection and assembly states">
+              <image href={sitePath("/images/proof/shot-builder.png")} width="1122" height="879" />
+            </svg> : <PublishPreview />}
+          </div>
+        </div>
+      ) : content}
       <figcaption>
         <T {...note} />
       </figcaption>

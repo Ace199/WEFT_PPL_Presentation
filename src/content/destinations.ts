@@ -10,7 +10,7 @@ export const destinations = [
   {
     slug: "design-innovation",
     index: "02",
-    title: "设计与创新",
+    title: "设计/创新",
     english: "DESIGN & INNOVATION",
     description:
       "兼容历史、可组合模块、完整状态与可执行规则：四项并列的生产模型设计决策。",

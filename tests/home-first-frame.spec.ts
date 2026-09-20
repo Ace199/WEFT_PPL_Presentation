@@ -16,7 +16,7 @@ test("hero starts from scatter on load, reload and chapter return", async ({ pag
     if (entry === "load") await page.goto("/");
     if (entry === "reload") await page.reload();
     if (entry === "return") {
-      await page.getByRole("link", { name: "02 / 设计与创新", exact: true }).click();
+      await page.getByRole("link", { name: "02 / 设计/创新", exact: true }).click();
       await expect(page).toHaveURL(/design-innovation/);
       await page.getByRole("link", { name: "WEFT / PPL", exact: true }).first().click();
     }

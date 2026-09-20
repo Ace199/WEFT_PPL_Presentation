@@ -13,7 +13,7 @@ test("chapter navigation does not masquerade as homepage section links", async (
   await expect(navigation.locator('a[href^="#"]')).toHaveCount(0);
   await expect(navigation.getByRole("link")).toHaveCount(4);
   await expect(navigation).toContainText("系统思考");
-  await expect(navigation).toContainText("设计与创新");
+  await expect(navigation).toContainText("设计/创新");
   await expect(navigation).toContainText("下一步");
 });
 for (const width of sizes) {

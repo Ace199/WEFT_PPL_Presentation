@@ -24,7 +24,7 @@ test("decision deck stays synchronized through pointer, keyboard and rapid chang
   await expect(
     page
       .getByRole("navigation", { name: "章节导航" })
-      .getByRole("link", { name: "02 / 设计与创新" }),
+      .getByRole("link", { name: "02 / 设计/创新" }),
   ).toHaveAttribute("aria-current", "page");
   await expect(deck).toHaveAttribute("data-active-decision", "compatibility");
   await expect(

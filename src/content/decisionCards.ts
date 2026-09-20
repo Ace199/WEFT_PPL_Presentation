@@ -39,12 +39,12 @@ export const decisionCards: Record<
     before:
       "PUBLISH\nA  v003\n\nWhat changed this time?\n         ≠\nWhat exists now?",
     problem: {
-      zh: "仅记录“这次 A 变了”，无法单独回答整个 Shot 当前是什么状态；下游只能猜测、回溯或重建历史。",
-      en: "Recording only that A changed cannot describe the current shot. Downstream work must guess, trace or reconstruct its history.",
+      zh: "承接模块化发布：Camera、角色等模块可以分别更新，因此单次发布只描述本次变化。将变化合并到已有状态，才能得到镜头当前完整的资源组合。",
+      en: "Building on modular publishing: cameras, characters and other modules can update independently, so each publish describes only its changes. Merging those changes into the existing state produces the complete current shot composition.",
     },
     takeaway: {
-      zh: "这次发生了什么变化，与现在完整存在什么，是两个不同的问题。",
-      en: "What changed this time? ≠ What exists now?",
+      zh: "本次更新 A，保留未变更的 B 与 Camera；局部发布持续汇入完整镜头状态。",
+      en: "Update A while retaining unchanged B and Camera; partial publishes accumulate into the full shot state.",
     },
     example: "Publish Delta / Current Shot State",
   },

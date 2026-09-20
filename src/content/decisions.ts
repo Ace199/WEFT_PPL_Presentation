@@ -86,8 +86,8 @@ export const decisions = [
       "A change is an event.\nA state is a full snapshot.",
     ),
     summary: copy(
-      "系统记录本次发生的变化，\n同时维护当前完整的 Production State。",
-      "Record what changed this time,\nwhile maintaining the complete current production state.",
+      "模块独立发布后，每次交付只包含局部变化。\n系统同时维护整个镜头当前完整的 Production State。",
+      "With modules published independently, each delivery contains a partial change.\nThe system also maintains the complete current production state of the shot.",
     ),
     from: "Partial Change",
     to: "Materialized Full State",

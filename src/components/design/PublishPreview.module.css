@@ -1,0 +1,8 @@
+.preview { display: block; position: relative; width: min(100%, 190px); margin: 16px auto; padding: 0; border: 1px solid #b7bfbb; background: #494949; cursor: zoom-in; }
+.preview svg { display: block; width: 100%; height: auto; overflow: hidden; }
+.preview span { position: absolute; right: 6px; bottom: 6px; padding: 5px 8px; color: #fff; background: #1c201eee; font: 13px/1.4 var(--body); }
+.dialog { position: fixed; margin: auto; width: min(92vw, 56dvh, 680px); max-width: none; max-height: 94dvh; padding: 8px; border: 1px dotted #89978c; background: #111713; overflow: hidden; }
+.dialog::backdrop { background: #0a100de6; }
+.dialog svg { display: block; width: 100%; height: auto; overflow: hidden; }
+.close { position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; border: 1px solid #89978c; color: #fff; background: #1c201eee; font-size: 28px; cursor: pointer; }
+.preview:focus-visible, .close:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
