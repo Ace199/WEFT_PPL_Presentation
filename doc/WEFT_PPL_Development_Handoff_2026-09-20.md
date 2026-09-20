@@ -4,6 +4,7 @@
 
 ## 本次上传摘要 · 2026-09-20
 
+- **上传回执：五卡及同期改动已成功推送 GitHub main。** 实现提交 [1f75bf9](https://github.com/Ace199/WEFT_PPL_Presentation/commit/1f75bf9befbeee0ba8818cf1d879bcfe008bc896)（feat: expand decision viewer and unify chapter styling）。正常 git push 返回 84ea225..1f75bf9，随后 GitHub API 独立核对远程 main 为 1f75bf9befbeee0ba8818cf1d879bcfe008bc896。本条回执另作纯文档提交。未部署 GitHub Pages。
 - 用户已要求更新交接文档并上传 GitHub；本次允许正常源码提交和推送，不包含 Pages 部署或强推。
 - 最终为五卡：Compatibility / Modularity / State / Task Composition / Execution。04 仅保留 Part 01、Part 02；03 不恢复 Before；05 保留 Publish 缩略图放大。五卡循环与内部滚动保持。
 - 章节 02 Hero 已恢复自然高度，不再占满首屏；桌面 Viewer 在原高度上增加 40px。索引副标题缩小，04 只写 Independent Subtasks。导航为“设计&创新”。
