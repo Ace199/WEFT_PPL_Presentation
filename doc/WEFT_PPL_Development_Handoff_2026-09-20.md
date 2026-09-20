@@ -63,6 +63,8 @@
 
 ### 本次接续发布检查
 
+- **当前发布状态：源码已成功推送 GitHub `main`。** 实现提交 `70dca1a`（`feat: refine decision cards and add Publish image preview`），`git push origin main` 返回成功，远程由 `0fb8dff` 更新为 `70dca1a`。本条发布回执单独追加文档提交；下方失败记录均为历史。未部署 GitHub Pages。
+
 - 再次 `git fetch origin` 成功，远程 `main` 已是 `0fb8dff`，与本地提交一致（领先/落后均为 0）。下面“未推送成功”仅记录早前尝试，不再代表远程缺少那两笔提交；无法从本次检查判断中间由何人完成同步。
 - 当前新增内容为四卡修订、Publish 放大查看和导航中文更名，交接及 AGENTS 已同步。GitHub 发布仍指源码推送，不包含 Pages 配置或网站部署。
 - Deck / Viewer / Compatibility 首轮 10 项中 9 项通过，1 项因导航更名后测试仍引用旧名称失败；已同步更新测试文本。构建、静态导出及本轮交互手动脚本检查通过。
