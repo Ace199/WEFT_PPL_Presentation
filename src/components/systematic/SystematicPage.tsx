@@ -32,9 +32,9 @@ function SharedModel() {
               <T text={"人员 / 任务"} />
             </small>
           </p>
-          <svg viewBox="0 0 260 82" aria-hidden="true">
-            <Icon kind="person" x={40} y={43} />
-            <Icon kind="person" x={118} y={43} />
+          <svg className={styles.peopleIcons} viewBox="0 0 210 62" aria-hidden="true">
+            <Icon kind="person" x={31} y={32} scale={0.72} />
+            <Icon kind="person" x={93} y={32} scale={0.72} />
           </svg>
           <p className={styles.subtle}>
             <T text={"导演 / 艺术家 / 技术 / 制作"} />
@@ -49,14 +49,31 @@ function SharedModel() {
               <T text={"制作成果"} />
             </small>
           </p>
-          <svg viewBox="0 0 260 78" aria-hidden="true">
-            <Icon kind="camera" x={30} y={37} scale={0.7} />
-            <Icon kind="cube" x={99} y={37} scale={0.7} />
-            <Icon kind="cloth" x={182} y={37} scale={0.9} />
+          <svg className={styles.productIcons} viewBox="0 0 260 78" aria-hidden="true">
+            <Icon kind="camera" x={30} y={37} scale={0.56} />
+            <Icon kind="cube" x={99} y={37} scale={0.56} />
+            <Icon kind="cloth" x={182} y={37} scale={0.72} />
           </svg>
           <p className={styles.subtle}>
             <T text={"镜头 / 场景 / 资产 / 其他"} />
           </p>
+          <div className={styles.formatGroup}>
+            <p>
+              PRODUCTION FORMATS
+              <small>
+                <T text={"生产格式"} />
+              </small>
+            </p>
+            <div className={styles.formatLogos}>
+              <img src={sitePath("/images/formats/usd.png")} alt="USD" />
+              <img
+                className={styles.alembicLogo}
+                src={sitePath("/images/formats/alembic-transparent.png")}
+                alt="Alembic"
+              />
+              <span>.usd / .abc</span>
+            </div>
+          </div>
         </div>
       </div>
       <div data-step="1" className={styles.semantics}>
@@ -149,6 +166,12 @@ function SharedModel() {
           </div>
         ))}
         <div data-step="3" className={styles.dcc}>
+          <p>
+            DCC SOFTWARE
+            <small>
+              <T text="生产软件" />
+            </small>
+          </p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={sitePath("/images/logos/maya.png")} width="48" height="48" alt="Maya" />
           {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -9,6 +9,8 @@ export const systematicEnglish: Record<string, string> = {
   "导演 / 艺术家 / 技术 / 制作": "Directors / artists / TDs / producers",
   "任务 / 协作 / 决策": "Tasks / collaboration / decisions",
   制作成果: "Production products",
+  生产格式: "Production formats",
+  生产软件: "Production software",
   "镜头 / 场景 / 资产 / 其他": "Shots / sets / assets / more",
   共享的生产语义: "Shared production semantics",
   "Context、Product、Version、Dependency、State、Validation 六个共享语义组成生产模型。":

@@ -52,8 +52,9 @@ export const home = {
     description: "",
     facts: [
       ["HOSTS", "Maya 2022 / Houdini 21–22"],
-      ["SYSTEM", "USD / Rez / Ftrack / Dailies"],
-      ["WORKFLOW", "Build / Load / Publish / Review"],
+      ["SYSTEM", "Rez / Ftrack"],
+      ["WORKFLOW", "Build / Load / Publish / Dailes Review"],
+      ["FORMAT", "USD / Alembic"],
       ["STATUS", "Active production / 2026"],
     ],
     figures: [

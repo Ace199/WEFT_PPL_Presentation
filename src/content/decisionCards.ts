@@ -48,6 +48,18 @@ export const decisionCards: Record<
     },
     example: "Publish Delta / Current Shot State",
   },
+  "task-composition": {
+    before: "ONE SHOT / ONE ANI TASK\n\nMain Character A\nMain Character B\nMain Character C\nSecondary 01\nSecondary 02\nSecondary 03\nSecondary 04\nSecondary 05\nSecondary 06\nSecondary 07",
+    problem: {
+      zh: "10 个角色都集中在同一个 Ani Task 中制作。场景更重，交互更慢，任务边界也更难管理。",
+      en: "10 characters in one animation task: a heavier scene, slower interaction and task boundaries that are harder to manage.",
+    },
+    takeaway: {
+      zh: "按职责拆分 Ani 子任务，分别制作、分别发布；最终继续汇入同一个镜头状态文件，保留各任务的贡献来源。",
+      en: "Split production by responsibility. Work and publish independently, then merge results into one shared shot state while retaining task sources.",
+    },
+    example: "Ani Subtask State Aggregation",
+  },
   execution: {
     before:
       "PIPELINE GUIDE\n\n• Naming conventions\n• Directory structure\n• Dependency rules\n• Check before publishing\n\n         ↓\nArtist remembers correctly",

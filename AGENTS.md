@@ -23,6 +23,22 @@ Explicit user decisions take precedence. Do not silently rewrite the historical 
 
 ## Session handoff and later confirmed refinements
 
+Latest background correction: chapter 01 uses the same flat `var(--paper)` Ivory background as chapter 02. Remove chapter 01's white radial-gradient overlay; preserve its dark sections.
+
+Latest chapter typography decision: match chapter 01's Hero main title and chapter label to chapter 02. Main title uses the same body/display language choice, 750 weight, 1.12 line height, 0.015em Chinese tracking and responsive sizes (38px–80px desktop, 35px–52px at <=960px). Preserve each chapter's copy and content structure; this does not restyle all internal headings.
+
+Latest card sizing refinement: add 40px to the desktop (>960px) Design Decision Viewer height, giving that space to the internally scrollable card body. Narrow screens retain the prior height. Preserve fixed card header/footer, document-flow indexes and natural-height Hero. The desktop viewer is now slightly taller than the previous exact viewport-minus-header fit.
+
+Latest Card 04 removal: omit the entire Part 03 / Project Example section (including its CTA) from Task Composition only. Keep its Decision and Before / After, and preserve the examples and implementation boundary on `/in-production/#task-composition`. Other cards retain Part 03.
+
+Latest Card 04 narrative correction: explain a ten-character shot becoming heavy and hard to divide under one Ani Task. Before lists three main and seven secondary characters. After splits Main Characters, Secondary Characters and Camera / Layout tasks, with Mint contributions to Ani Master State and retained task sources. Use “Single Shot Ani Task → Split Tasks + Shared Shot State”. Benefits are lighter working scope, clearer ownership and preserved shared state, not a measured performance claim. Directory examples use Main_Characters / Secondary_Characters / Camera, not Task_A / B / C. Preserve the existing publish-only implementation boundary.
+
+Latest Hero correction: the user reverted Design & Innovation's full-screen Hero spacer. Restore its natural content height and original top padding; remove the viewport min-height and added bottom padding. Keep current copy, five-card Viewer and Card 04 Part 03 removal unchanged. This does not change the homepage Hero.
+
+Latest extension on 2026-09-20: the Design Decision Viewer now has five cards: Compatibility, Modularity, State, Task Composition, Execution. Insert Task Composition as 04 and move Execution to 05; circular navigation, Synthesis and the single In Production page include the new `#task-composition` anchor. Its examples are illustrative. Publish-side Task Record + Ani Master Record aggregation is in scope; Maya Ani Builder does not yet reconstruct full multi-task shots from that master record. Preserve fixed cards and internal scrolling. Index subtitles are smaller; Task Composition's short label is only “Independent Subtasks” (remove “/ Shared Shot State” from the index, not the card's meaning).
+
+Latest navigation wording correction on 2026-09-20: use Chinese “设计&创新”, superseding “设计/创新” below. Keep the English name and `/design-innovation/` route unchanged.
+
 Latest user decisions on 2026-09-20: read `doc/WEFT_PPL_Development_Handoff_2026-09-20.md` first. Card 03 has no Before comparison: independent module publishing motivates partial changes plus full shot state. Card 02's project example splits resource-tree illustration and actual Shot Builder crop; Card 04 splits illustrative execution steps and a compact actual Publish thumbnail with click-to-enlarge, Escape/backdrop/close dismissal and focus return. Chinese navigation is “设计/创新”; route and English name are unchanged. Card 01 uses matching fine-grid cubes and spheres, with mint face fills for material, synchronized rotating cubes, and the revised historical compatibility captions. These override the earlier uniform Before layout; diagrams remain conceptual and screenshots retain the user's earlier public-use authorization.
 
 Latest handoff entry: read `doc/WEFT_PPL_Development_Handoff_2026-09-20.md` before the historical September 17 handoff. The user authorized this session's normal GitHub source commit/push. This does not establish that GitHub Pages is live. The Compatibility specimen's project prefix is now a solid gray rectangle; preserve the remaining URI path and semantic highlights.

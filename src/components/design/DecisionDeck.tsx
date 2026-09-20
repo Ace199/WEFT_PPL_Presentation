@@ -118,7 +118,7 @@ export function DecisionDeck({
           : event.key === "Home"
             ? 0
             : event.key === "End"
-              ? 3
+              ? decisions.length - 1
               : null;
     if (next === null) return;
     event.preventDefault();
@@ -189,7 +189,7 @@ export function DecisionDeck({
           onKeyDown={keyboard}
         >
           <h2 className={styles.label} id="deck-title">
-            DESIGN DECISION VIEWER / 04
+            DESIGN DECISION VIEWER / {String(decisions.length).padStart(2, "0")}
           </h2>
           <div className={styles.deckFrame}>
             <button

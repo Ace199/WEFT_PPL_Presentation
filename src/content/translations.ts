@@ -34,7 +34,7 @@ export const english: Record<string, string> = {
   "章节导航": "Chapter navigation",
   "00 / 项目概览": "00 / Overview",
   "系统思考": "Systematic Thinking",
-  "设计/创新": "Design & Innovation",
+  "设计&创新": "Design & Innovation",
   "下一步": "What Comes Next",
   "真实生产中的实践": "How it works in production",
   "分散的成果": "Scattered outputs",

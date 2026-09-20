@@ -1,4 +1,4 @@
-export type DecisionId = "compatibility" | "modularity" | "state" | "execution";
+export type DecisionId = "compatibility" | "modularity" | "state" | "task-composition" | "execution";
 export type Copy = { zh: string; en: string };
 const copy = (zh: string, en: string): Copy => ({ zh, en });
 export const decisions = [
@@ -80,7 +80,7 @@ export const decisions = [
     id: "state",
     index: "03",
     category: "STATE",
-    label: "Full State",
+    label: "Materialized Full State",
     title: copy(
       "变化是事件，\n状态是完整快照。",
       "A change is an event.\nA state is a full snapshot.",
@@ -114,8 +114,30 @@ export const decisions = [
     ),
   },
   {
-    id: "execution",
+    id: "task-composition",
     index: "04",
+    category: "TASK COMPOSITION",
+    label: "Independent Subtasks",
+    title: copy(
+      "一个镜头的动画工作，\n不必挤在同一个任务里。",
+      "One shot’s animation work\nneed not fit into a single task.",
+    ),
+    summary: copy(
+      "按角色层级或制作职责拆分任务，分别制作、分别发布，再汇入共同的镜头状态。",
+      "Split tasks by character group or production responsibility. Work and publish independently, then merge into a shared shot state.",
+    ),
+    from: "Single Shot Ani Task",
+    to: "Split Tasks + Shared Shot State",
+    symptom: copy("多个角色集中在同一个 Ani Task 中，场景更重，交互与任务管理成本更高。", "Many characters in one animation task make the scene heavier and raise interaction and task-management costs."),
+    cause: copy("Task ownership 与 Shot state 被混在同一个粒度里。", "Task ownership and shot state share a single granularity."),
+    meaning: copy("每次子任务发布，只增量更新自己的状态和 Ani 主状态，不需要重新扫描所有任务再重建汇总。", "Each subtask publish incrementally updates its own state and the animation master state, without rescanning every task to rebuild the aggregate."),
+    cta: copy("查看独立子任务如何汇总为共同状态", "See how subtasks contribute to shared state"),
+    indexLabel: copy("独立子任务与共同状态", "Independent subtasks, shared state"),
+    diagramNote: copy("任务可以独立，Shot State 不必割裂。", "Independent task ownership, shared shot state."),
+  },
+  {
+    id: "execution",
+    index: "05",
     category: "EXECUTION",
     label: "Executable Rules",
     title: copy(

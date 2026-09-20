@@ -82,7 +82,7 @@ function DecisionCard({
             </div>
           )}
         </section>
-        <section
+        {d.id !== "task-composition" && <section
           className={styles.examplePart}
           data-card-part="example"
           aria-label="Project example"
@@ -93,7 +93,7 @@ function DecisionCard({
           <a className={styles.more} href={sitePath(`/in-production/#${d.id}`)}>
             <T {...d.cta} /> ↗
           </a>
-        </section>
+        </section>}
       </div>
     </article>
   );
@@ -103,6 +103,7 @@ function Synthesis() {
     ["COMPATIBILITY", "如何保持历史有效", "Keep history valid"],
     ["MODULE", "如何独立组合", "Compose independently"],
     ["STATE", "如何保持完整状态", "Maintain full state"],
+    ["TASK", "如何独立协作并汇总", "Work independently, aggregate together"],
     ["RULE", "如何进入执行", "Enter execution"],
   ];
   return (

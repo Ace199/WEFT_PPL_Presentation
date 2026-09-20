@@ -2,8 +2,10 @@ import type { DecisionId } from "@/content/decisions";
 import { sitePath } from "@/lib/paths";
 import { DesignText as T } from "./DesignText";
 import styles from "./DesignPage.module.css";
+import { ProductionSpecimen } from "./ProductionSpecimen";
 
 export function ProductionArtifact({ id }: { id: DecisionId }) {
+  if (id === "task-composition") return <ProductionSpecimen id={id} />;
   if (id === "modularity" || id === "execution")
     return (
       <figure className={styles.artifact}>

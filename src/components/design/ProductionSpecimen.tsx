@@ -136,6 +136,36 @@ export function ProductionSpecimen({ id }: { id: DecisionId }) {
       zh: "简化记录 · description 描述本次变化，record 保存合并历史变化后的当前完整状态；本次没有发布的资源不会因此自动被删除。",
       en: "Simplified records · description describes this change; record retains the complete state after merging past changes. Resources omitted from this publish are not automatically deleted.",
     };
+  } else if (id === "task-composition") {
+    content = (
+      <div className={styles.taskExample} data-task-example="">
+        <Specimen name="Ani / Subtask records" type="ILLUSTRATIVE DIRECTORY" lines={[
+          "Ani/",
+          "├─ Main_Characters/",
+          "│  └─ record/SH010_record.json",
+          "├─ Secondary_Characters/",
+          "│  └─ record/SH010_record.json",
+          "├─ Camera/",
+          "│  └─ record/SH010_record.json",
+          "└─ Ani/",
+          "   └─ record/SH010_record.json",
+          <>      <mark>↑ Ani master record</mark></>,
+        ]} />
+        <Specimen name="Main_Characters Publish" type="ILLUSTRATIVE UPDATE" lines={[
+          "delta:",
+          "Main__HeroA → v004",
+          "",
+          "├─ update Main_Characters record",
+          <>└─ <mark>update Ani master record</mark></>,
+          "",
+          <>source_task: <mark>Main_Characters</mark></>,
+        ]} />
+      </div>
+    );
+    note = {
+      zh: "每个子任务维护自己的 Task Record，同时把本次变化继续合入 Ani Master Record。目录与更新关系为简化示意，不是原始生产记录。",
+      en: "Each subtask maintains its own task record and merges this publish’s changes into the animation master record. Directory and update relationships are illustrative, not raw production records.",
+    };
   } else {
     content = (
       <Specimen
@@ -173,6 +203,7 @@ export function ProductionSpecimen({ id }: { id: DecisionId }) {
       ) : content}
       <figcaption>
         <T {...note} />
+        {id === "task-composition" && <p className={styles.taskScope}><T zh="当前范围：Publish 端汇总已实现。" en="Current scope: Publish-side aggregation implemented." /></p>}
       </figcaption>
     </figure>
   );

@@ -1,5 +1,6 @@
 import type { DecisionId } from "@/content/decisions";
 import styles from "./DesignPage.module.css";
+import { TaskCompositionDiagram } from "./TaskCompositionDiagram";
 
 function Cube({ x, dense = false }: { x: number; dense?: boolean }) {
   return (
@@ -382,6 +383,8 @@ export function DecisionDiagram({ id }: { id: DecisionId }) {
         <Modularity />
       ) : id === "state" ? (
         <StateDiagram />
+      ) : id === "task-composition" ? (
+        <TaskCompositionDiagram />
       ) : (
         <Execution />
       )}

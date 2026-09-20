@@ -20,7 +20,7 @@ import { ProofImage } from "@/components/ProofImage";
 
 export default function HomePage() {
   return (
-    <TextPreviewProvider fields={editableFields}>
+    <TextPreviewProvider fields={editableFields} showLauncher={false}>
       <div id="top" className={styles.site}>
         <a className="skip" href="#main">
           <T text="跳至正文" />

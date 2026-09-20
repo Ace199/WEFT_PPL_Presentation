@@ -15,7 +15,7 @@ test("decision indexes never slide over the card while the outer page scrolls", 
 });
 
 for (const language of ["zh", "en"]) {
-  test(`desktop viewer fits a screen and keeps controls reachable (${language})`, async ({
+  test(`desktop viewer adds 40px of reading space and keeps controls reachable (${language})`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 800 });
@@ -28,7 +28,7 @@ for (const language of ["zh", "en"]) {
     await expect(
       page.getByText("问题，往往出在模型。", { exact: true }),
     ).toHaveCount(0);
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
       await page.locator("[data-index]").nth(i).click();
       if (i === 2)
         await page
@@ -52,20 +52,22 @@ for (const language of ["zh", "en"]) {
               .querySelector("[data-site-header]")!
               .getBoundingClientRect();
             return (
-              el.getBoundingClientRect().height <=
-              innerHeight - header.height + 2
+              Math.abs(el.getBoundingClientRect().height -
+              (innerHeight - header.height + 40)) <= 2
             );
           }),
         )
         .toBe(true);
+      await page.getByRole("button", { name: "NEXT →", exact: true }).scrollIntoViewIfNeeded();
+      await page.evaluate(() => window.scrollBy({top: 4, behavior: "instant"}));
       await expect(
         page.getByRole("button", { name: "NEXT →", exact: true }),
       ).toBeInViewport({ ratio: 1 });
       const body = page.locator(
         '[data-panel][data-active="true"] [data-card-scroll]',
       );
-      await expect(body.locator("[data-card-part]")).toHaveCount(3);
-      expect(await body.locator("[data-card-part]").evaluateAll(els => els.map(el => el.getAttribute("data-card-part")))).toEqual(["decision", "comparison", "example"]);
+      await expect(body.locator("[data-card-part]")).toHaveCount(i === 3 ? 2 : 3);
+      expect(await body.locator("[data-card-part]").evaluateAll(els => els.map(el => el.getAttribute("data-card-part")))).toEqual(i === 3 ? ["decision", "comparison"] : ["decision", "comparison", "example"]);
       await expect(body.getByText("MODEL DIAGNOSIS", { exact: true })).toHaveCount(0);
       await body.evaluate((el) => (el.scrollTop = 0));
       await page.screenshot({
@@ -83,7 +85,7 @@ for (const language of ["zh", "en"]) {
       expect(await page.evaluate(() => scrollY)).toBe(pageY);
       await body.evaluate((el) => (el.scrollTop = el.scrollHeight));
       await expect(
-        page.locator('[data-panel][data-active="true"] a'),
+        page.locator(i === 3 ? '#decision-task-composition figcaption' : '[data-panel][data-active="true"] a'),
       ).toBeInViewport({ ratio: 1 });
       expect(
         await page
@@ -142,21 +144,21 @@ test("record switch preserves decision and displays parseable delta and full sta
     "data-active-decision",
     "execution",
   );
-  await page.locator("[data-index]").nth(3).press("Home");
+  await page.locator("[data-index]").nth(4).press("Home");
   await expect(
     page.getByRole("button", { name: "← PREV", exact: true }),
   ).toBeEnabled();
   const previous = page.getByRole("button", { name: "上一张决策卡", exact: true });
   const next = page.getByRole("button", { name: "下一张决策卡", exact: true });
-  await expect(previous).toHaveText("04 / EXECUTION");
+  await expect(previous).toHaveText("05 / EXECUTION");
   await previous.click();
   await expect(page.locator("#design-viewer")).toHaveAttribute("data-active-decision", "execution");
   await expect(next).toHaveText("01 / COMPATIBILITY");
   await next.click();
   await expect(page.locator("#design-viewer")).toHaveAttribute("data-active-decision", "compatibility");
   await page.locator("[data-index]").nth(0).press("ArrowLeft");
-  await expect(page.locator("[data-index]").nth(3)).toBeFocused();
-  await page.locator("[data-index]").nth(3).press("ArrowRight");
+  await expect(page.locator("[data-index]").nth(4)).toBeFocused();
+  await page.locator("[data-index]").nth(4).press("ArrowRight");
   await expect(page.locator("[data-index]").nth(0)).toBeFocused();
 });
 
@@ -187,6 +189,7 @@ test("short and mobile cards expose scrollable content and retain navigation", a
           behavior: "instant",
         }),
       );
+    await page.getByRole("button", { name: "NEXT →", exact: true }).scrollIntoViewIfNeeded();
     await expect(
       page.getByRole("button", { name: "NEXT →", exact: true }),
     ).toBeInViewport({ ratio: 1 });

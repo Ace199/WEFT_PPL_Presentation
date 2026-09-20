@@ -15,7 +15,7 @@ test("desktop navigation does not intercept decisions and requires a deliberate 
     const index = document.querySelector("[data-index]")!.getBoundingClientRect();
     return toggle.bottom <= index.top;
   })).toBe(true);
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
     const bounds = await page.locator("[data-index]").nth(i).boundingBox();
     await page.mouse.click(bounds!.x + bounds!.width / 2, bounds!.y + bounds!.height / 2);
     await expect(page.locator("[data-index]").nth(i)).toHaveAttribute("aria-pressed", "true");

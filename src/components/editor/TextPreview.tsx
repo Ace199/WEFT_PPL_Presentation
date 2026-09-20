@@ -53,9 +53,11 @@ export function EditableText({
 export function TextPreviewProvider({
   fields: baselineFields,
   children,
+  showLauncher = true,
 }: {
   fields: FieldRegistry;
   children: ReactNode;
+  showLauncher?: boolean;
 }) {
   const {language, t} = useLanguage();
   const fields = Object.fromEntries(Object.entries(baselineFields).map(([id, field]) =>
@@ -238,7 +240,7 @@ export function TextPreviewProvider({
             </aside>
           ) : null}
           {children}
-          {!open ? (
+          {!open && showLauncher ? (
             <div className={styles.launcher}>
               {list.changes.length ? (
                 <>

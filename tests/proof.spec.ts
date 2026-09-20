@@ -7,6 +7,14 @@ for (const width of [390, 768, 1440]) {
     await page.goto("/");
     const proof = page.locator("#production");
     await expect(proof.getByRole("heading", { name: "IN PRODUCTION", exact: true })).toBeVisible();
+    await expect(proof.locator('dt [data-glyph-text]')).toHaveText([
+      "HOSTS", "SYSTEM", "WORKFLOW", "FORMAT", "STATUS",
+    ]);
+    await expect(proof.locator('dd [data-glyph-text]')).toHaveText([
+      "Maya 2022 / Houdini 21–22", "Rez / Ftrack",
+      "Build / Load / Publish / Dailes Review", "USD / Alembic",
+      "Active production / 2026",
+    ]);
     await expect(proof.getByRole("link", { name: /HOW IT WORKS IN PRODUCTION/ })).toHaveAttribute("href", "/evidence/");
     await proof.scrollIntoViewIfNeeded();
     await page.evaluate(() => document.fonts.ready);

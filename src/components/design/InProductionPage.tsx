@@ -1,13 +1,13 @@
 import { SiteHeader } from "@/components/SiteHeader";
-import { decisions, type Copy } from "@/content/decisions";
+import { decisions, type Copy, type DecisionId } from "@/content/decisions";
 import { sitePath } from "@/lib/paths";
 import { DesignText as T } from "./DesignText";
 import { DesignFooter } from "./DesignPage";
 import { ProductionArtifact } from "./ProductionArtifact";
 import styles from "./DesignPage.module.css";
 
-const details: { paragraphs: Copy[]; boundary: Copy }[] = [
-  {
+const details: Record<DecisionId, { paragraphs: Copy[]; boundary: Copy }> = {
+  compatibility: {
     paragraphs: [
       {
         zh: "工作阶段使用当前生产状态，方便制作继续向前。正式发布时，已经使用的依赖关系被保留下来，使历史成果拥有自己的兼容依据。",
@@ -27,7 +27,7 @@ const details: { paragraphs: Copy[]; boundary: Copy }[] = [
       en: "This is a simplified representation of the production structure. Missing-candidate behavior and resolver refresh behavior still require separate runtime records.",
     },
   },
-  {
+  modularity: {
     paragraphs: [
       {
         zh: "镜头工作场景由可独立选择的 Production Modules 组成。Shot Builder 将资源树、版本选择与状态放在同一处，让局部更新拥有明确的作用范围。",
@@ -47,7 +47,7 @@ const details: { paragraphs: Copy[]; boundary: Copy }[] = [
       en: "Hair can appear in the resource structure, while complete Hair assembly is still evolving. Resource visibility does not establish completed assembly.",
     },
   },
-  {
+  state: {
     paragraphs: [
       {
         zh: "一次 Publish 可以只描述本次发生的变化。系统将这些变化与之前的记录合并，保留未变化的条目，形成当前完整镜头状态。",
@@ -67,7 +67,27 @@ const details: { paragraphs: Copy[]; boundary: Copy }[] = [
       en: "The data is a simplified semantic example, not a raw production record export. Shot Builder’s exact record source and concurrent master-record updates still require separate verification.",
     },
   },
-  {
+  "task-composition": {
+    paragraphs: [
+      {
+        zh: "一个镜头包含很多角色时，将所有动画集中在同一个 Ani Task 中，会增加场景负担与管理成本。WEFT / PPL 允许按主要角色、次要角色或相机等制作职责拆分 Ani 子任务，分别制作、分别发布，再汇入共同镜头状态。这改变的不只是工作负载，也是责任边界与状态组织方式。",
+        en: "When a shot contains many characters, placing all animation in one task increases scene and management costs. WEFT / PPL allows tasks to be split by responsibility, such as main characters, secondary characters or camera work. They work and publish independently, then contribute to a shared shot state. This changes both the working scope and the organization of responsibility and state.",
+      },
+      {
+        zh: "例如 Main_Characters 的一次 Publish 将本次 Delta 合入自身 Task Record，同时合入 Ani Master Record。Secondary_Characters 与 Camera 等任务沿用同一关系，汇总仍保留任务来源。每次发布增量更新，不需要重新扫描所有任务再重建汇总。",
+        en: "For example, a Main_Characters publish merges its delta into its own task record and the animation master record. Secondary_Characters and Camera tasks follow the same relationship, retaining task provenance. Each publish updates incrementally rather than rescanning all tasks to rebuild the aggregate.",
+      },
+      {
+        zh: "十角色镜头、任务分组、SH010 和版本号均为简化示例，不是原始记录或性能测量。单个任务范围更轻、责任边界更清晰、共同镜头状态继续保留，是这里的生产组织目标；不承诺具体速度提升。Camera 仍是独立内容，不放入 rigcache 映射。",
+        en: "The ten-character shot, task grouping, SH010 and version numbers are simplified examples, not raw records or performance measurements. The production goals are a lighter working scope, clearer ownership and preserved shared state, not a quantified speed guarantee. Camera remains separate from the rigcache map.",
+      },
+    ],
+    boundary: {
+      zh: "当前 Publish 端已经维护 Task Record + Ani Master Record；Maya Ani Builder 当前还没有通过这个 Master Record 重建完整多任务镜头。发布侧汇总不代表 Builder 消费闭环已完成，也不构成并发更新安全或冲突自动解决的保证。本页未独立验证生产运行时。",
+      en: "Publish currently maintains Task Record + Ani Master Record. Maya Ani Builder does not yet rebuild a complete multi-task shot from this master record. Publish-side aggregation does not establish end-to-end Builder consumption, concurrency safety or automatic conflict resolution. Production runtime was not independently verified for this page.",
+    },
+  },
+  execution: {
     paragraphs: [
       {
         zh: "Builder 在制作起点建立正确上下文；Resolution 在选择依赖时应用规则；Publish / QC 在正式交付边界检查成果。规则按其影响范围进入对应执行点。",
@@ -87,7 +107,7 @@ const details: { paragraphs: Copy[]; boundary: Copy }[] = [
       en: "The screenshot shows how rules enter the tool. It does not establish that every check passed or that publishing has full transactional recovery. Recovery remains a future engineering direction.",
     },
   },
-];
+};
 export function InProductionPage() {
   return (
     <div className={styles.page} id="top">
@@ -107,8 +127,8 @@ export function InProductionPage() {
           <p>How the design decisions exist in production.</p>
           <p>
             <T
-              zh="从四项设计决策，进入它们对应的生产结构、记录语义与执行界面。"
-              en="Explore the production structures, record semantics and execution interfaces behind the four decisions."
+              zh="从五项设计决策，进入它们对应的生产结构、记录语义、任务汇总与执行界面。"
+              en="Explore the production structures, record semantics, task aggregation and execution interfaces behind the five decisions."
             />
           </p>
           <nav className={styles.detailNav} aria-label="Production chapters">
@@ -120,7 +140,7 @@ export function InProductionPage() {
           </nav>
         </section>
         <div className={styles.details} id="production-details">
-          {decisions.map((d, i) => (
+          {decisions.map((d) => (
             <section
               id={d.id}
               key={d.id}
@@ -134,7 +154,7 @@ export function InProductionPage() {
                   <h2 id={`production-${d.id}`}>
                     <T {...d.title} />
                   </h2>
-                  {details[i].paragraphs.map((p, j) => (
+                  {details[d.id].paragraphs.map((p, j) => (
                     <p key={j}>
                       <T {...p} />
                     </p>
@@ -143,7 +163,7 @@ export function InProductionPage() {
                 <div>
                   <ProductionArtifact id={d.id} />
                   <p className={styles.boundary}>
-                    <T {...details[i].boundary} />
+                    <T {...details[d.id].boundary} />
                   </p>
                 </div>
               </div>

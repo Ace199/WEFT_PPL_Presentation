@@ -50,7 +50,8 @@ function FactsMotion({
       visible = false,
       finished = false;
     const fast = variant === "production";
-    let remaining = fast ? 320 : 550,
+    const playbackRate = fast ? 2 : 1;
+    let remaining = (fast ? 320 : 550) / playbackRate,
       due = 0;
     list.dataset.typing = "active";
     glyphs.forEach((glyph) => (glyph.dataset.untyped = "true"));
@@ -97,14 +98,18 @@ function FactsMotion({
         remaining = (
           fast ? [32, 52, 28, 42, 75, 35, 48] : [75, 115, 65, 95, 170, 80, 105]
         )[index % 7];
+      remaining /= playbackRate;
       schedule();
     };
     const visibility = () => (document.hidden ? pause() : schedule());
+    // Production starts when the facts are readable, not at the first pixel
+    // crossing the bottom edge. Hero keeps its existing first-entry trigger.
+    const visibleRatio = fast ? 0.5 : 0;
     const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
+      visible = entry.isIntersecting && entry.intersectionRatio >= visibleRatio;
       if (visible) schedule();
       else pause();
-    });
+    }, { threshold: visibleRatio });
     observer.observe(list);
     document.addEventListener("visibilitychange", visibility);
     return () => {

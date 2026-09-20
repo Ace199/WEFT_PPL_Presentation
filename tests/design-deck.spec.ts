@@ -24,7 +24,7 @@ test("decision deck stays synchronized through pointer, keyboard and rapid chang
   await expect(
     page
       .getByRole("navigation", { name: "章节导航" })
-      .getByRole("link", { name: "02 / 设计/创新" }),
+      .getByRole("link", { name: "02 / 设计&创新" }),
   ).toHaveAttribute("aria-current", "page");
   await expect(deck).toHaveAttribute("data-active-decision", "compatibility");
   await expect(
@@ -42,6 +42,8 @@ test("decision deck stays synchronized through pointer, keyboard and rapid chang
     indexes.getByRole("button", { name: /03 \/ STATE/ }),
   ).toBeFocused();
   await page.getByRole("button", { name: "NEXT →", exact: true }).click();
+  await expect(deck).toHaveAttribute("data-active-decision", "task-composition");
+  await page.getByRole("button", { name: "NEXT →", exact: true }).click();
   await expect(deck).toHaveAttribute("data-active-decision", "execution");
   await expect(
     page.getByRole("button", { name: "NEXT →", exact: true }),
@@ -53,7 +55,7 @@ test("decision deck stays synchronized through pointer, keyboard and rapid chang
   const navigation = page.getByRole("navigation", { name: "卡片切换" });
   for (const label of [
     "01 / COMPATIBILITY",
-    "04 / EXECUTION",
+    "05 / EXECUTION",
     "02 / MODULARITY",
     "03 / STATE",
     "01 / COMPATIBILITY",
@@ -101,7 +103,7 @@ test("tablet cards remain readable and expose only the active content to assisti
   await page.setViewportSize({ width: 768, height: 1024 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/design-innovation/");
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
     await page.locator("[data-index]").nth(i).click();
     await expect(page.getByRole("heading", { level: 3 })).toHaveCount(1);
     await page
@@ -110,7 +112,7 @@ test("tablet cards remain readable and expose only the active content to assisti
     const bounds = await page
       .locator("[data-panel][data-active=true]")
       .evaluate((panel) => {
-        const link = panel.querySelector("a")!.getBoundingClientRect();
+        const link = (panel.querySelector("a") ?? panel.querySelector("figcaption"))!.getBoundingClientRect();
         const frame = panel.getBoundingClientRect();
         return { linkBottom: link.bottom, frameBottom: frame.bottom };
       });
@@ -136,11 +138,16 @@ test("all cards, anchored destinations and global language work", async ({
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/design-innovation/");
-  const ids = ["compatibility", "modularity", "state", "execution"];
+  const ids = ["compatibility", "modularity", "state", "task-composition", "execution"];
   for (let i = 0; i < ids.length; i++) {
     await page.locator("[data-index]").nth(i).click();
     const panel = page.locator(`[data-panel]#decision-${ids[i]}`);
     await expect(panel).toHaveAttribute("data-active", "true");
+    if (ids[i] === "task-composition") {
+      await expect(panel.locator('[data-card-part="example"]')).toHaveCount(0);
+      await expect(panel.getByRole("link")).toHaveCount(0);
+      continue;
+    }
     await expect(
       panel.getByRole("heading", { name: "PART 03 / PROJECT EXAMPLE", exact: true }),
     ).toBeVisible();
@@ -159,7 +166,7 @@ test("all cards, anchored destinations and global language work", async ({
   );
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  await page.locator("[data-index]").nth(3).click();
+  await page.locator("[data-index]").nth(4).click();
   await expect(
     page.getByRole("heading", { name: /Put critical rules/ }),
   ).toBeVisible();
@@ -216,7 +223,7 @@ test("mobile swipe, vertical scrolling and reduced motion preserve usable contro
     "data-active-decision",
     "modularity",
   );
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
     await page.locator("[data-index]").nth(i).click();
     expect(
       await page.evaluate(

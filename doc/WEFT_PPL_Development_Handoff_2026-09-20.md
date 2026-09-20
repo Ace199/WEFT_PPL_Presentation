@@ -1,16 +1,58 @@
 # WEFT / PPL 开发交接 · 2026-09-20
 
-本文件是本轮交接入口。历史设计与实现记录保留于 [2026-09-17 交接](WEFT_PPL_Development_Handoff_2026-09-17.md)，当前用户确认的 Card 结构见 [冻结原文](WEFT_PPL_Chapter02_Card_Structure_Freeze_2026-09-20.md)。明确区分网站展示、概念示例与生产运行时。
+本文件是本轮交接入口。历史设计与实现记录保留于 [2026-09-17 交接](WEFT_PPL_Development_Handoff_2026-09-17.md)，Card 的早期结构基线见 [冻结原文](WEFT_PPL_Chapter02_Card_Structure_Freeze_2026-09-20.md)。以下最新用户决定优先于历史四卡冻结记录；明确区分网站展示、概念示例与生产运行时。
+
+## 本次上传摘要 · 2026-09-20
+
+- 用户已要求更新交接文档并上传 GitHub；本次允许正常源码提交和推送，不包含 Pages 部署或强推。
+- 最终为五卡：Compatibility / Modularity / State / Task Composition / Execution。04 仅保留 Part 01、Part 02；03 不恢复 Before；05 保留 Publish 缩略图放大。五卡循环与内部滚动保持。
+- 章节 02 Hero 已恢复自然高度，不再占满首屏；桌面 Viewer 在原高度上增加 40px。索引副标题缩小，04 只写 Independent Subtasks。导航为“设计&创新”。
+- 01 Hero 标题字体、字号及章节标识以 02 为准；01 页面改用与 02 相同的纯 Ivory #f5f5ee，移除白色径向渐变，深色区块不变。
+- 同期改动一并纳入上传：首页隐藏试编辑启动入口（编辑能力仍保留，临时内容不持久化）；Production Facts 在至少 50% 可见后以 2 倍速度打字，Hero 打字速度不变；首页生产信息更新。01 共享模型增加 USD / Alembic 生产格式图标并调整人、产品及 DCC 软件标签。此处为当前源码接续记录，不新增生产能力声明。
+- 最终 npm run build 通过（含类型检查及静态导出）。本次 Playwright / Edge 专项 **29 项全部通过，约 1.3 分钟**：五卡 Deck / Viewer、Task Composition、Hero 自然高度、章节标题与背景一致、Compatibility 动画、导航热区、首页首帧、Publish viewer、Production Facts 打字及试编辑入口隐藏。
+- 这不是全仓测试通过声明。旧 navigation 测试仍包含章节占位页假设，旧 verify-export 脚本同样过时，本次未作为验收执行；未测实体设备、生产运行时或 Core Web Vitals，未部署 Pages。
+- 上传前两次终端 fetch 因连接重置失败；通过 GitHub 连接器读取远程 main 为 84ea2259d4744c6ee7bfe463740e25ed06af0158，与本地提交起点一致。最终推送结果另以本文件发布回执及远程 SHA 核对为准。
+- 上传源码、测试、公开格式图标和选定当前截图；临时 trace / results 目录及已撤回的 task-composition-example 中间截图仅留本地。截图是网站展示验收，不是生产运行时记录。
 
 ## 当前完成范围
 
-- 首页、Systematic Thinking、Design & Innovation、带四个锚点的 In Production 页面已实现。
+- 首页、Systematic Thinking、Design & Innovation、带五个锚点（含 task-composition）的 In Production 页面已实现。
 - `/next/`、旧 `/evidence/` 仍是占位页，不应视为已完成章节。
 - Next.js 静态导出，React / TypeScript / CSS Modules / GSAP / SVG / Canvas；无后台或 CMS。语言偏好允许 localStorage，临时编辑只保存在内存。
 
 ## 本轮最终设计决定
 
-### 最新接续：四卡修订与截图放大
+- 最新背景统一：01 页面移除白色径向渐变叠层，改为与 02 相同的 `var(--paper)`（#f5f5ee）纯 Ivory 背景；原深色区块不变。
+
+- 最新章节标题统一：以 02 为准，01 Hero 主标题改为相同中英字体、750 字重、1.12 行高、中文 0.015em 字距和响应式字号；顶部章节标识统一为 14px Technical Label。保留两章文案、结构及内部标题样式。
+
+### 最新接续：新增 04 / Task Composition（覆盖下文四卡数量）
+
+- 最新尺寸微调：桌面（>960px）Viewer 在原 `100svh - nav-height` 基础上加高 40px，额外高度供卡片内部正文使用；窄屏维持原高度。卡头、底部控件和索引行为不变。展开导航时可稍滚动外层页面查看完整底栏，不再要求桌面 Viewer 严格等于视口减导航高度。
+
+- 最新撤回：用户通过回复批注要求 Hero「回到原来的样子」。已撤销章节 Hero 占满首屏的 min-height 和额外 36px 底部留白，恢复内容自然高度与原有顶部间距。下方的首屏留白记录仅为历史；五卡、精简索引副标题、04 Part 03 移除和首页 Hero 均不变。
+
+- 最新删减：用户要求 04 的 Part 03 先去掉。卡内不再渲染 Project Example、目录 / record 示例及该区 CTA，只保留 Part 01 和 Part 02；其他四卡不变。`/in-production/#task-composition` 中示例和 Publish / Builder 边界仍保留，暂不删除数据或深入页。
+
+- 最新 04 叙事覆盖下文早期 Task_A / Task_B 示例：主标题为「一个镜头的动画工作，不必挤在同一个任务里。」；System Shift 为 `Single Shot Ani Task → Split Tasks + Shared Shot State`。Before 明确三个主要角色＋七个次要角色集中在一个 Ani Task，配短文「场景更重，交互更慢，任务边界也更难管理」。不再用抽象 one task state 作为中间结论。
+- After 使用 Main Characters Task、Secondary Characters Task、Camera / Layout Task，以 Mint 线汇入 ANI MASTER STATE，保留 shared shot state / task sources retained。三项收益为单个任务范围更轻、责任边界更清晰、共同镜头状态继续保留，标为设计目标，不冒充性能测量。
+- 此次职责叙事修改后：构建通过；Task Composition、Deck 与 Viewer 共 11 项通过（24.3 秒），涵盖中英文边界、目录、三种职责、五卡循环、平板正文 axe、320–1440px 溢出及内部滚动。已检查桌面十角色对比与移动端纵向 Mint 关系图；移动截图 `artifacts/task-responsibility-mobile-state.png`。未运行生产性能测试、提交或部署。
+- 目录示例改为 Main_Characters / Secondary_Characters / Camera / Ani 各自 record，更新示例使用 Main_Characters Publish。任务分组和 SH010 仍为简化示例，Maya Builder 未完整消费 Master Record 的边界不变。图解使用 `TaskCompositionDiagram.tsx` 与独立 CSS Module，窄屏纵向连接，卡片仍内部滚动；其他四卡与 Hero 留白不改。
+
+- 历史 Hero 要求（已撤回，不得恢复）：章节开场与共享导航合计占满首屏，原文案靠上，下面仅留白。曾使用 `min-height: calc(100svh - var(--nav-height, 80px))`；当前已恢复自然高度。
+- Hero 留白版本构建通过，`design-hero.spec.ts` 与 `design-viewer.spec.ts` 共 6 项通过（15.0 秒）。首屏覆盖 1440 / 768 / 390px、中英两种语言，实测 Hero 底部落在视口边缘、卡片区不露出；桌面截图已检查。截图为 `artifacts/design-hero-{width}-{lang}.png`。
+
+- 顺序现为 01 Compatibility、02 Modularity、03 State、04 Task Composition、05 Execution。固定卡片、内部滚动、循环导航及 State 无 Before 保持。End 依据实际卡片数量选择末卡，首尾侧边、箭头与滑动按五卡循环。
+- 新卡说明独立任务责任与共同 Shot State：每个 Task Delta 更新自己的 Task Record，同时增量汇入 Ani Master Record，不重新扫描全部任务重建汇总。主图为概念示意；目录和更新关系采用用户给出的 Task_A / Task_B / SH010 / 版本示例，明确不是原始记录。
+- 新增 `/in-production/#task-composition`，仍是一个深入页。说明 Publish 端已维护 Task Record + Ani Master Record，但 Maya Ani Builder 尚未通过 Master Record 重建完整多任务镜头；没有承诺并发安全或自动冲突处理，也未独立验证生产运行时。
+- Synthesis 增加 TASK「如何独立协作并汇总」，保持汇入 EXPLICIT PRODUCTION MODEL。没有恢复底部 In Production 索引。
+- 用户截图反馈：索引英文副标题缩小至 12–15px，收紧留白，将空间让给卡片；04 副标题最终仅为 **Independent Subtasks**，去掉 `/ Shared Shot State`，正文共同状态语义保留。
+- 入口：`decisions.ts` / `decisionCards.ts`、`TaskCompositionDiagram.tsx`、`ProductionSpecimen.tsx`、`InProductionPage.tsx`；深入文案按 DecisionId 映射，不依赖数组位置。窄屏五个卡片指示器保持在卡片固定底部。
+- 最终构建通过。五卡 Deck / Viewer、Compatibility、导航热区及 Task Composition 专项共 14 项：首次 13 通过，移动导航关闭后的几何断言收到 bottom=98（期望 ≤12）；该项独立复测通过（4.0 秒），未改导航实现。不能写成首次全绿或已查明偶发原因。
+- 新卡专项覆盖五个索引、目录与更新贡献、第五锚点、Maya Builder 未闭环的中英文边界、320 / 390 / 768 / 1440px 的无横向溢出和 CTA 可达性。原有卡片及循环回归覆盖五项；平板正文 axe 检查通过。桌面主图与移动示例截图已检查，素材见 `artifacts/task-composition-*.png`、`task-composition-example-*.png`；这些是浏览器展示，不是运行时记录。仍未测实体设备、实际生产运行时或线上部署。
+- 上述开发阶段尚未提交、推送或部署；用户随后已授权本次提交和正常推送，见文首上传摘要。保留并行任务的首页和 Systematic Thinking 改动；不把历史四卡测试直接当作五卡验收。
+
+### 历史接续：四卡修订与截图放大（Execution 现编号 05）
 
 以下为同日后续用户决定，覆盖下面早期“全部 Before 对比”的描述。
 
@@ -18,7 +60,7 @@
 - **02 Modularity / 第三部分**：左侧示意资源树，右侧真实 Shot Builder 截图节选，保留原始版本及状态，不把示例数据说成截图中的数据。窄屏上下排列。
 - **03 State**：取消 Before 对比。因模块可以独立发布，单次发布描述局部变化，系统将变化合并到已有状态，维护完整镜头状态。第二段改为 `MODULAR PUBLISH → FULL STATE` 单幅图，标题区为 `STATE MODEL`；保留 Delta / Current State JSON 切换。历史冻结原文不改写。
 - **04 Execution / 第三部分**：左侧五阶段执行示意，右侧 Publish 原始界面缩略图，约 190px 宽，去掉顶部窗口栏。点击直接放大实际截图，不播放首页的原型转实现动画。支持关闭按钮、Escape、背景点击及关闭后焦点返回，打开时锁定外层页面滚动。移动端上下排列。查看器为独立小型 Client Component，卡片正文仍由服务端生成。
-- 导航中文“设计与创新”改为“设计/创新”，英文仍为 Design & Innovation，URL 不变。
+- 导航中文曾改为“设计/创新”；用户同日最新截图纠正为 **“设计&创新”**，英文仍为 Design & Innovation，URL 不变。
 
 新增入口：`CompatibilityComparison.tsx/.module.css`（对比图与旋转），`PublishPreview.tsx/.module.css`（截图缩略图及原生 dialog）。左右示例布局在 `ProductionSpecimen.tsx` 与 `DesignPage.module.css`；03 条件布局在 `DesignPage.tsx`，解释文案在 `decisionCards.ts`、`decisions.ts`。导航名称在 `destinations.ts` 与 `translations.ts`。
 
@@ -48,11 +90,12 @@
 
 | 文件 | 责任 |
 | --- | --- |
-| `src/components/design/DesignPage.tsx` | 共用三段 Card 模板 |
+| `src/components/design/DesignPage.tsx` | Card 模板：03 无 Before，04 不渲染第三段 |
 | `src/content/decisionCards.ts` | Before、问题、设计结论、示例标题 |
-| `src/content/decisions.ts` | 四卡主文案、索引、深入链接文案 |
+| `src/content/decisions.ts` | 五卡主文案、索引、深入链接文案 |
 | `src/components/design/DecisionDeck.tsx` | 循环、切换方向、键盘、触摸、内部滚动重置 |
-| `src/components/design/DecisionDiagrams.tsx` | 四个概念图，模块与状态示例同步 |
+| `src/components/design/DecisionDiagrams.tsx` | 五卡概念图入口，模块与状态示例同步 |
+| `src/components/design/TaskCompositionDiagram.tsx` / `.module.css` | 按职责拆分任务、Mint 汇入 Ani Master State 的响应式图解 |
 | `src/components/design/ProductionSpecimen.tsx` / `ArtifactState.tsx` | 示例和 JSON 双视图、灰色前缀块 |
 | `src/components/design/DesignPage.module.css` | 卡片尺寸、三段版式、内部滚动、示例样式 |
 | `src/components/AutoHeader.tsx` / `.module.css` | 导航窄条悬停和移动点击开关 |
@@ -61,9 +104,9 @@
 
 ## 验证与发布
 
-### 本次接续发布检查
+### 历史发布回执：四卡版本 70dca1a
 
-- **当前发布状态：源码已成功推送 GitHub `main`。** 实现提交 `70dca1a`（`feat: refine decision cards and add Publish image preview`），`git push origin main` 返回成功，远程由 `0fb8dff` 更新为 `70dca1a`。本条发布回执单独追加文档提交；下方失败记录均为历史。未部署 GitHub Pages。
+- **此前四卡版本已成功推送 GitHub `main`。** 实现提交 `70dca1a`（`feat: refine decision cards and add Publish image preview`），`git push origin main` 返回成功，远程由 `0fb8dff` 更新为 `70dca1a`；回执提交为 `84ea225`。这不是本次五卡版本的上传结果；下方失败记录均为历史。未部署 GitHub Pages。
 
 - 再次 `git fetch origin` 成功，远程 `main` 已是 `0fb8dff`，与本地提交一致（领先/落后均为 0）。下面“未推送成功”仅记录早前尝试，不再代表远程缺少那两笔提交；无法从本次检查判断中间由何人完成同步。
 - 当前新增内容为四卡修订、Publish 放大查看和导航中文更名，交接及 AGENTS 已同步。GitHub 发布仍指源码推送，不包含 Pages 配置或网站部署。
@@ -82,7 +125,7 @@
 
 ## 后续工作
 
-- **本轮实际发布状态：未推送成功。** 本地实现提交 `2789f1931398080897caaa7751be9822188eca8d`，包含源码、文档、测试与选定截图。两次 `git push origin main` 均因无法连接 github.com:443 失败；随后尝试 GitHub 连接器，创建 blob 返回 `403 Resource not accessible by integration`，未写入远程内容。连接器读取确认远程 main 仍为 `99dfed65c773376fa116574f66e5d6416f61da7e`。需要恢复 GitHub 网络连接或提供连接器仓库写权限后再发布；正常推送前重新 fetch，不强推。
+- **历史阻塞（其后已上传，不代表当前状态）：** 提交 `2789f1931398080897caaa7751be9822188eca8d` 曾两次 push 无法连接 github.com:443；GitHub 连接器创建 blob 曾返回 `403 Resource not accessible by integration`。随后该提交及后续四卡版本均已进入远程，见上方历史成功回执。正常推送须检查远程，不强推。
 - 用户最终视觉验收、实体手机、多浏览器冷启动、真实读者反馈尚未完成。
 - 性能目标不是保证；旧性能文件仅为当时实验数据，本轮没有重新完整测量 Core Web Vitals。
 - 如果后续要求网站上线，需要确认 Pages 设置、根域名/仓库子路径，构建时设置 base path 并验证线上资源和直达刷新。
