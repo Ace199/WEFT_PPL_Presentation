@@ -1,5 +1,35 @@
 # WEFT / PPL 开发交接：用户偏好、已确认行为与问题记录
 
+**最新交接入口：** [2026-09-20 开发交接](WEFT_PPL_Development_Handoff_2026-09-20.md)，汇总本轮最终卡片结构、交互、首页首帧修复、灰色前缀展示和 GitHub 发布边界。以下历史记录保留。
+
+## 最新接续补充 · 2026-09-20 / Card 结构冻结
+
+- 用户原文保存在 `WEFT_PPL_Chapter02_Card_Structure_Freeze_2026-09-20.md`。四卡改为 Decision → Before / WEFT / PPL → Project Example 的纵向三段；MODEL DIAGNOSIS 合并至 Before，System Shift 为标题区的一行，覆盖此前四象限布局。
+- 保留固定卡片、正文内部滚动、固定卡头/底部、循环切换。新增 `src/content/decisionCards.ts` 提供 Before 结构、问题、设计结论和示例标题；`DesignPage.tsx` 共用三段模板。
+- 图与示例对齐：模块为 Camera / Set / Character A RigCache / CFX / Character B RigCache；状态为 A v002→v003、B v001、Camera v003。JSON Camera 保持独立字段，未照抄为 rigcache 子项；文件名进入记录切换按钮。READY/LOADED 和五阶段执行序列来自本次用户示意，明确非真实资源状态或运行日志，不等于验证生产运行时。
+- 构建成功，Deck/Viewer 8 项通过；原短窗口/移动测试因新增 Before 的 pre 导致选择器歧义，已定位到 Project Example 后单独重跑。完整展开截图 `artifacts/card-freeze-01.png` 至 `04.png` 用于内容评审，实际页面仍为固定高度内部滚动。
+- 未提交、推送或部署；最终视觉待用户确认。
+
+## 最新接续补充 · 2026-09-19 / Chapter 02 Decision Viewer
+
+- 首页首帧修正（同日）：旧导出在 JS 未执行时显示完成态 SVG，已通过阻断脚本的浏览器测试复现。MotionFigure.module.css 在支持脚本且无减少动态偏好时定义等待态：Hero 初始化前不显示最终 SVG，Summary 后两阶段不可见；初始化完成后解除，Summary 使用显式 fromTo。已播放标记推迟到异步模块加载及初始化成功之后，避免取消初始化后跳过 intro。Facts 同样在 hydration 前准备打字首帧，停止后显式保留 complete。无 JS、减少动态和编辑模式保留静态内容。构建及 4 项首帧/首次进入/刷新/章节返回/静态回退/Summary 测试通过。旧 Hero 的 7 项录像测试收尾受 spawn EPERM 影响，不能标记整套通过；未部署。
+
+- 最新用户修正：01 左边显示 04、04 右边显示 01，改为循环 Deck，覆盖此前“端点不循环”。侧边、PREV/NEXT、左右键和滑动统一循环，Home/End 仍直达首尾；首尾过渡方向跟随操作方向。
+
+- 用户确认修复导航误触：共享 AutoHeader 桌面收起后仅底部 8px 窄条悬停 300ms 展开，移出取消，移除向下延伸 36px 的整行透明热区。移动端/粗指针使用右侧可见 44px 点击按钮；键盘焦点展开、Escape、编辑和 reduced-motion 保留。新增 header-reveal.spec.ts 验证真实坐标点击四个索引、短暂经过取消、停留展开、键盘与移动开关。该修正作用于共享导航。
+
+- 最新排版调整：用户要求卡内图文更集中、缩小图表。概念图桌面高度改为 210–280px（随视口高度），主标题 28–36px、说明 17px；SYSTEM SHIFT 桌面横向排列，收紧上下区间距。主要论点和完整概念图在上部同一区域展示，下方诊断及 Artifact 保留内部滚动，不保证全部细节一屏显示。移动图最大高度 260px。构建及 5 项 Viewer 回归通过，中英文桌面截图已查看；未部署，视觉待用户确认。
+
+- 随后用户指出四个索引吸顶时覆盖到卡片中间和底部。已取消索引独立 sticky，使索引与卡片一起随外层页面滚动；卡头/底部固定及内部滚动保持。不要恢复独立吸顶而再次横穿卡片。
+
+- 最新用户截图纠正优先于下面历史记录：保留有边框的内部 Card，左右露出相邻卡片。Card 尺寸按视口固定，正文在内部上下滚动；卡头和 PREV / 指示器 / NEXT 不随正文滚动。不是把内容缩小后全部排进一张无边框技术纸。
+- 删除“问题，往往出在模型”中间区；Hero 文案、四个索引、Synthesis、下一章与四个深入链接保留。索引和卡片组成桌面一屏；移动端正文纵向排列但仍在卡内滚动。非常矮的窗口保留 480px Viewer 最小高度，页面本身可滚动。
+- 原生 overflow-y 滚动，overscroll-behavior-y: contain 防止滚到卡内边界后连带滚动页面；页面外侧仍可滚动离开 Viewer。切换决策后新卡滚回顶部，语言变化不重置决策。左右侧露出的卡边可点击切换；端点不循环。
+- 卡内新增 ProductionSpecimen.tsx：简化 USDA（用户本轮授权的逻辑 URI，Mint 高亮 av / step）、资源树、JSON Delta / Current State、执行映射。ArtifactState.tsx 仅控制 JSON 视图，正文继续服务端生成；代码行支持独立横向查看，不应撑宽整个卡片。所有示例明确标注简化，不是生产记录原样导出或真实运行日志；不展示未经证实的 QC INSTANCE / PASS 状态。
+- `/in-production/` 的原 ProductionArtifact.tsx 和真实截图未改；USDA 仅核对展示结构，未接入生产 Resolver 或 USD 解析运行时验证。
+- 实现入口：DesignPage.tsx、DecisionDeck.tsx、DesignPage.module.css、ProductionSpecimen.tsx、ArtifactState.tsx。新增 tests/design-viewer.spec.ts 并更新原 Deck 回归。最新验证结果见根目录 design-qa.md 的 2026-09-19 补充。
+- 本轮没有提交、推送或部署。最终视觉仍待用户确认；已运行的浏览器检查不等于实体手机或生产运行时验收。
+
 更新：2026-09-18（首页蒲公英迭代、Design Decision Deck 与 Systematic Thinking 后续修正补全）。保留原文件名与历史记录；包含 Hero 蒲公英、Summary 提速、资产版本间距、公开文案，以及完整 02 章节的最新决定、实现入口和验证边界。来源为用户明确指示、当前代码及实际验证记录；其他任务的验证单独注明来源。本文用于接续本项目，不将观察推断为其他项目偏好。
 
 **接续摘要：** 新会话先读第 **19–24 节**，再按需读历史章节。首页 Hero 已换为程序化蒲公英种子，最新要求是杆长再增加 30%、数量再减少 25%，伞冠不变；Summary 仍用原细胞形态，播放速度为原来的 1.5 倍。首页 Transform 视图旧白色 v1 左移已落实，新绿色 v2 和连接端点已右移。用户可见主标题改用 IN PRODUCTION / HOW IT WORKS IN PRODUCTION。Systematic Thinking 已实现；本轮修复了主页与章节之间整页重载造成的旧画面闪现，并补齐图表首帧隐藏、按模块顺序展开、术语、DCC 图标与滚动速度规则（详见第 24 节）。Design & Innovation 已改为四个并列决策、一次显示一张海报的 Deck，复用全站导航，底部四入口索引已删除，卡片内生产内容和 `/in-production/` 四锚点仍保留。章节最终视觉仍待用户确认。本次请求仅更新交接文档，不新增提交、推送或部署授权；旧发布记录不代表本轮已发布。

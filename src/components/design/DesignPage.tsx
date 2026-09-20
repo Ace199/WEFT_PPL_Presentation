@@ -1,10 +1,11 @@
 import { SiteHeader } from "@/components/SiteHeader";
+import { decisionCards } from "@/content/decisionCards";
 import { decisions } from "@/content/decisions";
 import { sitePath } from "@/lib/paths";
 import { DesignText as T } from "./DesignText";
 import { DecisionDeck } from "./DecisionDeck";
 import { DecisionDiagram } from "./DecisionDiagrams";
-import { ProductionArtifact } from "./ProductionArtifact";
+import { ProductionSpecimen } from "./ProductionSpecimen";
 import styles from "./DesignPage.module.css";
 
 function DecisionCard({
@@ -12,6 +13,7 @@ function DecisionCard({
 }: {
   decision: (typeof decisions)[number];
 }) {
+  const narrative = decisionCards[d.id];
   return (
     <article className={styles.card} aria-labelledby={`title-${d.id}`}>
       <header className={styles.cardHeader}>
@@ -20,51 +22,60 @@ function DecisionCard({
         </span>
         <span>FIG. 02.{d.index}</span>
       </header>
-      <div className={styles.cardMain}>
-        <div className={styles.statement}>
+      <div
+        className={styles.cardBody}
+        data-card-scroll=""
+        tabIndex={0}
+        role="region"
+        aria-label={`${d.category} — 可上下滚动 / Scroll for details`}
+      >
+        <section className={styles.decisionPart} data-card-part="decision">
+          <p className={styles.partLabel}>PART 01 / DECISION</p>
           <h3 id={`title-${d.id}`}>
             <T {...d.title} />
           </h3>
-          <p className={styles.summary}>
+          <p className={styles.decisionSummary}>
             <T {...d.summary} />
           </p>
-          <div className={styles.shift}>
-            <p className={styles.label}>SYSTEM SHIFT</p>
-            <p>{d.from}</p>
-            <span aria-hidden="true">↓</span>
-            <p>{d.to}</p>
-          </div>
-        </div>
-        <figure className={styles.mainFigure}>
-          <DecisionDiagram id={d.id} />
-          <figcaption>
-            <T {...d.diagramNote} />
-            <span>
-              <T zh="概念示意" en="CONCEPTUAL DIAGRAM" />
-            </span>
-          </figcaption>
-        </figure>
-      </div>
-      <div className={styles.cardLower}>
-        <section className={styles.diagnosis} aria-label="Model diagnosis">
-          <h4 className={styles.label}>MODEL DIAGNOSIS</h4>
-          <dl>
-            <dt>SURFACE SYMPTOM</dt>
-            <dd>
-              <T {...d.symptom} />
-            </dd>
-            <dt>UNDERLYING CAUSE</dt>
-            <dd>
-              <T {...d.cause} />
-            </dd>
-          </dl>
-        </section>
-        <section className={styles.production} aria-label="In production">
-          <h4 className={styles.label}>IN PRODUCTION</h4>
-          <ProductionArtifact id={d.id} />
-          <p>
-            <T {...d.meaning} />
+          <p className={styles.inlineShift}>
+            <span>SYSTEM SHIFT</span> {d.from} <span aria-hidden="true">→</span>{" "}
+            {d.to}
           </p>
+        </section>
+        <section
+          className={styles.comparisonPart}
+          data-card-part="comparison"
+          aria-label="Before → WEFT / PPL"
+        >
+          <h4 className={styles.partLabel}>PART 02 / BEFORE → WEFT / PPL</h4>
+          <div className={styles.comparisonGrid}>
+            <div className={styles.beforeModel}>
+              <h5>BEFORE</h5>
+              <pre>{narrative.before}</pre>
+              <p>
+                <T {...narrative.problem} />
+              </p>
+            </div>
+            <figure className={styles.afterModel}>
+              <h5>WEFT / PPL</h5>
+              <DecisionDiagram id={d.id} />
+              <figcaption>
+                <T {...narrative.takeaway} />
+                <small>
+                  <T zh="概念示意" en="CONCEPTUAL DIAGRAM" />
+                </small>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+        <section
+          className={styles.examplePart}
+          data-card-part="example"
+          aria-label="Project example"
+        >
+          <h4 className={styles.partLabel}>PART 03 / PROJECT EXAMPLE</h4>
+          <h5>{narrative.example}</h5>
+          <ProductionSpecimen id={d.id} />
           <a className={styles.more} href={sitePath(`/in-production/#${d.id}`)}>
             <T {...d.cta} /> ↗
           </a>
@@ -127,7 +138,7 @@ export function DesignPage() {
       <a className="skip" href="#design-main">
         <T zh="跳到正文" en="Skip to content" />
       </a>
-      <SiteHeader current="design-innovation" boundaryId="design-model" />
+      <SiteHeader current="design-innovation" boundaryId="design-viewer" />
       <main id="design-main">
         <section className={styles.hero} aria-labelledby="design-title">
           <p className={styles.label}>02 / DESIGN &amp; INNOVATION</p>

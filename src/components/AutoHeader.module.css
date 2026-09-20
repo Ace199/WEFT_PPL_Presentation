@@ -21,8 +21,21 @@
   cursor: pointer;
   display: block;
 }
-.header[data-collapsed="true"] .handle { bottom: -36px; height: 44px; }
+.handle span { display: none; }
 .handle:focus-visible { outline-offset: -4px; }
+@media (max-width: 800px), (pointer: coarse) {
+  .handle {
+    inset: auto 0 -44px auto;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 0 0 3px 3px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 22px;
+  }
+  .handle span { display: inline; }
+}
 .status, .staticStatus {
   border: 0;
   border-left: 1px solid var(--line);

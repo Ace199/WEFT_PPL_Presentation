@@ -1,0 +1,14 @@
+/* Applied before hydration and lazy imports. No-JS and reduced-motion readers
+   keep the complete static SVG; only animated visitors see a pending frame. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .figure[data-motion="hero"][data-motion-ready="false"]:not([data-motion-static]) > svg {
+    visibility: hidden;
+  }
+  .figure[data-motion="summary"][data-motion-ready="false"]:not([data-motion-static]) [data-phase="0"] {
+    opacity: 0.2;
+  }
+  .figure[data-motion="summary"][data-motion-ready="false"]:not([data-motion-static]) [data-phase="1"],
+  .figure[data-motion="summary"][data-motion-ready="false"]:not([data-motion-static]) [data-phase="2"] {
+    opacity: 0;
+  }
+}

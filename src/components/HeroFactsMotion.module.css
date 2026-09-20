@@ -1,6 +1,12 @@
 .facts [data-typing-glyph] {
   position: relative;
 }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .facts:not([data-typing]):not([data-typing-static]) [data-typing-glyph],
+  .facts:not([data-typing]):not([data-typing-static]) li::before {
+    visibility: hidden;
+  }
+}
 .facts [data-untyped="true"] {
   visibility: hidden;
 }

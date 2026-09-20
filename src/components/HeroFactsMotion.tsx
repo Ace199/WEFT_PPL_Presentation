@@ -114,7 +114,7 @@ function FactsMotion({
       clearCaret();
       glyphs.forEach((glyph) => delete glyph.dataset.untyped);
       groups.forEach((group) => delete group.dataset.untypedLabel);
-      delete list.dataset.typing;
+      list.dataset.typing = "complete";
       delete list.dataset.paused;
       // An interruption reveals the full facts and does not restart the sequence.
       played.current = true;
@@ -127,6 +127,7 @@ function FactsMotion({
         root.current = element;
       }}
       data-fact-typing={variant}
+      data-typing-static={editing || undefined}
       className={`${className} ${styles.facts}`}
     >
       {children}

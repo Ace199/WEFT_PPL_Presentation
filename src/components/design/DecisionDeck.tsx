@@ -25,9 +25,15 @@ export function DecisionDeck({
   const reduced = useReducedMotion();
   const root = useRef<HTMLDivElement>(null);
   const previous = useRef(0);
+  const directionRef = useRef(1);
   const touch = useRef<{ x: number; y: number; id: number } | null>(null);
-  const select = (index: number) =>
-    setActive(Math.max(0, Math.min(decisions.length - 1, index)));
+  const wrap = (index: number) => (index + decisions.length) % decisions.length;
+  const select = (index: number) => {
+    directionRef.current = index >= active ? 1 : -1;
+    setActive(wrap(index));
+  };
+  const previousCard = decisions[wrap(active - 1)];
+  const nextCard = decisions[wrap(active + 1)];
 
   useLayoutEffect(() => {
     const panels = Array.from(
@@ -37,12 +43,16 @@ export function DecisionDeck({
     const oldIndex = previous.current;
     previous.current = active;
     if (!incoming) return;
+    if (oldIndex !== active)
+      incoming
+        .querySelector<HTMLElement>("[data-card-scroll]")
+        ?.scrollTo({ top: 0 });
     const context = gsap.context(() => {
       gsap.set(panels, { autoAlpha: 0, xPercent: 0 });
       gsap.set(incoming, { autoAlpha: 1 });
       if (reduced || oldIndex === active) return;
       const outgoing = panels[oldIndex];
-      const direction = active > oldIndex ? 1 : -1;
+      const direction = directionRef.current;
       const timeline = gsap.timeline({ defaults: { ease: "power2.inOut" } });
       gsap.set(outgoing, { autoAlpha: 1 });
       gsap.set(incoming, { autoAlpha: 0, xPercent: 6 * direction });
@@ -95,6 +105,7 @@ export function DecisionDeck({
       event.altKey ||
       event.ctrlKey ||
       event.metaKey ||
+      (event.target as HTMLElement).closest("[data-artifact-control], pre") ||
       event.target instanceof HTMLInputElement ||
       event.target instanceof HTMLTextAreaElement
     )
@@ -118,12 +129,14 @@ export function DecisionDeck({
     if (button)
       button.parentElement
         ?.querySelectorAll<HTMLButtonElement>("button")
-        [Math.max(0, Math.min(3, next))]?.focus({ preventScroll: true });
+        [wrap(next)]?.focus({ preventScroll: true });
   }
   function pointerStart(event: PointerEvent) {
     if (
       event.pointerType === "mouse" ||
-      (event.target as HTMLElement).closest("a,button")
+      (event.target as HTMLElement).closest(
+        "a,button,pre,[data-artifact-control]",
+      )
     )
       return;
     touch.current = { x: event.clientX, y: event.clientY, id: event.pointerId };
@@ -138,140 +151,144 @@ export function DecisionDeck({
       select(active + (dx < 0 ? 1 : -1));
   }
   return (
-    <div ref={root} data-active-decision={decisions[active].id}>
+    <>
       <div
-        className={styles.indexes}
-        role="group"
-        aria-label={
-          language === "zh" ? "设计决策索引" : "Design decision index"
-        }
-        onKeyDown={keyboard}
+        ref={root}
+        className={styles.viewer}
+        id="design-viewer"
+        data-active-decision={decisions[active].id}
       >
-        {decisions.map((decision, i) => (
-          <button
-            key={decision.id}
-            type="button"
-            data-index=""
-            aria-pressed={active === i}
-            aria-controls={`decision-${decision.id}`}
-            onClick={() => select(i)}
-          >
-            <span>
-              {decision.index} / {decision.category}
-            </span>
-            <span>{decision.label}</span>
-            <i aria-hidden="true" />
-          </button>
-        ))}
-      </div>
-      <section
-        className={styles.judgment}
-        id="design-model"
-        aria-labelledby="model-title"
-      >
-        <h2 id="model-title">
-          {language === "zh"
-            ? "问题，往往出在模型。"
-            : "The problem is often the model."}
-        </h2>
-        <p>
-          {language === "zh"
-            ? "表面问题往往来自更底层的 Production Model 判断。"
-            : "Surface problems often originate in deeper production model decisions."}
-        </p>
-      </section>
-      <section
-        className={styles.deck}
-        aria-labelledby="deck-title"
-        onKeyDown={keyboard}
-      >
-        <h2 className={styles.label} id="deck-title">
-          DESIGN DECISIONS / 04
-        </h2>
-        <div className={styles.deckFrame}>
-          <div
-            className={styles.poster}
-            tabIndex={0}
-            role="region"
-            aria-label={
-              language === "zh"
-                ? "设计决策卡片，左右方向键切换"
-                : "Design decision card; use left and right arrow keys"
-            }
-            onPointerDown={pointerStart}
-            onPointerUp={pointerEnd}
-            onPointerCancel={() => {
-              touch.current = null;
-            }}
-          >
-            <div className={styles.panels}>
-              {cards.map((card, i) => (
-                <div
-                  key={decisions[i].id}
-                  className={styles.panel}
-                  data-panel=""
-                  data-active={i === active}
-                  id={`decision-${decisions[i].id}`}
-                  aria-hidden={i !== active}
-                  inert={i !== active}
-                >
-                  {card}
-                </div>
-              ))}
-            </div>
-            <nav
-              className={styles.deckNav}
-              aria-label={
-                language === "zh" ? "卡片切换" : "Decision navigation"
-              }
+        <div
+          className={styles.indexes}
+          role="group"
+          aria-label={
+            language === "zh" ? "设计决策索引" : "Design decision index"
+          }
+          onKeyDown={keyboard}
+        >
+          {decisions.map((decision, i) => (
+            <button
+              key={decision.id}
+              type="button"
+              data-index=""
+              aria-pressed={active === i}
+              aria-controls={`decision-${decision.id}`}
+              onClick={() => select(i)}
             >
-              <button
-                type="button"
-                disabled={active === 0}
-                onClick={() => select(active - 1)}
-              >
-                ← PREV
-              </button>
-              <div>
-                {decisions.map((d, i) => (
-                  <button
-                    key={d.id}
-                    type="button"
-                    aria-label={`${d.index} / ${d.category}`}
-                    aria-pressed={active === i}
-                    onClick={() => select(i)}
+              <span>
+                {decision.index} / {decision.category}
+              </span>
+              <span>{decision.label}</span>
+              <i aria-hidden="true" />
+            </button>
+          ))}
+        </div>
+        <section
+          className={styles.deck}
+          aria-labelledby="deck-title"
+          onKeyDown={keyboard}
+        >
+          <h2 className={styles.label} id="deck-title">
+            DESIGN DECISION VIEWER / 04
+          </h2>
+          <div className={styles.deckFrame}>
+            <button
+              type="button"
+              className={`${styles.cardEdge} ${styles.previousEdge}`}
+              aria-label={
+                language === "zh" ? "上一张决策卡" : "Previous decision card"
+              }
+              onClick={() => select(active - 1)}
+            >
+              {`${previousCard.index} / ${previousCard.category}`}
+            </button>
+            <div
+              className={styles.poster}
+              tabIndex={0}
+              role="region"
+              aria-label={
+                language === "zh"
+                  ? "设计决策卡片，左右方向键切换"
+                  : "Design decision card; use left and right arrow keys"
+              }
+              onPointerDown={pointerStart}
+              onPointerUp={pointerEnd}
+              onPointerCancel={() => {
+                touch.current = null;
+              }}
+            >
+              <div className={styles.panels}>
+                {cards.map((card, i) => (
+                  <div
+                    key={decisions[i].id}
+                    className={styles.panel}
+                    data-panel=""
+                    data-active={i === active}
+                    id={`decision-${decisions[i].id}`}
+                    aria-hidden={i !== active}
+                    inert={i !== active}
                   >
-                    <i aria-hidden="true" />
-                    {d.index}
-                  </button>
+                    {card}
+                  </div>
                 ))}
               </div>
-              <button
-                type="button"
-                disabled={active === 3}
-                onClick={() => select(active + 1)}
+              <nav
+                className={styles.deckNav}
+                aria-label={
+                  language === "zh" ? "卡片切换" : "Decision navigation"
+                }
               >
-                NEXT →
-              </button>
-            </nav>
-          </div>
-          {active < 3 && (
-            <div className={styles.nextEdge} aria-hidden="true">
-              {decisions[active + 1].index} / {decisions[active + 1].category}
+                <button
+                  type="button"
+                  onClick={() => select(active - 1)}
+                >
+                  ← PREV
+                </button>
+                <div>
+                  {decisions.map((d, i) => (
+                    <button
+                      key={d.id}
+                      type="button"
+                      aria-label={`${d.index} / ${d.category}`}
+                      aria-pressed={active === i}
+                      onClick={() => select(i)}
+                    >
+                      <i aria-hidden="true" />
+                      {d.index}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => select(active + 1)}
+                >
+                  NEXT →
+                </button>
+              </nav>
             </div>
-          )}
-        </div>
-        <p
-          className={styles.srOnly}
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          {decisions[active].index} / {decisions[active].category} ·{" "}
-          {decisions[active].title[language]}
-        </p>
-      </section>
+            <button
+              type="button"
+              className={styles.cardEdge}
+              aria-label={
+                language === "zh" ? "下一张决策卡" : "Next decision card"
+              }
+              onClick={() => select(active + 1)}
+            >
+              {`${nextCard.index} / ${nextCard.category}`}
+            </button>
+          </div>
+          <p
+            className={styles.srOnly}
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {decisions[active].index} / {decisions[active].category} ·{" "}
+            {decisions[active].title[language]}
+          </p>
+        </section>
+      </div>
       {children}
-    </div>
+    </>
   );
 }

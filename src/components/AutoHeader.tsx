@@ -12,6 +12,7 @@ export function AutoHeader({ children, className, boundaryId = "summary" }: { ch
   const [inHero, setInHero] = useState(true);
   const root = useRef<HTMLElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const revealTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const hovering = useRef(false);
   const editing = useEditingActivity();
   const reduced = useReducedMotion();
@@ -20,7 +21,7 @@ export function AutoHeader({ children, className, boundaryId = "summary" }: { ch
     if (root.current) root.current.dataset.scrollTracking = "false";
     setRevealed(open);
   };
-  const cancel = () => clearTimeout(timer.current);
+  const cancel = () => { clearTimeout(timer.current); clearTimeout(revealTimer.current); };
   const reveal = () => { cancel(); manual(true); };
   const retire = (delay = 800) => {
     cancel();
@@ -73,13 +74,13 @@ export function AutoHeader({ children, className, boundaryId = "summary" }: { ch
   }, [boundaryId]);
   useEffect(() => {
     setReady(true);
-    clearTimeout(timer.current);
+    cancel();
     if (inHero || editing || reduced) setRevealed(false);
-    return () => clearTimeout(timer.current);
+    return cancel;
   }, [editing, reduced, inHero]);
   return (
     <header ref={root} data-site-header data-in-hero={inHero} data-collapsed={collapsed} className={`${className} ${styles.header}`}
-      onPointerEnter={(event) => { if (event.pointerType === "mouse") { hovering.current = true; reveal(); } }}
+      onPointerEnter={(event) => { if (event.pointerType === "mouse") { hovering.current = true; cancel(); } }}
       onPointerLeave={(event) => { if (event.pointerType === "mouse") { hovering.current = false; retire(); } }}
       onFocusCapture={(event) => { if (!(event.target as HTMLElement).hasAttribute("data-header-toggle")) reveal(); }}
       onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) retire(); }}
@@ -93,7 +94,13 @@ export function AutoHeader({ children, className, boundaryId = "summary" }: { ch
       }}>
       {ready && !editing && !inHero ? <button type="button" data-header-toggle className={styles.handle}
         aria-label={collapsed ? t("展开导航") : t("收起导航")} aria-expanded={!collapsed}
-        onClick={() => { cancel(); manual(collapsed); }} /> : null}
+        onPointerEnter={(event) => {
+          if (event.pointerType !== "mouse" || !collapsed || !window.matchMedia("(min-width: 801px) and (hover: hover) and (pointer: fine)").matches) return;
+          cancel();
+          revealTimer.current = setTimeout(() => manual(true), 300);
+        }}
+        onPointerLeave={() => clearTimeout(revealTimer.current)}
+        onClick={() => { cancel(); manual(collapsed); }}><span aria-hidden="true">{collapsed ? "☰" : "↑"}</span></button> : null}
       {children}
     </header>
   );

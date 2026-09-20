@@ -940,3 +940,562 @@
     stroke-dashoffset: 0 !important;
   }
 }
+
+/* Fixed cards: the body scrolls independently of the header and footer. */
+.decisionPart,
+.comparisonPart,
+.examplePart {
+  min-width: 0;
+  padding: 18px 0 24px;
+}
+.comparisonPart,
+.examplePart {
+  border-top: 1px solid #c6cec7;
+}
+.partLabel {
+  font: 14px/1.4 var(--display);
+  letter-spacing: 0.06em;
+  color: #53616a;
+  margin: 0 0 16px;
+}
+.decisionPart h3 {
+  font-size: clamp(27px, 2.5vw, 38px);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  white-space: normal;
+  max-width: 1000px;
+}
+.decisionSummary {
+  font-size: 17px;
+  line-height: 1.65;
+  color: #53616a;
+  margin: 12px 0 16px;
+  max-width: 960px;
+}
+.inlineShift {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  font: 20px/1.4 var(--display);
+}
+.inlineShift > span:first-child {
+  font-size: 13px;
+  color: #53616a;
+  margin-right: 8px;
+}
+.comparisonGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 30px;
+}
+.comparisonGrid h5,
+.examplePart h5 {
+  font: 20px/1.35 var(--display);
+  margin-bottom: 14px;
+}
+.beforeModel {
+  border-right: 1px solid #c6cec7;
+  padding-right: 30px;
+  min-width: 0;
+}
+.beforeModel pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    14px/1.7 Consolas,
+    monospace;
+  color: #53616a;
+  margin: 0 0 20px;
+}
+.beforeModel p,
+.afterModel figcaption {
+  font-size: 15px;
+  line-height: 1.7;
+}
+.afterModel {
+  min-width: 0;
+}
+.afterModel figcaption {
+  border-top: 1px solid #c6cec7;
+  margin-top: 14px;
+  padding-top: 12px;
+}
+.afterModel figcaption small {
+  display: block;
+  font: 12px/1.5 var(--display);
+  color: #53616a;
+  margin-top: 8px;
+}
+.examplePart .more {
+  font-size: 16px;
+  min-height: 44px;
+  margin-top: 12px;
+}
+.examplePart .specimenFigure figcaption {
+  font-size: 15px;
+  margin-top: 14px;
+}
+.examplePart .specimenSwitch {
+  position: static;
+  gap: 24px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.examplePart .specimenSwitch button {
+  min-height: 44px;
+  font:
+    13px/1.5 Consolas,
+    monospace;
+  text-align: left;
+}
+.examplePart .specimenSwitch button span {
+  display: block;
+  font: 13px var(--display);
+}
+.examplePart .recordViewer .specimenTitle {
+  padding: 6px 10px;
+}
+@media (max-width: 960px) {
+  .comparisonGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .beforeModel {
+    border-right: 0;
+    border-bottom: 1px solid #c6cec7;
+    padding: 0 0 22px;
+  }
+  .decisionPart h3 {
+    font-size: 28px;
+  }
+  .decisionSummary {
+    font-size: 16px;
+  }
+  .inlineShift {
+    font-size: 17px;
+    gap: 6px 10px;
+  }
+  .inlineShift > span:first-child {
+    flex-basis: 100%;
+  }
+}
+.viewer {
+  margin: 38px 4.35% 24px;
+  height: calc(100svh - var(--nav-height, 80px));
+  min-height: 480px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  scroll-margin-top: var(--nav-height, 80px);
+}
+.viewer .indexes {
+  margin: 0;
+  padding: 6px 0 10px;
+  position: relative;
+  top: auto;
+  z-index: 5;
+  background: var(--paper);
+  border-bottom: 1px solid var(--deck-line);
+}
+.viewer .indexes button {
+  min-height: 58px;
+  font-size: clamp(18px, 1.6vw, 24px);
+  line-height: 1.15;
+  padding-bottom: 10px;
+}
+.viewer .indexes button span + span {
+  font-size: 0.85em;
+}
+.viewer .deck {
+  margin: 0;
+  padding: 9px 0 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  min-width: 0;
+}
+.viewer .deck > h2 {
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.viewer .deckFrame {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 38px;
+  gap: 12px;
+  min-width: 0;
+  min-height: 0;
+}
+.viewer .poster {
+  width: 100%;
+  padding: 0;
+  border: 1px solid #b7bfbb;
+  border-radius: 4px;
+  background: #ffffff1c;
+  overflow: clip;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 0;
+}
+.viewer .panels,
+.viewer .panel {
+  min-height: 0;
+}
+.cardEdge {
+  border: 1px solid #b7bfbb;
+  border-radius: 4px;
+  background: #ffffff1c;
+  color: #52645d;
+  writing-mode: vertical-rl;
+  text-align: left;
+  padding: 20px 7px;
+  font: 21px var(--display);
+  cursor: pointer;
+}
+.cardEdge:hover {
+  border-color: var(--diagram-mint);
+}
+.cardEdge:disabled {
+  visibility: hidden;
+}
+.previousEdge {
+  transform: rotate(180deg);
+}
+.viewer .card {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 0;
+  min-height: 0;
+}
+.viewer .cardHeader {
+  font-size: 26px;
+  margin: 0;
+  padding: 18px 26px;
+}
+.cardBody {
+  min-height: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #859c91 #e6e9e1;
+  padding: 8px 24px 24px;
+  scroll-padding-block: 14px;
+}
+.cardBody:focus-visible {
+  outline-offset: -3px;
+}
+.viewer .cardHeader span:last-child {
+  font-size: 18px;
+}
+.viewer .cardMain {
+  min-height: 0;
+  gap: 22px;
+  grid-template-columns: 38% minmax(0, 1fr);
+}
+.viewer .statement {
+  padding-right: 24px;
+}
+.viewer .statement h3 {
+  font-size: clamp(28px, 2.3vw, 36px);
+  line-height: 1.2;
+}
+.viewer .summary {
+  font-size: 17px;
+  line-height: 1.5;
+  margin-top: 14px;
+}
+.viewer .shift {
+  padding: 18px 0 0;
+  font-size: 20px;
+  line-height: 1.15;
+}
+.viewer .shift:before {
+  display: none;
+}
+.viewer .shift .label {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.viewer .shift p:not(.label) {
+  max-width: none;
+}
+.viewer .shift > span {
+  display: block;
+  font-size: 20px;
+  margin: 4px 0;
+}
+.viewer .shift p:not(.label) {
+  display: block;
+}
+.viewer .mainFigure {
+  justify-content: center;
+}
+.viewer .diagram svg {
+  width: 100%;
+  height: clamp(210px, 30svh, 280px);
+  display: block;
+}
+.viewer .mainFigure figcaption {
+  margin-top: 12px;
+  padding-top: 10px;
+  font-size: 14px;
+}
+.viewer .mainFigure figcaption > span {
+  display: inline;
+  margin-left: 12px;
+  font-size: 10px;
+}
+.viewer .cardLower {
+  grid-template-columns: 38% minmax(0, 1fr);
+  margin: 16px 0 0;
+  padding: 14px 0 0;
+  gap: 26px;
+}
+.viewer .cardLower h4 {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.viewer .diagnosis {
+  padding-right: 24px;
+}
+.viewer .diagnosis dt {
+  font-size: 15px;
+}
+.viewer .diagnosis dd {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 5px;
+}
+.viewer .diagnosis dt:not(:first-child):before {
+  margin: 12px 0;
+  width: 26px;
+}
+.viewer .production .more {
+  padding: 5px 0 0;
+  margin: 6px 0 0;
+  font-size: 15px;
+  min-height: 44px;
+}
+.viewer .production {
+  min-width: 0;
+}
+.viewer .deckNav {
+  position: relative;
+  z-index: 6;
+  margin: 0 24px;
+  padding: 8px 0;
+  background: var(--paper);
+}
+.viewer .deckNav button {
+  font-size: 19px;
+}
+.viewer .deckNav i {
+  width: 11px;
+  height: 11px;
+}
+.specimenFigure {
+  min-width: 0;
+}
+.specimen {
+  border: 1px solid #b7bfbb;
+  min-width: 0;
+}
+.specimenTitle {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #ccd1cb;
+  padding: 4px 10px;
+  font: 13px/1.4 var(--mono);
+}
+.specimenTitle > span:last-child {
+  color: #53616a;
+  font: 14px var(--display);
+}
+.specimen pre {
+  font:
+    13px/1.6 Consolas,
+    monospace;
+  padding: 4px 10px;
+  margin: 0;
+  overflow-x: auto;
+  tab-size: 4;
+  touch-action: pan-x pan-y;
+}
+.codeLine {
+  display: flex;
+  min-width: max-content;
+}
+.lineNumber {
+  color: #53645b;
+  width: 27px;
+  flex: 0 0 27px;
+  user-select: none;
+}
+.specimen mark {
+  background: #c4ecda;
+  color: #153d32;
+  padding: 0 2px;
+}
+.redactedPrefix {
+  display: inline-block;
+  width: 9ch;
+  height: 0.85em;
+  background: #999;
+  vertical-align: -0.05em;
+}
+.specimenFigure figcaption {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #53616a;
+  margin-top: 5px;
+}
+.recordViewer {
+  position: relative;
+}
+.recordViewer .specimenTitle {
+  padding-right: 178px;
+}
+.recordViewer .specimenTitle > span:last-child {
+  display: none;
+}
+.recordViewer pre {
+  min-height: 126px;
+}
+.specimenSwitch {
+  position: absolute;
+  right: 8px;
+  top: 0;
+  display: flex;
+  gap: 14px;
+}
+.specimenSwitch button {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  padding: 4px 0;
+  font: 14px var(--display);
+  color: #53616a;
+  cursor: pointer;
+  min-height: 27px;
+}
+.specimenSwitch button[aria-pressed="true"] {
+  color: var(--ink);
+  border-color: var(--diagram-mint);
+}
+@media (min-width: 961px) {
+  .viewer .shift {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 6px 12px;
+  }
+  .viewer .shift .label {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+  .viewer .shift > span {
+    transform: rotate(-90deg);
+    margin: 0;
+  }
+}
+@media (max-width: 960px) {
+  .viewer {
+    min-height: 480px;
+    margin-top: 24px;
+  }
+  .viewer .indexes {
+    gap: 12px 0;
+    padding-top: 10px;
+  }
+  .viewer .indexes button {
+    font-size: 19px;
+    min-height: 55px;
+  }
+  .viewer .card {
+    gap: 0;
+  }
+  .viewer .deckFrame {
+    grid-template-columns: 14px minmax(0, 1fr) 14px;
+    gap: 5px;
+  }
+  .cardEdge {
+    font-size: 12px;
+    padding: 15px 0;
+  }
+  .viewer .cardHeader {
+    padding: 12px;
+    font-size: 20px;
+  }
+  .viewer .cardHeader span:last-child {
+    font-size: 14px;
+  }
+  .cardBody {
+    padding: 8px 12px 20px;
+  }
+  .viewer .deckNav {
+    margin: 0 10px;
+  }
+  .viewer .deckNav > div button {
+    min-width: 32px;
+  }
+  .viewer .cardMain,
+  .viewer .cardLower {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    min-height: 0;
+  }
+  .viewer .statement,
+  .viewer .diagnosis {
+    padding-right: 0;
+  }
+  .viewer .statement h3 {
+    font-size: 30px;
+  }
+  .viewer .summary {
+    font-size: 17px;
+  }
+  .viewer .shift {
+    padding-top: 16px;
+  }
+  .viewer .diagram svg {
+    height: auto;
+    max-height: 260px;
+  }
+  .viewer .mainFigure figcaption > span {
+    display: block;
+    margin-left: 0;
+  }
+  .viewer .production {
+    padding-top: 14px;
+  }
+  .viewer .production .more {
+    min-height: 44px;
+    padding-top: 10px;
+    font-size: 14px;
+  }
+  .viewer .deckNav button {
+    font-size: 17px;
+  }
+  .recordViewer .specimenTitle {
+    padding-right: 10px;
+    padding-top: 44px;
+  }
+  .specimenSwitch button {
+    min-height: 44px;
+  }
+  .specimen pre {
+    font-size: 12px;
+  }
+}
+@media (max-width: 360px) {
+  .viewer .indexes button {
+    font-size: 17px;
+  }
+  .viewer .statement h3 {
+    font-size: 30px;
+  }
+}

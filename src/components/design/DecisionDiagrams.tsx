@@ -128,103 +128,83 @@ function Compatibility() {
     </svg>
   );
 }
-const modules = ["Model", "Surface", "Rig", "Groom", "Camera", "CFX"];
 function Modularity() {
+  const rows = [
+    ["Camera", "v003"],
+    ["Set", "v002"],
+    ["Character A / RigCache", "v004"],
+    ["Character A / CFX", "v002"],
+    ["Character B / RigCache", "v007"],
+  ];
   return (
     <svg
       viewBox="0 0 620 410"
       role="img"
-      aria-label="Independent modules compose explicitly into a workspace, retaining identity, version, dependency and state."
+      aria-label="Independent Camera, Set and character products retain their own versions and compose into a shot workspace."
     >
-      <text x="12" y="29">
-        INDEPENDENT MODULES
+      <text x="24" y="32">
+        PRODUCTION MODULES
       </text>
-      <text x="392" y="29">
-        WORKSPACE /
+      <text x="421" y="32">
+        SHOT WORKSPACE
       </text>
-      <text x="392" y="52">
-        PRODUCTION VIEW
-      </text>
-      <g data-line="" fill="none" stroke="currentColor" opacity=".42">
-        <path d="M175 84H260V326H175 M175 132H260M175 180H260M175 228H260M175 276H260 M260 202H380" />
-      </g>
-      <g data-relation="" className={styles.validRelation}>
-        <path data-line="" d="M260 202H380m-7 -5 7 5-7 5" />
-      </g>
-      {modules.map((name, i) => (
+      {rows.map(([name, version], i) => (
         <g key={name} data-node="">
           <rect
-            x="12"
-            y={65 + i * 48}
-            width="162"
-            height="36"
+            x="24"
+            y={60 + i * 53}
+            width="303"
+            height="39"
             rx="2"
             fill="none"
             stroke="currentColor"
-            strokeOpacity=".55"
+            strokeOpacity=".4"
           />
-          <text x="25" y={90 + i * 48}>
+          <text x="36" y={86 + i * 53}>
             {name}
           </text>
-          <text x="151" y={90 + i * 48} textAnchor="end" opacity=".6">
-            v{[12, 8, 21, 4, 3, 2][i].toString().padStart(2, "0")}
+          <text x="312" y={86 + i * 53} textAnchor="end">
+            {version}
           </text>
+          <path
+            data-line=""
+            d={`M327 ${80 + i * 53}H369V185H419`}
+            fill="none"
+            stroke="currentColor"
+            strokeOpacity=".4"
+          />
         </g>
       ))}
       <g data-node="">
         <rect
-          x="384"
-          y="68"
-          width="221"
-          height="274"
+          x="419"
+          y="135"
+          width="175"
+          height="100"
           rx="2"
           fill="none"
-          stroke="currentColor"
-          strokeOpacity=".65"
+          stroke="var(--diagram-mint)"
         />
-        {modules.map((name, i) => (
-          <g key={name}>
-            <rect
-              x="400"
-              y={84 + i * 40}
-              width="189"
-              height="30"
-              rx="1"
-              fill="none"
-              stroke="currentColor"
-              strokeOpacity=".3"
-            />
-            <text x="414" y={105 + i * 40}>
-              {name}
-            </text>
-            <circle
-              cx="574"
-              cy={99 + i * 40}
-              r="3"
-              className={styles.mintFill}
-            />
-          </g>
-        ))}
+        <text x="507" y="177" textAnchor="middle">
+          EXPLICIT
+        </text>
+        <text x="507" y="205" textAnchor="middle">
+          COMPOSITION
+        </text>
       </g>
-      <text x="277" y="238" className={styles.smallSvg}>
-        EXPLICIT
-      </text>
-      <text x="277" y="258" className={styles.smallSvg}>
-        COMPOSITION
-      </text>
-      <text x="12" y="390" className={styles.smallSvg}>
+      <text x="24" y="367">
         Identity · Version · Dependency · State
       </text>
     </svg>
   );
 }
 function StateDiagram() {
-  const names = ["Model", "Surface", "Rig", "Groom"];
+  const names = ["A", "B", "Camera"];
   return (
     <svg
       viewBox="0 0 620 410"
       role="img"
-      aria-label="Previous state plus Groom v05 change is merged into the full state; Model v12, Surface v08 and Rig v21 remain unchanged."
+      aria-label="Previous state plus A v003 change is merged into the full state; B v001 and Camera v003 remain unchanged."
     >
       <text x="12" y="39">
         PREVIOUS STATE
@@ -254,14 +234,14 @@ function StateDiagram() {
                 y={78 + i * 46}
                 width="161"
                 height="37"
-                fill={block === 1 && i === 3 ? "var(--mint)" : "none"}
+                fill={block === 1 && i === 0 ? "var(--mint)" : "none"}
                 rx="1"
               />
               <text x={x + 20} y={103 + i * 46}>
                 {name}
               </text>
               <text x={x + 159} y={103 + i * 46} textAnchor="end">
-                {["v12", "v08", "v21", block === 1 ? "v05" : "v04"][i]}
+                {[block === 1 ? "v003" : "v002", "v001", "v003"][i]}
               </text>
             </g>
           ))}
@@ -277,10 +257,10 @@ function StateDiagram() {
           fill="var(--mint)"
         />
         <text x="240" y="112">
-          Groom
+          A
         </text>
         <text x="377" y="112" textAnchor="end">
-          v05
+          v003
         </text>
       </g>
       <text x="205" y="112" textAnchor="middle">

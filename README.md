@@ -1,5 +1,7 @@
 # WEFT / PPL — V1 首页
 
+> 当前实现已扩展至首页、Systematic Thinking、Design & Innovation 和 In Production。请先读 [2026-09-20 开发交接](doc/WEFT_PPL_Development_Handoff_2026-09-20.md)。下文部分 V1 范围与测试说明为历史记录；`/next/`、`/evidence/` 仍为占位，本轮 GitHub 发布指源码推送，不代表 Pages 已上线。
+
 Next.js App Router / React / TypeScript / CSS Modules / GSAP / SVG / Canvas 2D。V1 只完成首页内容；章节与 Evidence 仅提供“内容尚未开放”的最小目标页承接真实导航，无完整章节正文、CMS、后端或部署工作流。
 
 ## 本地运行

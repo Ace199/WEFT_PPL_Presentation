@@ -30,7 +30,7 @@ export const decisions = [
       "Published RigCache retains its compatibility scope. Downstream resolution finds a Surface within that scope, rather than forcing the global latest.",
     ),
     cta: copy(
-      "查看兼容关系如何落地",
+      "查看兼容关系如何在生产中工作",
       "See how compatibility works in production",
     ),
     indexLabel: copy("兼容历史", "Compatible history"),
@@ -109,8 +109,8 @@ export const decisions = [
     ),
     indexLabel: copy("局部发布与完整状态", "Partial change, full state"),
     diagramNote: copy(
-      "只更新发生变化的 Groom，其余模块的状态被保留。",
-      "Update the changed Groom; retain the state of every other module.",
+      "只更新发生变化的 A，B 和 Camera 的状态被保留。",
+      "Update A; retain the state of B and Camera.",
     ),
   },
   {
@@ -123,8 +123,8 @@ export const decisions = [
       "Put critical rules\nat execution boundaries.",
     ),
     summary: copy(
-      "影响正确性的规则，\n不应该只停留在说明文档里。",
-      "Rules that affect correctness\nneed to reach beyond documentation.",
+      "影响 Production Correctness 的规则，不应该只停留在说明文档或 Artist 的记忆里。",
+      "Rules that affect production correctness should not rely only on documentation or artists’ memory.",
     ),
     from: "Written Rules",
     to: "Executable Workflow",

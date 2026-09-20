@@ -45,7 +45,11 @@ test("decision deck stays synchronized through pointer, keyboard and rapid chang
   await expect(deck).toHaveAttribute("data-active-decision", "execution");
   await expect(
     page.getByRole("button", { name: "NEXT →", exact: true }),
-  ).toBeDisabled();
+  ).toBeEnabled();
+  await page.getByRole("button", { name: "NEXT →", exact: true }).click();
+  await expect(deck).toHaveAttribute("data-active-decision", "compatibility");
+  await page.getByRole("button", { name: "← PREV", exact: true }).click();
+  await expect(deck).toHaveAttribute("data-active-decision", "execution");
   const navigation = page.getByRole("navigation", { name: "卡片切换" });
   for (const label of [
     "01 / COMPATIBILITY",
@@ -84,7 +88,7 @@ test("decision deck stays synchronized through pointer, keyboard and rapid chang
     .getByRole("navigation", { name: "章节导航" })
     .getByRole("link", { name: "01 / 系统思考" })
     .click();
-  await expect(page).toHaveURL(/\/systematic-thinking\/$/);
+  await expect(page).toHaveURL(/\/systematic-thinking\/?$/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "动画生产",
   );
@@ -100,6 +104,9 @@ test("tablet cards remain readable and expose only the active content to assisti
   for (let i = 0; i < 4; i++) {
     await page.locator("[data-index]").nth(i).click();
     await expect(page.getByRole("heading", { level: 3 })).toHaveCount(1);
+    await page
+      .locator("[data-panel][data-active=true] [data-card-scroll]")
+      .evaluate((el) => (el.scrollTop = el.scrollHeight));
     const bounds = await page
       .locator("[data-panel][data-active=true]")
       .evaluate((panel) => {
@@ -135,7 +142,7 @@ test("all cards, anchored destinations and global language work", async ({
     const panel = page.locator(`[data-panel]#decision-${ids[i]}`);
     await expect(panel).toHaveAttribute("data-active", "true");
     await expect(
-      panel.getByRole("heading", { name: "IN PRODUCTION", exact: true }),
+      panel.getByRole("heading", { name: "PART 03 / PROJECT EXAMPLE", exact: true }),
     ).toBeVisible();
     await expect(panel.getByRole("link")).toHaveAttribute(
       "href",
@@ -219,6 +226,17 @@ test("mobile swipe, vertical scrolling and reduced motion preserve usable contro
     await expect(page.locator('[data-panel][data-active="true"]')).toHaveCSS(
       "opacity",
       "1",
+    );
+    await page.evaluate(() => {
+      (document.activeElement as HTMLElement)?.blur();
+      document
+        .querySelectorAll("[data-card-scroll]")
+        .forEach((el) => (el.scrollTop = 0));
+      window.scrollTo({ top: 0, behavior: "instant" });
+    });
+    await expect(page.locator("[data-site-header]")).toHaveAttribute(
+      "data-in-hero",
+      "true",
     );
     await page.screenshot({
       path: `artifacts/design-deck-mobile-${i + 1}.png`,
