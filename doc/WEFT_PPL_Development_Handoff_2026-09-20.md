@@ -4,6 +4,12 @@
 
 本节优先于下方同日历史过程记录。下方“未提交 / 未推送”描述的是各轮开发完成时的状态，不应据此判断本次上传结果；本次以此节后续追加的发布回执为准。
 
+### 本次发布回执
+
+- **网站源码与交接已成功推送 GitHub `main`。** 实现提交 [d2cee38](https://github.com/Ace199/WEFT_PPL_Presentation/commit/d2cee383be7d18bc9dc22262f8c17d89fed4126c)：`feat: finalize contact, operate view and decision reading layout`，包含 53 个文件及 6 张选定最终截图。
+- 前两次 fetch 遇到连接重置；使用 GitHub API 核对远程起点为 `1243739b3435ab01249b87e610b3877c7a37078d`。首次 push 连接 github.com:443 失败；使用命令级 HTTP/1.1 正常重试成功，返回 `1243739..d2cee38 main -> main`。未修改全局网络配置、未强推。
+- 本条为推送后的纯文档回执，另作提交；产品构建和 28 项测试对应实现提交。临时产物继续留在本地，工作区并非全部清空。**源码同步不等于 GitHub Pages 已部署。**
+
 ### 当前必须保留的状态
 
 - 四个公开页面：Overview、Systematic Thinking、Design & Innovation、Contact。中文导航为 `00 / 项目概览`、`01 / 系统思考`、`02 / 设计&创新`、`03 / 联系`。不恢复 What Comes Next 或独立 In Production / Evidence 路由；深入内容仅保留源码。
