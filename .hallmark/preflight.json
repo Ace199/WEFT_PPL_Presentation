@@ -1,0 +1,10 @@
+{
+  "date": "2026-09-20",
+  "scope": "Contact page and public navigation simplification",
+  "framework": "Next.js App Router / React / TypeScript / CSS Modules",
+  "tokens": "src/app/globals.css:1",
+  "fonts": "Existing Barlow Condensed display and Microsoft YaHei / PingFang body",
+  "palette": "Existing Ivory / Black / Mint",
+  "motion": "GSAP retained for existing components; Contact remains static",
+  "preserve": "Shared SiteHeader, DesignFooter, existing tokens and chapter type scale"
+}
