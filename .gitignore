@@ -6,3 +6,7 @@ playwright-report/
 *.tsbuildinfo
 *.log
 .env*.local
+
+# Local documentation and reference assets
+/doc/
+/ref/
